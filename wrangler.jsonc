@@ -1,0 +1,8 @@
+{
+  // Statische Website: Cloudflare liefert den Ordner public/ aus.
+  "name": "jakob-christensen-website",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./public"
+  }
+}
