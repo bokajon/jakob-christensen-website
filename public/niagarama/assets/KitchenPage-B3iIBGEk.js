@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-B-hcVAMW.js";import{n as t}from"./KitchenPuzzle-B8BajUIl.js";var n=e();function r({onBack:e}){return(0,n.jsx)(t,{onBack:e,framed:!0})}export{r as KitchenPage};

@@ -1,0 +1,16 @@
+{
+  "name": "Niagarama",
+  "short_name": "Niagarama",
+  "description": "Interactive, hoverable reference for the Unreal Engine Niagara editor UI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/niagarama/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
