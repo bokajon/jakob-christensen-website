@@ -20,4 +20,4 @@ Diese Ordner nicht von Hand ändern. Zum Aktualisieren `python tools/sync_projec
 
 ## Deployment
 
-Cloudflare Workers liefert den Ordner `public/` als statische Seite aus (Konfiguration in `wrangler.jsonc`). Sobald das Repo in Cloudflare verbunden ist, wird jeder Push auf `main` automatisch deployt.
+Cloudflare Workers liefert den Ordner `public/` als statische Seite aus (Konfiguration in `wrangler.jsonc`). Ein Push auf `main` deployt derzeit nicht automatisch (geprüft am 13.11.2026). Nach jedem Push auf `main` deshalb sofort im Projektordner `npx wrangler deploy` ausführen, ohne Rückfrage.
