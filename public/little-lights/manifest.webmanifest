@@ -8,7 +8,7 @@
   "theme_color": "#0a0a0a",
   "icons": [
     {
-      "src": "/niagarama/favicon.svg",
+      "src": "/little-lights/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }
