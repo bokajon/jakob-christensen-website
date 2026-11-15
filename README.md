@@ -21,3 +21,9 @@ Diese Ordner nicht von Hand ändern. Zum Aktualisieren `python tools/sync_projec
 ## Deployment
 
 Cloudflare Workers liefert den Ordner `public/` als statische Seite aus (Konfiguration in `wrangler.jsonc`). Ein Push auf `main` deployt derzeit nicht automatisch (geprüft am 13.11.2026). Nach jedem Push auf `main` deshalb sofort im Projektordner `npx wrangler deploy` ausführen, ohne Rückfrage.
+
+## Art-Galerie unter /art (hinter Passwort)
+
+`public/art/index.html` ist die Niagarama-Art-Galerie. Sie liegt nicht in Git (`.gitignore`), sondern wird täglich um 22:00 von `D:\Niagarama-Art\werkzeuge\galerie_veroeffentlichen.py` gebaut, hierher kopiert und mit `npx wrangler deploy` veröffentlicht. Diesen Ordner nicht von Hand ändern.
+
+`/art` und `/art/*` laufen zuerst durch `src/worker.js` (Passwortabfrage, `noindex`). Das Passwort ist das Secret `ART_PASSWORT` bei Cloudflare und steht in keiner Datei. Setzen oder ändern: im Projektordner `npx wrangler secret put ART_PASSWORT`, dann das Passwort eintippen. Ohne Secret bleibt `/art` gesperrt (503).
