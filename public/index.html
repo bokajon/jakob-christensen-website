@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jakob Christensen</title>
+  <title>Jakob Christensen Curiosities</title>
   <meta name="description" content="Projekte von Jakob Christensen.">
   <style>
     :root {
@@ -83,9 +83,7 @@
     .nowrap { white-space: nowrap; }
     .link { font-size: 0.9rem; color: var(--accent); overflow-wrap: anywhere; }
     .link::after { content: " →"; }
-    .soon { display: none; font-size: 0.9rem; font-weight: 600; color: var(--accent); }
-    .card.is-soon:hover .link { display: none; }
-    .card.is-soon:hover .soon { display: block; }
+    .coming { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
     @media (prefers-reduced-motion: reduce) {
       .card { transition: none; }
@@ -96,7 +94,7 @@
 <body>
   <main>
     <header>
-      <h1>Jakob Christensen</h1>
+      <h1>Jakob Christensen Curiosities</h1>
     </header>
 
     <ul class="projects">
@@ -119,10 +117,15 @@
         </a>
       </li>
       <li>
+        <a class="card" href="niagara-workshop/">
+          <h2>RAVE Niagara Workshop <span class="nowrap">(Unreal Niagara course tool)</span></h2>
+          <span class="link">jakobchristensen.com/niagara-workshop</span>
+        </a>
+      </li>
+      <li>
         <div class="card is-soon" aria-disabled="true">
           <h2>Little Lights, Long Nights</h2>
-          <span class="link">jakobchristensen.com/little-lights</span>
-          <span class="soon">Coming soon</span>
+          <span class="coming">Coming soon</span>
         </div>
       </li>
     </ul>
