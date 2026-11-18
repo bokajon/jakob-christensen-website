@@ -86,6 +86,12 @@
     .coming { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
     .video { margin: 3rem auto 0; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; }
     .video iframe { width: 100%; height: 100%; border: 0; border-radius: 8px; display: block; }
+    .hidden-clip { margin: 0 auto; width: 100%; max-width: 640px; height: 160px; }
+    .clip-layer { position: fixed; inset: 0; z-index: 10; background: #000; opacity: 0; visibility: hidden; transition: opacity 1.2s ease, visibility 0s linear 1.2s; }
+    .clip-layer.is-open { opacity: 1; visibility: visible; transition: opacity 1.2s ease; }
+    .clip-x { position: absolute; top: 12px; right: 16px; z-index: 1; width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(0,0,0,.55); color: #fff; font-size: 24px; line-height: 1; cursor: pointer; }
+    .clip-layer iframe { width: 100%; height: 100%; border: 0; display: block; }
+    @media (prefers-reduced-motion: reduce) { .clip-layer, .clip-layer.is-open { transition: none; } }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
     @media (prefers-reduced-motion: reduce) {
       .card { transition: none; }
@@ -137,6 +143,25 @@
     <div class="video">
       <iframe src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
+    <div class="hidden-clip" id="hidden-clip" aria-hidden="true"></div>
   </main>
+  <div class="clip-layer" id="clip-layer"></div>
+  <script>
+    (function () {
+      var spot = document.getElementById('hidden-clip');
+      var layer = document.getElementById('clip-layer');
+      function close() {
+        layer.classList.remove('is-open');
+        setTimeout(function () { layer.innerHTML = ''; }, 1300);
+      }
+      spot.addEventListener('click', function () {
+        layer.innerHTML = '<button type="button" class="clip-x" aria-label="Close">×</button><iframe src="https://www.youtube-nocookie.com/embed/16GmbZe_PYQ?autoplay=1&rel=0" title="Clip" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+        layer.firstChild.addEventListener('click', close);
+        void layer.offsetWidth;
+        layer.classList.add('is-open');
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    })();
+  </script>
 </body>
 </html>
