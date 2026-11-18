@@ -148,7 +148,7 @@
     <footer>© 2026 Jakob Christensen</footer>
 
     <div class="video">
-      <iframe src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw?enablejsapi=1" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
     <div class="hidden-clip" id="hidden-clip" aria-hidden="true"></div>
   </main>
@@ -167,13 +167,18 @@
       window.addEventListener('blur', function () {
         setTimeout(function () { if (document.activeElement === video) armed = true; }, 0);
       });
+      function pause(frame) {
+        if (frame && frame.contentWindow) frame.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+      }
       function close() {
+        pause(stage.querySelector('iframe'));
         layer.classList.remove('is-open');
         setTimeout(function () { stage.innerHTML = ''; }, 1500);
       }
       spot.addEventListener('click', function () {
         if (!armed) return;
-        stage.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/16GmbZe_PYQ?autoplay=1&rel=0" title="Clip" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+        pause(video);
+        stage.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/16GmbZe_PYQ?autoplay=1&rel=0&enablejsapi=1" title="Clip" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
         void layer.offsetWidth;
         layer.classList.add('is-open');
       });
