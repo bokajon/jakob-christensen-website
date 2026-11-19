@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#0a0a0a;color:#eceef1}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 
 <html lang="en">
@@ -14,11 +14,11 @@
     box-sizing: border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    color-scheme: light;
+    color-scheme: dark;
 
-    --bg: #f3f3f4;
-    --bg-deep: #e9e9eb;
-    --surface: #ffffff;
+    --bg: #0a0a0a;
+    --bg-deep: #0a0a0a;
+    --surface: #313338;
     --surface-2: #f6f6f7;
     --ink: #1f2023;
     --ink-2: #45474d;
@@ -42,15 +42,15 @@
     --val-bg: #ececef;
     --val-ink: #5a4520;
 
-    --sky-1: #3a3c42;
-    --sky-2: #26272b;
+    --sky-1: #0a0a0a;
+    --sky-2: #0a0a0a;
     --star: #ffffff;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --bg: #2b2d31;
-      --bg-deep: #232428;
+      --bg: #0a0a0a;
+      --bg-deep: #0a0a0a;
       --surface: #313338;
       --surface-2: #36383e;
       --ink: #e6e7ea;
@@ -75,15 +75,15 @@
       --val-bg: #1f2023;
       --val-ink: #e0c38f;
 
-      --sky-1: #34363b;
-      --sky-2: #232428;
+      --sky-1: #0a0a0a;
+      --sky-2: #0a0a0a;
       --star: #ffffff;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #2b2d31;
-    --bg-deep: #232428;
+    --bg: #0a0a0a;
+    --bg-deep: #0a0a0a;
     --surface: #313338;
     --surface-2: #36383e;
     --ink: #e6e7ea;
@@ -105,8 +105,8 @@
     --chip-ink: #dcdee2;
     --val-bg: #1f2023;
     --val-ink: #e0c38f;
-    --sky-1: #34363b;
-    --sky-2: #232428;
+    --sky-1: #0a0a0a;
+    --sky-2: #0a0a0a;
     --star: #ffffff;
   }
 
@@ -652,7 +652,7 @@
 
   /* ---------- collapsible sidebar ---------- */
   .clock button.nav-toggle {
-    position: absolute; top: 33px; right: 0; margin: 0;
+    position: absolute; top: 33px; right: 0; z-index: 2; margin: 0;
     width: 26px; height: 26px; padding: 0; display: grid; place-items: center;
     border: 1px solid var(--line); border-radius: 7px; background: transparent;
     color: var(--muted); font-size: 16px; line-height: 1; cursor: pointer; opacity: .7;
