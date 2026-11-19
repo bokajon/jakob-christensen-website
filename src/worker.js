@@ -14,6 +14,10 @@ async function same(a, b) {
 
 export default {
   async fetch(request, env) {
+    // Cloudflare ruft den Worker auch für jede Datei auf, die es in public/ nicht gibt. Alles außer /art bekommt hier
+    // die normale Antwort (404), sonst löst eine fehlende Datei irgendwo auf der Seite die Passwortabfrage aus.
+    const path = new URL(request.url).pathname;
+    if (path !== "/art" && !path.startsWith("/art/")) return env.ASSETS.fetch(request);
     const hdr = { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "private, no-store" };
     if (!env.ART_PASSWORT) return new Response("Diese Seite ist noch nicht freigeschaltet.", { status: 503, headers: hdr });
     const auth = request.headers.get("Authorization") || "";
