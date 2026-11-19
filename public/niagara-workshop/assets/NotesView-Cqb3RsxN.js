@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-LKYXHABd.js";var t=e();function n(){return(0,t.jsx)(`iframe`,{src:`./notes/rave-niagara-notes.html`,title:`RAVE Niagara Notes`,className:`block w-full border-0`,style:{height:`calc(100vh - 4.5rem)`,minHeight:`32rem`}})}export{n as NotesView};
