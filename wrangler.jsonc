@@ -1,12 +1,12 @@
 {
   // Statische Website: Cloudflare liefert den Ordner public/ aus.
-  // Nur /art und /art/* laufen zuerst durch src/worker.js (Passwortschutz), alles andere kommt direkt aus public/.
+  // /art und /art/* laufen zuerst durch src/worker.js (Passwortschutz), die Startseite von /niagara-workshop (Handy-Hinweis), alles andere kommt direkt aus public/.
   "name": "jakob-christensen-website",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
-    "run_worker_first": ["/art", "/art/*"]
+    "run_worker_first": ["/art", "/art/*", "/niagara-workshop", "/niagara-workshop/", "/niagara-workshop/index.html"]
   }
 }
