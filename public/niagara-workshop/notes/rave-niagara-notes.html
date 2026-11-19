@@ -1991,15 +1991,6 @@
 </tbody>
 </table></div>
 </details>
-<h3>Recap questions</h3>
-<ol class="recap">
-<li>Why does the blast emitter have no Spawn Rate, and where do its particles come from?</li>
-<li>What would happen if Add Velocity sat in Particle Update instead of Particle Spawn?</li>
-<li>What does Solve Forces and Velocity do, and why must it be below Gravity Force?</li>
-<li>Why do the sparks stay white while the trails are pink?</li>
-<li>What goes wrong in the trails if Ribbon ID is set to Output?</li>
-<li>You want all fireworks blue in the level. Where do you change it?</li>
-</ol>
 </section>
 <!-- ============================================================ -->
 <section class="block" id="short">
@@ -2550,18 +2541,6 @@ Render            Light Renderer</pre>
 <p>Anyone who did not do Session 1 live: open the <a class="xref" href="https://jakobchristensen.com/niagara-workshop" rel="noopener" target="_blank">RAVE Niagara Workshop</a>, go to <span class="ui">Collection</span>, and in the area Course press <span class="ui">Reset to start of session 2</span>. The Fireworks cards are then unlocked and the Rain cards are locked.</p>
 </div>
 <ol class="steps">
-<li><label><input data-step="r0-2" type="checkbox"/><span class="n"></span></label><div class="body">
-<p class="title">Three questions<span class="kind shw">show only</span></p>
-<ul class="do show-only">
-<li class="show">“Where does Spawn Rate live, and why there?”</li>
-<li class="show">“Add Velocity in Particle Update: what happens?”</li>
-<li class="show">“What three things does an event need?”</li>
-</ul>
-<div class="ex">
-<p class="why"><b>Answers:</b> Emitter Update, it runs once per frame for the whole emitter. The push is added every frame, the rockets accelerate forever. A Generate module on the sender, an Event Handler with Source set, and a Receive module; plus Persistent IDs on the sender.</p>
-<p class="why"><b>Why:</b> today’s rain uses exactly these three ideas again.</p>
-</div>
-</div></li>
 <li><label><input data-step="r0-3" type="checkbox"/><span class="n"></span></label><div class="body">
 <p class="title">Repair the fireworks<span class="kind chg">change</span></p>
 <ul class="do">
@@ -3639,17 +3618,6 @@ Render            Light Renderer</pre>
 </tbody>
 </table></div>
 </details>
-<h3>Recap questions</h3>
-<ol class="recap">
-<li>Why do the drops fall through the floor in the Niagara preview but not in the level?</li>
-<li>What does Drag do to falling rain, and why does that look realistic?</li>
-<li>Splashes and rings come from the same event. What makes one jump up and the other lie flat?</li>
-<li>What goes wrong if Execution Mode is left on Every Particle?</li>
-<li>Why does the ring material need the Particle Color node?</li>
-<li>A level designer wants heavier rain blowing to the left in one corner. What do they change, and where?</li>
-<li>Why does the lightning not flash every 5 seconds like the rest of the system?</li>
-<li>The GPU rain is twenty times denser. Why do we still build the splashes on the CPU?</li>
-</ol>
 </section>
 <!-- ============================================================ -->
 <section class="block" id="rshort">
@@ -4293,17 +4261,6 @@ Render            Sprite Renderer (M_Circle, Unaligned)</pre>
 <p class="goal">The finished smoke, three questions about rain, and what is new today.</p>
 </div>
 <ol class="steps">
-<li><label><input data-step="sm0-2" type="checkbox"/><span class="n"></span></label><div class="body">
-<p class="title">Three questions<span class="kind shw">show only</span></p>
-<ul class="do show-only">
-<li class="show">“The ring material needed one special node to fade. Which one?”</li>
-<li class="show">“A size curve is 0 at birth and 1 at death. Which value walks along it?”</li>
-<li class="show">“Why did the GPU rain lose its splashes?”</li>
-</ul>
-<div class="ex">
-<p class="why"><b>Answers:</b> Particle Color, because without it colour and alpha never reach the pixels. NormalizedAge. Events only exist on the CPU.</p>
-</div>
-</div></li>
 <li><label><input data-step="sm0-3" type="checkbox"/><span class="n"></span></label><div class="body">
 <p class="title">What is new today<span class="kind shw">show only</span></p>
 <ul class="do show-only">
@@ -4949,17 +4906,6 @@ Render            Sprite Renderer (M_Circle, Unaligned)</pre>
 </tbody>
 </table></div>
 </details>
-<h3>Recap questions</h3>
-<ol class="recap">
-<li>Every sprite shows the whole sheet of pictures. Which setting is missing?</li>
-<li>What does Sub UV Animation read to choose the picture, and why does that make the flipbook last exactly one life?</li>
-<li>Why ParticleSubUV in the material instead of a plain Texture Sample?</li>
-<li>Gravity is 0, 0, 200 on the smoke. Why positive?</li>
-<li>What does DepthFade fix, and where do you see it?</li>
-<li>Why does the smoke need Sort Mode View Depth and the embers do not?</li>
-<li>What is the difference between Source Mode Particles and Emitter on the Light Renderer?</li>
-<li>Why could the embers move to the GPU, but not the rain splashes?</li>
-</ol>
 </section>
 <!-- ============================================================ -->
 <section class="block" id="smshort">
