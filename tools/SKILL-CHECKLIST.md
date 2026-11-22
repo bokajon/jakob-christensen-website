@@ -37,7 +37,7 @@ Work through this list for every skill before it goes on the Agent Skills page. 
 ## 5. Side effects
 
 1. Every change that reaches outside the current project (global package install, PATH, system settings, global config files, accounts, paid services) is put to the user first. (Ours. Matt is not consistent here: `git-guardrails-claude-code/SKILL.md:22-24` asks "this project or all projects", `setup-pre-commit/SKILL.md:81-83` installs and commits without asking)
-2. Reason: with `/workaround` loaded, Sonnet still ran a global `pip install csvkit` without asking in 2 of 2 runs, because "reversible first" let it through. (Test, 2026-11-22)
+2. Reason: with `/workaround` loaded, Sonnet still ran a global `pip install csvkit` without asking in 2 of 2 runs, because "reversible first" let it through. After step 4 named the project boundary: 0 global installs in 4 runs; every run installed into a throwaway venv in its own session scratchpad instead, without asking, and said so in its report. (Test, 2026-11-22)
 3. A test run can change the real machine. Undo it after each run (e.g. `pip uninstall -y csvkit`) and check at the end that it is gone. (Test: run A1 installed csvkit globally on Jakob's machine)
 
 ## 6. Mechanical rules go into a check
