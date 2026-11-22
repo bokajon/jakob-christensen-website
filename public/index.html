@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jakob Christensen | Oddities</title>
+  <title>Jakob Christensen | Odds &amp; Ends</title>
   <meta name="description" content="Projekte von Jakob Christensen.">
   <style>
     :root {
@@ -57,7 +57,7 @@
       margin: 0;
       padding: 0;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+      grid-template-columns: minmax(0, 1fr);
       gap: 1rem;
     }
     .card {
@@ -81,11 +81,10 @@
     .card.is-soon { cursor: default; }
     .card h2 { margin: 0; font-size: 1.15rem; }
     .nowrap { white-space: nowrap; }
+    .desc { margin: 0; font-size: 0.95rem; color: var(--muted); flex: 1; }
     .link { font-size: 0.9rem; color: var(--accent); overflow-wrap: anywhere; }
     .link::after { content: " →"; }
     .coming { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
-    .video { margin: 3rem auto 0; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; }
-    .video iframe { width: 100%; height: 100%; border: 0; border-radius: 8px; display: block; }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
     @media (prefers-reduced-motion: reduce) {
       .card { transition: none; }
@@ -96,31 +95,42 @@
 <body>
   <main>
     <header>
-      <h1>Jakob Christensen | Oddities</h1>
+      <h1>Jakob Christensen | Odds &amp; Ends</h1>
     </header>
 
     <ul class="projects">
       <li>
+        <div class="card is-soon" aria-disabled="true">
+          <h2>Jakob's Agent Skills</h2>
+          <p class="desc">A set of agent skills I've built up for my own workflow and refined project by project. Most of what I do with AI runs through them. They use the open SKILL.md format, so they work in Claude Code, Codex, Cursor and other tools that support it.</p>
+          <span class="coming">Coming soon</span>
+        </div>
+      </li>
+      <li>
         <a class="card" href="https://studentbenefits.page">
           <h2>Student Handbook</h2>
+          <p class="desc">A guide for animation students at the Salzburg University of Applied Sciences (FH Salzburg) in Austria. It explains the equipment and software the school gives students access to. It also lists student events, film festivals, job offers and discounts.</p>
           <span class="link">studentbenefits.page</span>
         </a>
       </li>
       <li>
         <a class="card" href="students-on-the-loose/">
-          <h2>Students on the Loose <span class="nowrap">(incl. Inca 3D and Pict 2D browser apps)</span></h2>
+          <h2>Students on the Loose <span class="nowrap">(incl. Inca 3D &amp; Pict 2D)</span></h2>
+          <p class="desc">Small pixel students walk across the page and react to objects you place there. You create and place the objects with two built-in browser programs: Inca for 3D and Pict for 2D drawing.</p>
           <span class="link">jakobchristensen.com/students-on-the-loose</span>
         </a>
       </li>
       <li>
         <a class="card" href="https://choirtool.com">
           <h2>Choir · Critique Orchestrator</h2>
+          <p class="desc">A tool for getting feedback on a concept from many sides, using an AI like Claude or ChatGPT. It writes the prompts, and each side is played by a simulated persona.</p>
           <span class="link">choirtool.com</span>
         </a>
       </li>
       <li>
         <a class="card" href="niagara-workshop/">
-          <h2>RAVE Niagara Workshop</h2>
+          <h2>Niagara Card Lab</h2>
+          <p class="desc">A teaching tool made for Realtime Art &amp; Visual Effects students at the Salzburg University of Applied Sciences (FH Salzburg), for a workshop on visual effects in Unreal Engine. It shows each Niagara module as a card, so the modules are easier to understand. A particle emitter in the browser lets you try them out, and an export script brings the setup into Unreal.</p>
           <span class="link">jakobchristensen.com/niagara-workshop</span>
         </a>
       </li>
@@ -133,10 +143,6 @@
     </ul>
 
     <footer>© 2026 Jakob Christensen</footer>
-
-    <div class="video">
-      <iframe src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw?enablejsapi=1" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
   </main>
 </body>
 </html>
