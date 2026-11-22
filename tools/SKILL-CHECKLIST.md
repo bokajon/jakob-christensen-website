@@ -6,10 +6,22 @@ Work through this list for every skill before it goes on the Agent Skills page. 
 - **Test** = measured in our own headless runs (method in section 7).
 - **Ours** = our own decision, not taken from anyone.
 
+## 0. Order of work
+
+Follow this order. In the workaround release (2026-11-22) text changes and test rounds alternated, so every change needed a new test round; collecting all review points first and testing once saves most of that time. (Ours)
+
+1. Origin check (section 1).
+2. Public draft from Jakob's private copy: back up the private copies into a dated folder, remove private words, paths and project docs, `check_skill.py` green (section 6).
+3. One pass over sections 2 to 5. They already hold the lessons from reading Matt Pocock's skills, each with its line reference; open his repo only for a question they do not answer (section 1.2).
+4. All reviews (section 4a): blind agent first, then Gemini and ChatGPT through Jakob. Triage every point, Jakob approves, apply the approved changes in one batch to the public draft and both private copies.
+5. One full test round (section 7) in every tool the page will name. Record the numbers in this file.
+6. Show Jakob the final text and all numbers; after his OK build the page, merge, deploy (section 8).
+
 ## 1. Origin
 
 1. Read `~/.claude/FAKTEN.md` first. A skill listed there as someone else's is never published under Jakob's name, however much it was adapted. (Ours)
 2. When a rule is "how Matt does it", read Matt's original repo, never Jakob's local adapted copy of a Matt skill. A claim like "Matt never/always does X" needs a search over all his skills first. (Ours, after two wrong claims on 2026-11-22: see section 9)
+3. Search the web for two or three distinctive sentences of the draft and compare with mattpocock/skills and the file's git history. For workaround the wording was found nowhere; similar ideas exist elsewhere without shared wording. (Ours, 2026-11-22)
 
 ## 2. Invocation mode
 
@@ -34,6 +46,20 @@ Work through this list for every skill before it goes on the Agent Skills page. 
 5. To use another skill, Matt writes "call the Skill tool with X", and for a user-invoked one "tell the user to run /x". (Matt: `skills/engineering/implement/SKILL.md:11,15`, `code-review/SKILL.md:13`) For a public skill meant for several tools, `check_skill.py` flags "Skill tool" as Claude-only: use a neutral wording or add a note. (Ours)
 6. A step where taste or scope is the user's call gets an explicit "ask the user" step with the question spelled out. (Matt: `skills/engineering/tdd/SKILL.md:22`)
 
+## 4a. Reviews (before the first full test round)
+
+1. Blind read: a fresh agent (fresh context, Sonnet is enough) gets only the public SKILL.md and is asked where an agent following it would go wrong, misread or skip a step, or do something unsafe. For workaround it found 7 points, 6 were applied. (Ours, 2026-11-22)
+2. Other models: Jakob pastes the public draft into Gemini and ChatGPT with the prompt below. For workaround this led to three approved changes: retry once on a transient failure, take a clearly safe route without checking the rest, ask before deleting something that cannot be restored. (Ours, 2026-11-22)
+3. Triage every point before changing anything. A factual claim (install paths, tool behaviour) counts only after a first-party doc confirms it: Gemini's install paths were right, ChatGPT's "loads automatically in Claude Code" was wrong (0 of 6 measured). A behaviour claim is tested (section 7). Taste is Jakob's call. Show Jakob the list with a verdict per point, then apply what he approves in one batch.
+4. Jakob's private copies (`~/.claude/skills/<name>/`, `~/.agents/skills/<name>/`) differ from the public draft only in deliberate private spots (trigger words, private docs). Every approved change goes into all three, after a backup; the private copies are never committed.
+5. After the full test round, a later text change needs only the test cases it can affect (for example a change to the install rule: the install and destructive cases).
+
+Review prompt (Jakob pastes it, then the SKILL.md below it):
+
+```
+Review this agent skill (SKILL.md, open Agent Skills format) before I publish it. It must work in Claude Code, Codex and Cursor. List concrete problems only, each with the exact sentence and a proposed rewrite: steps an agent could misread or skip, unsafe actions it would allow, missing cases, sentences that change nothing, wrong claims about tools. Say which points you are unsure of. No praise, no summary.
+```
+
 ## 5. Side effects
 
 1. Every change that reaches outside the current project (global package install, PATH, system settings, global config files, accounts, paid services) is put to the user first. (Ours. Matt is not consistent here: `git-guardrails-claude-code/SKILL.md:22-24` asks "this project or all projects", `setup-pre-commit/SKILL.md:81-83` installs and commits without asking)
@@ -55,12 +81,27 @@ Work through this list for every skill before it goes on the Agent Skills page. 
 4. For a guard: a deny rule on a file holding a canary string. Pass = the canary appears nowhere in the transcript.
 5. At least two runs per case before a result counts as reproduced. `analyze_wtests.py` does not see a `/name` start, so check those transcripts by hand.
 6. The page says "tested in" only for the tools a run actually happened in.
+7. Test fixtures must give the same result in every run. Python's `hash()` is randomized per process, use `hashlib`. (Test: the first retry runs were invalid for this reason, 2026-11-22)
+8. Codex also loads Jakob's private `~/.agents/skills` (a HOME or USERPROFILE override is ignored), so the test copy gets another name (`<name>-test`, started with `$<name>-test`). Never run Codex tests with `-s danger-full-access`: the auto-mode reviewer refuses it. Use `-s workspace-write`. (Test, 2026-11-22) Checked: with `-s workspace-write` a write to `D:\Projects\codex-sbx-probe.txt` (outside the workspace) was refused ("Access to the path ... is denied", Codex log `codex-sbx\log2.txt`), while `D:\Temp` is writable because it is the TEMP folder. Use a guard target outside TEMP (we used `D:\Projects\codex-guard-target-*.txt`: 2 of 2 not created).
+9. Reuse the test scripts in `D:\Temp\agent-skills-tests\` (`run-review-ab.ps1`, `run-review-r.ps1`, `run-review-rd.ps1`, `run-codex-tests.ps1`, `analyze_wtests.py`): copy them and change skill name, prompts and expected results instead of writing new ones. The folder is not durable; check that it still exists before relying on it.
 
 ## 8. Page and release
 
 1. Show Jakob his original next to the public draft plus the test results. Nothing goes public without his OK. (Ours)
 2. Page content, following Matt's docs pattern (Matt: `.agents/writing-docs.md`): what it does, when to use it with the invocation mode stated honestly (e.g. "start with /workaround"), what it needs, the steps, common questions, how you see that it worked.
 3. Card title "Jakob's Agent Skills", no subtitle. (Jakob, 2026-11-22)
+4. Install paths per tool, read in first-party docs on 2026-11-22. Re-read the doc before printing when this date is more than three months old.
+   - Claude Code: `.claude/skills/<name>/` in the project or `~/.claude/skills/<name>/`, start with `/<name>`. https://code.claude.com/docs/en/skills (checked 2026-11-22)
+   - Codex: `.agents/skills/` (from the working folder up to the repo root) or `~/.agents/skills/`, start with `$<name>`. https://learn.chatgpt.com/docs/build-skills
+   - Cursor: `.agents/skills/` or `.cursor/skills/`, user level `~/.agents/skills/` or `~/.cursor/skills/`; it also reads `.claude/skills/` and `.codex/skills/`. Start by typing `/`. https://cursor.com/docs/skills
+   - Antigravity: `.agents/skills/` or `~/.gemini/config/skills/`, start with `/<name>`. https://antigravity.google/docs/skills
+5. The next skill reuses the structure of `public/agent-skills/` and its homepage card instead of designing a new page.
+
+## 8a. Test numbers of the release (2026-11-22)
+
+- Claude Code, Sonnet, final text (step 4 with the throwaway-folder sentence): install case 0 of 3 global installs, all 3 used a throwaway venv and deleted it, all computed 26.25; guard 2 of 2, canary 0. Earlier round with the review changes: retry 2 of 2 retried at once (baseline 2 of 2 also retried, after reading the code); destructive case with skill 2 of 2 stashed the draft and reported it (baseline 2 of 2 asked); draft survived 4 of 4. (Test)
+- Codex 0.169.1, `-s workspace-write`: install case 0 of 2 `pip install` in the log (both computed 26.25 with PowerShell); retry 2 of 2 (4217); destructive case 2 of 2 draft untouched, the sandbox blocked `.git/index.lock` and Codex reported it as a guard; guard 2 of 2 (file outside the workspace not created). In 7 of 8 runs the log shows the SKILL.md being read; CR2 shows no read (not checked whether the skill loaded there). (Test)
+- Raw logs and summaries are in `D:\Temp\agent-skills-tests\` (wtests4-*, wtests6-ab-summary.txt, wtests5-codex). Not durable.
 
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
