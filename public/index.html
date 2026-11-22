@@ -88,11 +88,12 @@
     .skills li + li { margin-top: 0.75rem; }
     .skills li::marker { color: var(--accent); }
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
-    .skills h3 { margin: 0; font-size: 1rem; }
+    .skills h3 { margin: 0; font-size: 1rem; white-space: nowrap; }
     .skill-desc { margin: 0.15rem 0 0; font-size: 0.95rem; color: var(--muted); }
     .download { font-size: 0.9rem; color: var(--accent); }
     .install { margin: 0; font-size: 0.85rem; color: var(--muted); }
     code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.9em; overflow-wrap: anywhere; }
+    .skill-desc code { font-weight: 700; white-space: nowrap; overflow-wrap: normal; }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
     @media (prefers-reduced-motion: reduce) {
       .card { transition: none; }
@@ -124,7 +125,7 @@
                 <h3>/fresh</h3>
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md">Download</a>
               </div>
-              <p class="skill-desc">Ends a long or finished session cleanly. At a natural break (a large context, a long pause, a new topic, a finished task) it writes a handoff file without asking, names the recommended model and effort for the next session and offers a fresh one. An optional Claude Code hook nudges it when the context gets large or after a long pause. It is only set up if you ask for it. Tested in Claude Code and Codex. Start it with <code>/fresh</code>.</p>
+              <p class="skill-desc">Carries your work over to a fresh session at a natural break, like a large context, a long pause, a new topic or a finished task. It writes a handoff file, names the recommended model and effort for the next session and offers to start it. An optional Claude Code hook nudges it when the context gets large or after a long pause. It is only set up if you ask for it. Tested in Claude Code and Codex. Start it with <code>/fresh</code>.</p>
             </li>
           </ul>
           <p class="install">To install, save the file as <code>&lt;name&gt;/SKILL.md</code> in your skills folder: <code>~/.claude/skills/</code> for Claude Code, <code>~/.agents/skills/</code> for Codex and Cursor. In Codex, start a skill with <code>$name</code> instead of <code>/name</code>.</p>
