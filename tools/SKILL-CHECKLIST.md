@@ -99,6 +99,7 @@ Review this agent skill (SKILL.md, open Agent Skills format) before I publish it
    - Cursor: `.agents/skills/` or `.cursor/skills/`, user level `~/.agents/skills/` or `~/.cursor/skills/`; it also reads `.claude/skills/` and `.codex/skills/`. Start by typing `/`. https://cursor.com/docs/skills
    - Antigravity: `.agents/skills/` or `~/.gemini/config/skills/`, start with `/<name>`. https://antigravity.google/docs/skills
 5. The next skill is one more `<li>` in that list, with the same markup as `workaround`.
+6. After the deploy, compare the SHA-256 of the live download with the released file, not only of the local copy. Git on this machine checks text out with CRLF (`core.autocrlf=true`) and Wrangler uploads the working files, so `.gitattributes` keeps `public/agent-skills/**` at LF: until 2026-11-23 both downloads went out with CRLF. (Ours, 2026-11-23)
 
 ## 8a. Test numbers of the release (2026-11-22)
 

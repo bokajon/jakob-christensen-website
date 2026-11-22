@@ -1,0 +1,2 @@
+# Skill downloads must stay byte-identical to the released file, whatever core.autocrlf says.
+public/agent-skills/** text=auto eol=lf
