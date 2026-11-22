@@ -1,6 +1,6 @@
 # Checklist for writing and publishing a skill
 
-Work through this list for every skill before it goes on the Agent Skills page. Each rule says where it comes from:
+Work through this list for every skill before it goes on the Agent Skills card of the homepage. Each rule says where it comes from:
 
 - **Matt** = checked line in the original mattpocock/skills repo, version 1.3.2, downloaded and read 2026-11-22 (paths relative to that repo).
 - **Test** = measured in our own headless runs (method in section 7).
@@ -15,7 +15,7 @@ Follow this order. In the workaround release (2026-11-22) text changes and test 
 3. One pass over sections 2 to 5. They already hold the lessons from reading Matt Pocock's skills, each with its line reference; open his repo only for a question they do not answer (section 1.2).
 4. All reviews (section 4a): blind agent first, then Gemini and ChatGPT through Jakob. Triage every point, Jakob approves, apply the approved changes in one batch to the public draft and both private copies.
 5. One full test round (section 7) in every tool the page will name. Record the numbers in this file.
-6. Show Jakob the final text and all numbers; after his OK build the page, merge, deploy (section 8).
+6. Show Jakob the final text and all numbers; after his OK add the skill to the card, merge, deploy (section 8).
 
 ## 1. Origin
 
@@ -88,14 +88,14 @@ Review this agent skill (SKILL.md, open Agent Skills format) before I publish it
 ## 8. Page and release
 
 1. Show Jakob his original next to the public draft plus the test results. Nothing goes public without his OK. (Ours)
-2. Page content, following Matt's docs pattern (Matt: `.agents/writing-docs.md`): what it does, when to use it with the invocation mode stated honestly (e.g. "start with /workaround"), what it needs, the steps, common questions, how you see that it worked.
+2. Each released skill is a sub-item of the "Jakob's Agent Skills" card in `public/index.html`, not a page of its own (Jakob, 2026-11-22): its name, a download link to `public/agent-skills/<name>/SKILL.md`, and a short, clear description of what it does, when it helps and how to start it, stated honestly (e.g. "Start it with /workaround" while it does not start on its own). One shared install line under the list names the skill folders. A skill with more files than SKILL.md (a script next to it) needs another download form, for example a zip; not decided yet.
 3. Card title "Jakob's Agent Skills", no subtitle. (Jakob, 2026-11-22)
 4. Install paths per tool, read in first-party docs on 2026-11-22. Re-read the doc before printing when this date is more than three months old.
    - Claude Code: `.claude/skills/<name>/` in the project or `~/.claude/skills/<name>/`, start with `/<name>`. https://code.claude.com/docs/en/skills (checked 2026-11-22)
    - Codex: `.agents/skills/` (from the working folder up to the repo root) or `~/.agents/skills/`, start with `$<name>`. https://learn.chatgpt.com/docs/build-skills
    - Cursor: `.agents/skills/` or `.cursor/skills/`, user level `~/.agents/skills/` or `~/.cursor/skills/`; it also reads `.claude/skills/` and `.codex/skills/`. Start by typing `/`. https://cursor.com/docs/skills
    - Antigravity: `.agents/skills/` or `~/.gemini/config/skills/`, start with `/<name>`. https://antigravity.google/docs/skills
-5. The next skill reuses the structure of `public/agent-skills/` and its homepage card instead of designing a new page.
+5. The next skill is one more `<li>` in that list, with the same markup as `workaround`.
 
 ## 8a. Test numbers of the release (2026-11-22)
 
