@@ -10,7 +10,7 @@ Drei Projekte liegen vorerst als Kopie unter dieser Domain:
 
 - `public/students-on-the-loose/` - aus `D:\Projects\students-on-the-loose\public`
 - `public/niagara-tutor-ui/` - Vite-Build aus `D:\NiagaraUI` (ohne Service Worker, also ohne Offline-Modus)
-- `public/little-lights/` - Build von „Little Lights, Long Nights“ (früher Niagarama) aus `D:\Niagarama-Spiel\spiel`, absolute Pfade auf `/little-lights/` umgeschrieben, ohne Service Worker. Das Sync-Skript erfasst diesen Ordner nicht.
+- `public/little-lights/` - Build von „Little Lights: An Alpine Retreat“ (früher „Little Lights, Long Nights“ und Niagarama) aus `D:\Niagarama-Spiel\spiel`, absolute Pfade auf `/little-lights/` umgeschrieben, ohne Service Worker. Das Sync-Skript erfasst diesen Ordner nicht.
 
 Diese Ordner nicht von Hand ändern. Zum Aktualisieren `python tools/sync_projects.py` ausführen, dann committen und pushen.
 
