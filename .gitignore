@@ -1,3 +1,5 @@
 .wrangler/
 __pycache__/
 public/art/
+public/little-lights/
+.dev.vars

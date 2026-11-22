@@ -10,6 +10,14 @@ under jakobchristensen.com/<name>/.
   The service worker is left out because it registers itself at /sw.js,
   which only works when the app sits at the root of a domain. Hard-coded
   /videos/ paths are rewritten to the subfolder.
+
+    python tools/sync_projects.py little-lights [NiagaraUI checkout]
+
+- Little Lights (the game, same repo as the tutor): only built when asked for
+  by name, from D:\\NiagaraUI or the given checkout, under the base
+  /little-lights/. Same service worker rule as the tutor; every hard-coded
+  path to a public/ folder of the game is rewritten to the subfolder. The
+  site serves it behind the /art password (src/worker.js).
 """
 
 import shutil
@@ -59,7 +67,47 @@ def sync_niagara() -> None:
     print(f"niagara-tutor-ui: built from {NIAGARA} ({commit_of(NIAGARA)})")
 
 
+def sync_little_lights(source: Path) -> None:
+    base = "/little-lights/"
+    dest = SITE / "little-lights"
+    subprocess.run(
+        f'npx vite build --base={base} --outDir "{dest}" --emptyOutDir',
+        cwd=source, shell=True, check=True,
+    )
+    (dest / "sw.js").unlink(missing_ok=True)
+    # Cloudflare reads _headers only at the site root.
+    (dest / "_headers").unlink(missing_ok=True)
+    # Paths in the source that start with a public/ folder or file name
+    # (/audio/, /favicon.svg) skip the Vite base, so point them at the subfolder.
+    names = [
+        p.name + "/" if p.is_dir() else p.name
+        for p in (source / "public").iterdir()
+        if p.name not in ("sw.js", "_headers")
+    ]
+    changed = 0
+    for f in dest.rglob("*"):
+        if f.suffix not in (".js", ".css", ".html", ".webmanifest"):
+            continue
+        text = f.read_text(encoding="utf-8")
+        fixed = text
+        for name in names:
+            for lead in "\"'`(":
+                fixed = fixed.replace(lead + "/" + name, lead + base + name)
+        if f.suffix == ".webmanifest":
+            fixed = fixed.replace('"start_url": "/"', f'"start_url": "{base}?shell=game"')
+        if fixed != text:
+            f.write_text(fixed, encoding="utf-8")
+            changed += 1
+    print(f"little-lights: built from {source} ({commit_of(source)}), paths fixed in {changed} files")
+
+
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["little-lights"]:
+        source = Path(sys.argv[2]) if len(sys.argv) > 2 else NIAGARA
+        if not source.exists():
+            sys.exit(f"Not found: {source}")
+        sync_little_lights(source)
+        sys.exit()
     for source in (SOTL, NIAGARA):
         if not source.exists():
             sys.exit(f"Not found: {source}")

@@ -1,7 +1,10 @@
-// Die Seite ist statisch (public/). Dieses Skript läuft nur für /art und /art/*: Passwortabfrage, sonst nichts.
-// Das Passwort liegt als Secret ART_PASSWORT bei Cloudflare (npx wrangler secret put ART_PASSWORT), nie in einer Datei.
-// Ist kein Secret gesetzt, bleibt /art gesperrt.
+// Die Seite ist statisch (public/). Dieses Skript läuft für /art und /little-lights (Passwortabfrage) und für die
+// Startseite von /niagara-workshop (Handy-Hinweis).
+// Das Passwort liegt als Secret ART_PASSWORT bei Cloudflare (npx wrangler secret put ART_PASSWORT), nie in einer Datei;
+// die Art-Galerie und das Spiel teilen es. Ist kein Secret gesetzt, bleiben beide gesperrt.
 const enc = new TextEncoder();
+const PROTECTED = ["/art", "/little-lights"];
+const isUnder = (path, prefix) => path === prefix || path.startsWith(prefix + "/");
 
 async function same(a, b) {
   // Vergleich über Hashes, damit die Länge und Position eines Fehlers nichts verraten
@@ -35,16 +38,19 @@ const MOBILE_NOTICE = `<style>
 
 export default {
   async fetch(request, env) {
-    // Cloudflare ruft den Worker auch für jede Datei auf, die es in public/ nicht gibt. Alles außer /art bekommt hier
-    // die normale Antwort (404), sonst löst eine fehlende Datei irgendwo auf der Seite die Passwortabfrage aus.
-    const path = new URL(request.url).pathname;
+    // Cloudflare ruft den Worker auch für jede Datei auf, die es in public/ nicht gibt. Alles außer den geschützten Ordnern
+    // bekommt hier die normale Antwort (404), sonst löst eine fehlende Datei irgendwo auf der Seite die Passwortabfrage aus.
+    const url = new URL(request.url);
+    const path = url.pathname;
     if (path === "/niagara-workshop" || path === "/niagara-workshop/" || path === "/niagara-workshop/index.html") {
       const res = await env.ASSETS.fetch(request);
       if (!(res.headers.get("Content-Type") || "").includes("text/html")) return res;
       return new HTMLRewriter().on("body", { element(el) { el.append(MOBILE_NOTICE, { html: true }); } }).transform(res);
     }
-    if (path !== "/art" && !path.startsWith("/art/")) return env.ASSETS.fetch(request);
-    const hdr = { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "private, no-store" };
+    if (!PROTECTED.some((p) => isUnder(path, p))) return env.ASSETS.fetch(request);
+    const game = isUnder(path, "/little-lights");
+    // Das Spiel ist groß (Audio, Bilder): der Browser darf es behalten, fragt aber jedes Mal nach (ETag, sonst 304).
+    const hdr = { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": game ? "private, no-cache" : "private, no-store" };
     if (!env.ART_PASSWORT) return new Response("Diese Seite ist noch nicht freigeschaltet.", { status: 503, headers: hdr });
     const auth = request.headers.get("Authorization") || "";
     let pw = null;
@@ -53,6 +59,10 @@ export default {
     }
     if (pw === null || !(await same(pw, env.ART_PASSWORT))) {
       return new Response("Passwort nötig.", { status: 401, headers: { ...hdr, "WWW-Authenticate": 'Basic realm="Art", charset="UTF-8"' } });
+    }
+    // Ohne ?shell= zeigt der Build die Lern-Website; die Adresse /little-lights/ öffnet direkt das Spiel.
+    if ((path === "/little-lights" || path === "/little-lights/") && !url.searchParams.has("shell")) {
+      return new Response(null, { status: 302, headers: { ...hdr, Location: "/little-lights/?shell=game" } });
     }
     const res = await env.ASSETS.fetch(request);
     const out = new Response(res.body, res);
