@@ -7,10 +7,10 @@ description: Find another working route when the direct one is blocked by someth
 
 Goal: reach the original goal by another route, without hiding that the direct route failed.
 
-1. Name the blocker in one line: what failed, the exact error, and whether the cause is shown (in the output or reproduced) or only "probably".
+1. Name the blocker in one line: what failed, the exact error, and whether the cause is shown (in the output or reproduced) or only "probably". If the failure looks transient (a timeout, a dropped connection), retry once before anything else.
 2. Decide whether the blocker is a guard: something put there on purpose to stop this action (a permission rule, a refused approval, a sandbox restriction, a security or safety check, a policy). A guard is never worked around with another tool or command: tell the user what was blocked and ask how to go on. A failing test, lint or build is not a guard, but skipping or weakening it is never the workaround either.
-3. Otherwise collect 2-4 alternative routes (another tool, another API, a script, a manual step, a smaller scope). Check each one quickly without changing anything. Never use credentials, accounts or paid services the user has not already provided or approved, and get the user's OK before shrinking the scope.
-4. Pick the route that keeps every change inside the project first, then the cheapest and closest to the original goal. A route that reaches beyond the project (a global install, PATH, system settings) goes to the user first.
+3. Otherwise collect up to 4 alternative routes (another tool, another API, a script, a manual step, a smaller scope). Check each one quickly without changing anything; if one is clearly safe, stays inside the project and can be verified, take it without checking the rest. Never use credentials, accounts or paid services the user has not already provided or approved, and get the user's OK before shrinking the scope.
+4. Pick the route that keeps every change inside the project first, then the cheapest and closest to the original goal. A route that reaches beyond the project (a global install, PATH, system settings) or deletes or overwrites something that cannot be restored (files, git history) goes to the user first. A throwaway folder that only this task uses (for example a temporary virtual environment) counts as inside the project; remove it when the task is done.
 5. Do it, then verify that the result really works.
 6. If none of the collected routes works, stop and say what you tried. Do not move on to riskier routes.
 7. Report: blocker, chosen workaround, what it costs, changes or leaves out, and whether the real fix should be noted somewhere (an issue, a to-do, a line for the user).
