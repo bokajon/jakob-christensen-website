@@ -1,8 +1,8 @@
-"""Regression tests for skill-drafts/leakcheck/scripts/leakcheck.py. Run: python -I tools/test_leakcheck.py"""
+"""Regression tests for skill-drafts/fingerprints/scripts/fingerprints.py. Run: python -I tools/test_fingerprints.py"""
 import subprocess, sys, tempfile, shutil
 from pathlib import Path
 
-SCRIPT = Path(__file__).resolve().parent.parent / "skill-drafts" / "leakcheck" / "scripts" / "leakcheck.py"
+SCRIPT = Path(__file__).resolve().parent.parent / "skill-drafts" / "fingerprints" / "scripts" / "fingerprints.py"
 HEAD = "---\nname: demo\ndescription: Demo skill.\n---\n"
 
 

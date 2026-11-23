@@ -1,6 +1,6 @@
 """Check a skill folder before you share it.
 
-Usage: python -I scripts/leakcheck.py <skill-folder> [<skill-folder> ...]
+Usage: python -I scripts/fingerprints.py <skill-folder> [<skill-folder> ...]
            [--words FILE] [--no-dashes] [--english]
 
 Exit code 0 = no problems, 1 = problems found, 2 = wrong usage.
