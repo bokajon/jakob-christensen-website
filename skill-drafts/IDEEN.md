@@ -105,3 +105,9 @@ Jakob hat je Punkt genau eine Antwort gegeben. Gebaut ist noch nichts.
 - **Downloads**: nur zeigen, nie löschen.
 - **Geplante Aufgabe**: vorerst nein, nur manuell.
 - **Offen**: Netz-Abgleich für den Namen (vor Veröffentlichung); Plattform (Windows und C: nur) für die öffentliche Fassung; Größe von Worktrees und Logs auf D: nicht gemessen.
+
+## F. /reroll (2026-11-23), Ideen für später
+
+`/reroll` ist gebaut und privat (`~/.claude/skills/reroll/SKILL.md`), Kandidat für die Website. Er gibt Jakobs Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt. Test am 2026-11-23: Übergabe korrekt, kein Leck. Dasselbe Modell bringt aber fast dieselben Ideen, darum zeigt der Skill eine Tipp-Zeile für `different` oder ein anderes Modell. Ob `different` wirklich andere Ideen bringt, ist nicht geprüft.
+- **Antworten vergleichen oder zusammenführen**: Nachdem beide Antworten da sind, eine Übersicht, was nur in der einen oder der anderen steht, oder eine zusammengeführte Fassung. Nur nach den Antworten, sonst ist die Blindheit weg.
+- **Reroll mit Codex (GPT)**: Die Anfrage an ein Modell eines anderen Anbieters geben, für die größte Vielfalt. Dafür müsste der Skill ein externes Programm starten (z. B. die Codex-CLI), deutlich mehr Aufwand als der Weg über die Zwischenablage.
