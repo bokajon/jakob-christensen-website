@@ -45,3 +45,34 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 - **Dev-Server unter Windows stoppen**: zu schmal für einen eigenen Skill.
 - **no-dashes-Hook, usage-report.py, statusline.py, die Agenten builder, checker und searcher**: keine Skills.
 - **Matt-Pocock-Skills und OpenAI-Systemskills**: nie (siehe FAKTEN.md).
+
+## D. Abgleich mit dem Netz (2026-11-23)
+
+Zwei Recherche-Agenten (Sonnet) haben jeden Skill und jede Idee gegen Skill-Verzeichnisse, GitHub und Matts Original-Repo gesucht. Der Rohbericht mit allen Links und Suchanfragen steht in `NETZ-ABGLEICH.md`. Wo eine Meinung in A oder B dieser Tabelle widerspricht, gilt D.
+
+Grenzen: "gelesen" heißt bei den Agenten, dass ein kleines Modell die Seite zusammengefasst hat, kein Rohtext. Von Matts 27 Skills wurden nur 5 gelesen (implement-spec, pr, to-questionnaire, writing-for-agents, retro), dazu handoff in der Nachprüfung. Exakte Satzsuchen sind unsicher, "nicht gefunden" ist kein Beweis. In der Spalte "Nachgeprüft" steht, was ich selbst im Rohtext gelesen habe.
+
+"gleich" = derselbe Job, "ähnlich" = Überschneidung, unser Kern ist anders, "nah" = der Unterschied ist klein.
+
+| Skill oder Idee | Name frei? | Gibt es schon? | Was bei uns anders ist | Nachgeprüft |
+|---|---|---|---|---|
+| workaround (online) | ja | ähnlich: getting-unstuck | Pflichtschritt "ist der Blocker eine Schutzvorrichtung?", Wahl der Route, Bericht | nein |
+| fresh (online) | ja (nah: fresh-start) | ähnlich: Matts handoff, fresh-start (baut auf handoff auf) | Auslöser, Modell und Aufwand, grüne Befehle, Abnahme, Hook. Die vier Inhaltsregeln von handoff (Datei im Temp-Ordner, Links statt Kopien, Geheimes raus, empfohlene Skills) stehen auch in fresh, schon in der ersten Fassung vom 2026-11-22, in eigenem Wortlaut | ja, handoff gelesen |
+| blindtest (online) | ja | ähnlich: blinde A/B-Vergleiche (skill-creator, skill-auditor, blinded-eval), nur Suchergebnis | Zählkriterien gegen feste Lösungsliste, Lauf ohne Skill, Audit-Modus | nein |
+| lanes (online) | nein: tavinathanson/lanes, ein Claude-Code-Skill für parallele Worktrees; auch parallel-worktrees ist vergeben (codervisor) | ähnlich | Haupt-Checkout nur Integrationsziel, Integration nacheinander mit Sperre, voller Check, nur fast-forward | ja, Repo gelesen |
+| strays (Entwurf) | ja | nichts Gleiches | Übersicht ungepushter Arbeit, Push per SHA, nie force | nein |
+| tidy (Entwurf) | nein, aber anderer Job (finolabs tidy u. a.) | nichts Gleiches | archiviert nur erledigte Desktop-Sessions, mit git-Prüfung. Der Agent zweifelt am Satz "Archiving a session is reversible": Die App gibt Agenten ein Werkzeug `unarchive_session`, ob die Oberfläche es kann, ist nicht geprüft | nein |
+| 1 delegate | nein (exarchos delegate u. a.) | ähnlich | Rollen statt Modellnamen, Frage vor mehr als 2 Agenten, gemeinsamer Brief plus Dateiliste. "Agentenbericht gegen den Diff prüfen" steht auch in obras verification-before-completion | teils, obra gelesen |
+| 2 decision-box | ja | ähnlich | Empfehlung und Befund zuerst, volle Optionstexte, eine Frage je Entscheidung | nein |
+| 3 resume-check | ja | ähnlich, nur Suchergebnis | laufende Hintergrundjobs prüfen, nie beenden, sondern melden | nein |
+| 4 claim-check | nein | ähnlich, nah: obra verification-before-completion | Label "nicht geprüft", Ursache erst nach Beleg, Größen, Anteile und Nutzen messen | ja, obra gelesen |
+| 5 generated-asset-check | ja | ähnlich, nah: ai-media-quality-review | vor dem Geldausgeben sagen, was nicht messbar ist; Bilder aus den Bildern einordnen | nein |
+| 6 live-layout-check | ja | ähnlich: autonomous-ui-inspection | Umschalten in mehreren Reihenfolgen, derselbe Tab | nein |
+| 7 measure-twice | nein, anderer Zweck | nichts gefunden | Wiederholungslauf mit geprüfter Rechnerlast, Laufzeitwerte aus der laufenden App | nein |
+| 8 history-first | ja | ähnlich: investigating-repository-history | Korrekturen des Nutzers aus den Commits übernehmen | nein |
+| 9 backup-before-rewrite | ja | ähnlich: safe-edit (datierte Backups) | Text wörtlich verschieben, Verlustprüfung Zeile für Zeile per Skript | nein |
+| 10 project-docs | nein | ähnlich: wrap-session | Aufteilung in 5 Dateien mit Abgleich am Sessionende | nein |
+| 11 pinned-facts | ja | ähnlich, nah: agent-memory-discipline | feste Datei, jede Session liest sie zuerst, die Datei gilt | nein |
+| 12 skill-check | nein (mehrfach) | gleich: NVIDIA SkillEvaluator (PII, Geheimnisse, lokale Kennungen, Frontmatter, Tool-Kompatibilität) | nur leichter, eigene Wortliste, Gedankenstriche, deutscher Text | ja, NVIDIA-Doku gelesen |
+| 13 rule-edit | ja | ähnlich, nah, deutlich bei Matt (writing-for-agents, retro) | kaum | nein |
+| 14 proof (claim-check + measure-twice + generated-asset-check) | ja (nah: proof-of-work, proof-agent) | ähnlich, nah: obra verification-before-completion, proof-of-work | Durchsicht des fertigen Berichts mit Etikett je Aussage, dazu die Regeln für Zeitmessung, Laufzeitwerte und generierte Medien | ja, obra gelesen |
