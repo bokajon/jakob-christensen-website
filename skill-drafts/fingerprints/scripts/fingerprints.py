@@ -1,11 +1,13 @@
-"""Check a skill folder before you share it.
+"""Check a folder before you share it: a skill folder or any other folder.
 
-Usage: python -I scripts/fingerprints.py <skill-folder> [<skill-folder> ...]
+Usage: python -I scripts/fingerprints.py <folder> [<folder> ...]
            [--words FILE] [--no-dashes] [--english]
 
 Exit code 0 = no problems, 1 = problems found, 2 = wrong usage.
 "Hint" lines are for a human and never fail the check.
 
+Without a SKILL.md the folder is scanned as a plain folder: only private words, paths,
+emails, keys, links and dashes are checked. With one, the frontmatter rules below apply too.
 Frontmatter rules follow the Agent Skills specification: name required, max 64
 characters, lowercase letters, digits and single hyphens, equal to the folder
 name; description required, max 1024 characters; optional fields license,
@@ -130,38 +132,43 @@ def list_files(folder, hints):
 def check(folder, words, no_dashes, english):
     problems, hints = [], []
     if Path(folder).is_symlink():
-        hints.append(f"{folder}: the skill folder itself is a symlink, check its target by hand")
+        hints.append(f"{folder}: the folder itself is a symlink, check its target by hand")
     folder = Path(folder).resolve()
     skill = folder / "SKILL.md"
-    if skill.is_symlink() or not skill.is_file():
-        return [f"no regular SKILL.md in {folder} (missing or a symlink)"], hints
-    try:
-        text = skill.read_text(encoding="utf-8-sig")
-    except (UnicodeDecodeError, OSError) as e:
-        return [f"SKILL.md cannot be read as UTF-8 text ({type(e).__name__})"], hints
-    fields = parse_frontmatter(text)
-    if fields is None:
-        problems.append("SKILL.md has no frontmatter between --- lines")
-        fields = {}
-    name, desc = fields.get("name", ""), fields.get("description", "")
-    if not name:
-        problems.append("frontmatter: name missing")
+    is_skill = skill.is_symlink() or skill.exists()
+    text, desc = "", ""
+    if not is_skill:
+        hints.append("no SKILL.md: scanned as a plain folder, skill header and tool-specific terms not checked")
     else:
-        if len(name) > 64:
-            problems.append(f"frontmatter: name longer than 64 characters ({len(name)})")
-        if not NAME_RE.match(name):
-            problems.append(f"frontmatter: name '{name}' is not lowercase letters, digits and single hyphens")
-        if name != folder.name:
-            problems.append(f"frontmatter: name '{name}' differs from folder name '{folder.name}'")
-    if not desc:
-        problems.append("frontmatter: description missing or empty")
-    elif len(desc) > 1024:
-        problems.append(f"frontmatter: description longer than 1024 characters ({len(desc)})")
-    if len(fields.get("compatibility", "")) > 500:
-        problems.append("frontmatter: compatibility longer than 500 characters")
-    for key in fields:
-        if key not in SPEC_FIELDS:
-            problems.append(f"frontmatter: field '{key}' is not in the Agent Skills spec (tool-specific or a typo)")
+        if skill.is_symlink() or not skill.is_file():
+            return [f"no regular SKILL.md in {folder} (missing or a symlink)"], hints
+        try:
+            text = skill.read_text(encoding="utf-8-sig")
+        except (UnicodeDecodeError, OSError) as e:
+            return [f"SKILL.md cannot be read as UTF-8 text ({type(e).__name__})"], hints
+        fields = parse_frontmatter(text)
+        if fields is None:
+            problems.append("SKILL.md has no frontmatter between --- lines")
+            fields = {}
+        name, desc = fields.get("name", ""), fields.get("description", "")
+        if not name:
+            problems.append("frontmatter: name missing")
+        else:
+            if len(name) > 64:
+                problems.append(f"frontmatter: name longer than 64 characters ({len(name)})")
+            if not NAME_RE.match(name):
+                problems.append(f"frontmatter: name '{name}' is not lowercase letters, digits and single hyphens")
+            if name != folder.name:
+                problems.append(f"frontmatter: name '{name}' differs from folder name '{folder.name}'")
+        if not desc:
+            problems.append("frontmatter: description missing or empty")
+        elif len(desc) > 1024:
+            problems.append(f"frontmatter: description longer than 1024 characters ({len(desc)})")
+        if len(fields.get("compatibility", "")) > 500:
+            problems.append("frontmatter: compatibility longer than 500 characters")
+        for key in fields:
+            if key not in SPEC_FIELDS:
+                problems.append(f"frontmatter: field '{key}' is not in the Agent Skills spec (tool-specific or a typo)")
 
     word_patterns = [(w, word_pattern(w)) for w in words]
     files = list_files(folder, hints)
@@ -192,7 +199,7 @@ def check(folder, words, no_dashes, english):
             for m in re.finditer(DASHES, content):
                 line = content.count("\n", 0, m.start()) + 1
                 problems.append(f"{rel}:{line}: em or en dash")
-        for word in TOOL_ONLY:
+        for word in (TOOL_ONLY if is_skill else []):
             if word in content:
                 problems.append(f"{rel}: '{word}' is a tool-specific term, check that it works in every tool the skill targets")
         if english:
@@ -205,7 +212,10 @@ def check(folder, words, no_dashes, english):
             except ValueError:
                 line = content.count("\n", 0, m.start()) + 1
                 hints.append(f"{rel}:{line}: link to check by hand: (unreadable link, check line by hand)")
-    hints.append(f"{len(files)} file(s), SKILL.md {len(text)} characters, description {len(desc)} characters")
+    if is_skill:
+        hints.append(f"{len(files)} file(s), SKILL.md {len(text)} characters, description {len(desc)} characters")
+    else:
+        hints.append(f"{len(files)} file(s)")
     return problems, hints
 
 
