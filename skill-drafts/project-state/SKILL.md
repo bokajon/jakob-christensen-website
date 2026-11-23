@@ -1,5 +1,5 @@
 ---
-name: decision-log
+name: project-state
 description: Keep a project's decisions in DECISIONS.md, a decision log that every session reads first - names, assignments and choices the user has stated, append only, each line dated with its source - next to a short STATE.md for the current state and open points (overwritten). Use at the start of a session in a project that has these files, when the user fixes something that should outlive the current task (a name, an assignment, a rule, a choice between options, or a correction they had to repeat), and at the end of a session that changed the state. A choice that only concerns the current edit is not a decision. Also use to set the two files up in a new project.
 ---
 

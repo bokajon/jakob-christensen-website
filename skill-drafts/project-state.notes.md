@@ -1,4 +1,4 @@
-# decision-log - draft notes
+# project-state - draft notes
 
 ## Sources read
 - Private rules: section "Rules and documents" (split project notes: current state, open commitments, deferred ideas, map, append-only log; end-of-session update) and the pinned-facts rule at the top of the global instruction file (a file of fixed facts that every session reads first, entries written at once, "in a contradiction the file wins, the contradiction is reported"). Material to generalize, not copied. The owner's own facts file was read for the format idea only (one line per fact with a date); none of its content is used.
