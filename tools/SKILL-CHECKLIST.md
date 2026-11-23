@@ -130,6 +130,14 @@ Released by Jakob on 2026-11-23 with the wording "Tested in Claude Code and Code
 - Red PowerShell checks: 4 of 4 (`Get-Item` of a missing path, `Write-Error`, `cmd /c exit 3`, `throw`) FAILED with exit 1 and main unchanged; green check with double quotes OK.
 - Details and limits: `D:\Temp\agent-skills-tests\parallel-worktrees-test-round.md`. Not durable. Not tested: Codex, two waiting integrations at once.
 
+## 8d. Test numbers of the tidy skill (2026-11-23)
+
+Draft at commit ea3a780, Claude desktop app, three throwaway sessions, one run, steps done by hand from the SKILL.md (not by a headless `/tidy` run). Not yet released. (Test)
+
+- Session ending read with `list_events` limit 8: `tidytest-done` final report, archived (`archive_session` succeeded; no `branch` field, so "git not checked"). `tidytest-question` last message an open question, kept. `tidytest-dirty` final report, but one uncommitted file in its worktree: kept by the dirty rule (its branch was already contained in `origin/main`, so only the dirty check applied).
+- Open worktree question: after `archive_session` on `tidytest-dirty` (done by me to measure), the worktree folder and the uncommitted `tidytest-dirty.txt` were still there. One example, not a guarantee for other cases.
+- Not tested: parent with a running child, aborted session, squash merge, pinned or open-on-screen refusal texts. `startedBy` of the test sessions named a session that is not in the family list (origin not checked).
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
