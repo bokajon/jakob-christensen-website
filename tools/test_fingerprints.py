@@ -44,5 +44,15 @@ results = [
     case("task-management is no key", run(HEAD + "task-management-board-with-many-parts\n")[0] == 0),
     case(".git skipped", (lambda r: r[0] == 0 and "skipped" in r[1])(run(extra={".git/config": (KEY).encode()}))),
     case("non-UTF-8 extra file is a hint", (lambda r: r[0] == 0 and "not UTF-8" in r[1])(run(extra={"b.bin": b"\xff\xfe\x00\x01"}))),
+    case("link: query token not printed", (lambda r: "SECRET123" not in r[1] and "(query omitted)" in r[1])(run(HEAD + "see https://example.com/a?token=SECRET123\n"))),
+    case("link: user:pass not printed", (lambda r: "user:pass" not in r[1] and "(credentials omitted)" in r[1] and "example.com/x" in r[1])(run(HEAD + "see https://user:pass@example.com/x\n"))),
+    case("link: trailing dot and backtick stripped", "link to check by hand: https://example.com/page\n" in run(HEAD + "see `https://example.com/page.`\n")[1]),
+    case("word 'acme' hits client_acme_v2.py in text and path", (lambda r: r[0] == 1 and "private word 'acme' in the file path" in r[1] and "client_acme_v2.py:1: private word 'acme'" in r[1])(run(extra={"client_acme_v2.py": b"acme\n"}, words="acme\n"))),
+    case("word 'acme' does not hit acmeco or xacme", run(HEAD + "acmeco xacme\n", extra={"acmeco.txt": b"xacme\n"}, words="acme\n")[0] == 0),
+    case("Windows path printed as C:\\, not redacted", (lambda r: "'C:\\'" in r[1] and "[REDACTED]" not in r[1])(run(HEAD + "C:\\Users\\x\n"))),
+    case("15-character xoxb token shows only length", (lambda r: "[REDACTED] (15 characters)" in r[1] and "xoxb-1234567890" not in r[1])(run(HEAD + "xoxb-1234567890\n"))),
+    case("two private word hits give two lines", (lambda r: "SKILL.md:5: private word 'ann'" in r[1] and "SKILL.md:7: private word 'ann'" in r[1])(run(HEAD + "ann\nfoo\nann\n", words="ann\n"))),
+    case("'----' start gives no frontmatter", "no frontmatter" in run(body="----\nname: demo\ndescription: Demo skill.\n---\n")[1]),
+    case("CRLF SKILL.md parses", (lambda r: r[0] == 0 and "no frontmatter" not in r[1] and "frontmatter:" not in r[1])(run(HEAD.replace("\n", "\r\n")))),
 ]
 sys.exit(0 if all(results) else 1)

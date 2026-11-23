@@ -13,8 +13,10 @@ compatibility (max 500), metadata, allowed-tools. The frontmatter reader handles
 simple "key: value" lines only. It is not a full YAML parser.
 
 Symlinks are not followed (reported as hints). The folders .git, node_modules and
-__pycache__ are skipped (reported as hints). A found key or token is printed
-masked (first 4 and last 4 characters), never in full.
+__pycache__ are skipped (reported as hints). Found emails, keys and tokens
+are printed masked (first and last 4 characters; below 20 characters only the
+length), never in full. Links are printed without query string and credentials.
+Private words are reported per line.
 
 Options:
   --words FILE   One private word or file name per line (names, projects, internal
@@ -28,6 +30,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
 
 SPEC_FIELDS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 SKIP_DIRS = {".git", "node_modules", "__pycache__"}
@@ -54,28 +57,43 @@ PATTERNS = {
     ),
     "long secret-like string": re.compile(r"\b(?=[A-Za-z0-9+/_-]*[A-Z])(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*\d)[A-Za-z0-9+/_-]{40,}\b"),
 }
+MASKED = {"email address", "key or token", "long secret-like string"}
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
 
 def mask(value):
-    """Show only the first and last 4 characters of a found secret."""
-    if len(value) <= 12:
-        return "[REDACTED]"
+    """Show only the first and last 4 characters of a found secret (length only below 20)."""
+    if len(value) < 20:
+        return f"[REDACTED] ({len(value)} characters)"
     return f"{value[:4]}...{value[-4:]} ({len(value)} characters)"
 
 
 def word_pattern(word):
-    return re.compile(r"(?<!\w)" + re.escape(word) + r"(?!\w)", re.IGNORECASE)
+    return re.compile(r"(?<![^\W_])" + re.escape(word) + r"(?![^\W_])", re.IGNORECASE)
+
+
+def show_link(raw):
+    """A link without query string and credentials, with a note for each part dropped."""
+    url = raw.rstrip(".,;:!?*]")
+    parts = urlsplit(url)
+    netloc, notes = parts.netloc, ""
+    if "@" in netloc:
+        netloc = netloc.rpartition("@")[2]
+        notes += " (credentials omitted)"
+    if parts.query:
+        notes += " (query omitted)"
+    return urlunsplit((parts.scheme, netloc, parts.path, "", parts.fragment)) + notes
 
 
 def parse_frontmatter(text):
-    if not text.startswith("---"):
+    lines = text.splitlines()
+    if not lines or lines[0].rstrip() != "---":
         return None
-    end = text.find("\n---", 3)
-    if end == -1:
+    end = next((i for i in range(1, len(lines)) if lines[i].rstrip() == "---"), None)
+    if end is None:
         return None
     fields, current = {}, None
-    for line in text[3:end].strip("\n").splitlines():
+    for line in lines[1:end]:
         m = re.match(r"^([A-Za-z0-9_-]+):\s*(.*)$", line)
         if m and not line.startswith(" "):
             current = m.group(1)
@@ -111,6 +129,8 @@ def list_files(folder, hints):
 
 def check(folder, words, no_dashes, english):
     problems, hints = [], []
+    if Path(folder).is_symlink():
+        hints.append(f"{folder}: the skill folder itself is a symlink, check its target by hand")
     folder = Path(folder).resolve()
     skill = folder / "SKILL.md"
     if skill.is_symlink() or not skill.is_file():
@@ -151,7 +171,7 @@ def check(folder, words, no_dashes, english):
             if pat.search(rel.as_posix()):
                 problems.append(f"{rel}: private word '{word}' in the file path")
         try:
-            content = path.read_text(encoding="utf-8")
+            content = path.read_text(encoding="utf-8-sig")
         except UnicodeDecodeError:
             hints.append(f"{rel}: not UTF-8 text ({path.stat().st_size} bytes), check by hand")
             continue
@@ -160,12 +180,14 @@ def check(folder, words, no_dashes, english):
             continue
         lower = content.lower()
         for word, pat in word_patterns:
-            if pat.search(content):
-                problems.append(f"{rel}: private word '{word}'")
+            for m in pat.finditer(content):
+                line = content.count("\n", 0, m.start()) + 1
+                problems.append(f"{rel}:{line}: private word '{word}'")
         for label, pattern in PATTERNS.items():
             for m in pattern.finditer(content):
                 line = content.count("\n", 0, m.start()) + 1
-                problems.append(f"{rel}:{line}: {label}: '{mask(m.group(0))}'")
+                shown = mask(m.group(0)) if label in MASKED else m.group(0)
+                problems.append(f"{rel}:{line}: {label}: '{shown}'")
         if no_dashes:
             for m in re.finditer(DASHES, content):
                 line = content.count("\n", 0, m.start()) + 1
@@ -177,8 +199,12 @@ def check(folder, words, no_dashes, english):
             german = [w.strip() for w in GERMAN_HINTS if w in lower]
             if len(german) >= 2:
                 hints.append(f"{rel}: looks partly German ({', '.join(german)})")
-        for m in re.finditer(r"https?://[^\s)>\"']+", content):
-            hints.append(f"{rel}: link to check by hand: {m.group(0)}")
+        for m in re.finditer(r"https?://[^\s)>\"'`]+", content):
+            try:
+                hints.append(f"{rel}: link to check by hand: {show_link(m.group(0))}")
+            except ValueError:
+                line = content.count("\n", 0, m.start()) + 1
+                hints.append(f"{rel}:{line}: link to check by hand: (unreadable link, check line by hand)")
     hints.append(f"{len(files)} file(s), SKILL.md {len(text)} characters, description {len(desc)} characters")
     return problems, hints
 
