@@ -16,6 +16,7 @@
 #   InstallCommand         run in the temporary worktree before the check. Auto: npm ci when package-lock.json exists. "none" skips it.
 #   RetryCheckCommand      run once if the check fails, to tell a flaky red from a real one (for example the same check with one test worker).
 #   MainInstallCommand     run in the main checkout after OK when package-lock.json changed. Auto: npm install --no-save. "none" skips it.
+#                          It runs package scripts there, so read the config of a repository you do not know before the first run.
 #   DevServerPattern       text in the command line of node processes to stop after OK, only those started inside the branch's own
 #                          worktree (for example vite). Empty: stop nothing.
 # Commands are PowerShell, run from the temporary worktree, and must exit 0 on success.
@@ -62,22 +63,43 @@ $DevServerPattern = Setting $DevServerPattern 'devServerPattern'
 $branch = (git rev-parse --abbrev-ref HEAD).Trim()
 if ($branch -eq 'HEAD') { Fail 'HEAD is detached, check out a feature branch first' }
 $commonDir = (git rev-parse --path-format=absolute --git-common-dir).Trim()
-$log = Join-Path $commonDir ("integrate-" + ($branch -replace '[\/]', '-') + ".log")
+# Log and pid file are named after the branch plus a short hash of its exact name, so "a/b" and "a-b" never share a log.
+$safeName = $branch -replace '[^A-Za-z0-9._-]', '-'
+$md5 = [System.Security.Cryptography.MD5]::Create()
+$hash = (($md5.ComputeHash([Text.Encoding]::UTF8.GetBytes($branch)) | ForEach-Object { $_.ToString('x2') }) -join '').Substring(0, 8)
+$log = Join-Path $commonDir "integrate-$safeName-$hash.log"
+$pidFile = Join-Path $commonDir "integrate-$safeName-$hash.pid"
+
+# Splits NUL-separated git output (-z) so odd file names (umlauts, quotes) arrive exactly as stored.
+function Split-Z($text) {
+  if (-not $text) { return @() }
+  return @((@($text) -join "`n") -split "`0" | Where-Object { $_ -ne '' })
+}
 
 # The result is the one line that starts with "OK: " or "FAILED: "; it ends in a sentence, not in the word OK.
 function Wait-Result {
   # Long enough for two 60-minute waits on the main checkout plus the checks.
-  $deadline = (Get-Date).AddMinutes(180)
+  $start = Get-Date
+  $deadline = $start.AddMinutes(180)
   while ((Get-Date) -lt $deadline) {
     $result = $null
     if (Test-Path $log) {
       $result = Select-String -Path $log -Pattern '^(OK|FAILED): ' -ErrorAction SilentlyContinue | Select-Object -Last 1
-    } else {
-      Write-Host "FAILED-SO-FAR: log $log does not exist yet" -ForegroundColor Red
     }
     if ($result) {
       Get-Content $log -Tail 8
       if ($result.Line -like 'OK: *') { exit 0 } else { exit 1 }
+    }
+    # The detached process creates the log a moment after it starts, so the first minute is not an error.
+    $worker = $null
+    if (Test-Path $pidFile) {
+      $workerId = [int](Get-Content $pidFile -ErrorAction SilentlyContinue | Select-Object -First 1)
+      if ($workerId) { $worker = Get-Process -Id $workerId -ErrorAction SilentlyContinue }
+    }
+    if (-not $worker -and ((Get-Date) - $start).TotalSeconds -gt 60) {
+      if (Test-Path $log) { Write-Host "FAILED: the detached run ended without a result line, see $log" }
+      else { Write-Host "FAILED: no detached run is going and there is no log $log. Start the script again with -Detach." }
+      exit 1
     }
     Start-Sleep -Seconds 10
   }
@@ -132,34 +154,47 @@ if (-not $CheckCommand) {
 
 if ($Detach) {
   # An old log's result line would end a -Wait at once.
-  Remove-Item $log -ErrorAction SilentlyContinue
+  Remove-Item $log, $pidFile -ErrorAction SilentlyContinue
   $inner = "& '$PSCommandPath'"
   foreach ($pair in @(@('Target', $Target), @('CheckCommand', $CheckCommand), @('InstallCommand', $InstallCommand), @('RetryCheckCommand', $RetryCheckCommand), @('MainInstallCommand', $MainInstallCommand), @('DevServerPattern', $DevServerPattern))) {
     if ($pair[1]) { $inner += " -$($pair[0]) '" + ($pair[1] -replace "'", "''") + "'" }
   }
   $inner += " *> '$log'"
-  Start-Process powershell -WindowStyle Hidden -WorkingDirectory (Get-Location).Path -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $inner
+  $worker = Start-Process powershell -PassThru -WindowStyle Hidden -WorkingDirectory (Get-Location).Path -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $inner
+  Set-Content -Path $pidFile -Value $worker.Id
   Write-Host "Started in the background. Log (result line starts with OK: or FAILED:): $log"
   if ($Wait) { Wait-Result }
   Write-Host "To wait for it: run this script again with -Wait"
   exit 0
 }
 
-# Runs a PowerShell command string and returns its exit code as an int (non-zero when the last native call failed).
-# The command's output goes to the host so it never becomes part of the return value.
+# Runs a PowerShell command string and returns its exit code as an int. Non-zero when a native call exited non-zero,
+# when the command threw, or when it wrote a PowerShell error (checked through -ErrorVariable, because $? would
+# describe Out-Host here). The command's output goes to the host so it never becomes part of the return value.
 function Run-Command($command) {
   $global:LASTEXITCODE = 0
-  Invoke-Expression $command | Out-Host
+  $ok = $true
+  try {
+    Invoke-Expression $command -ErrorVariable commandErrors | Out-Host
+    if (@($commandErrors).Count -gt 0) { $ok = $false }
+  } catch {
+    Write-Host "error: $($_.Exception.Message)"
+    return 1
+  }
   $code = [int]$LASTEXITCODE
-  if ($code -eq 0 -and -not $?) { $code = 1 }
+  if ($code -eq 0 -and -not $ok) { $code = 1 }
   return [int]$code
 }
 
-# Every path the main checkout has changed, both sides of a rename included.
+# Every path the main checkout has changed, both sides of a rename or copy included.
 function Main-Dirty-Paths {
   $paths = @()
-  foreach ($line in (git -C $main status --porcelain=v1 -uall)) {
-    foreach ($part in ($line.Substring(3) -split ' -> ')) { $paths += $part.Trim('"') }
+  $records = Split-Z (git -C $main status --porcelain=v1 -uall -z)
+  $i = 0
+  while ($i -lt $records.Count) {
+    $paths += $records[$i].Substring(3)
+    if ($records[$i].Substring(0, 2) -match '[RC]') { $i++; if ($i -lt $records.Count) { $paths += $records[$i] } }
+    $i++
   }
   return $paths
 }
@@ -185,19 +220,22 @@ function Wait-No-Overlap($changedPaths) {
 }
 
 # Wait before taking the lock, so a wait here never holds up other integrations.
-Wait-No-Overlap @(git diff --name-only "$Target...$branch")
+Wait-No-Overlap (Split-Z (git diff --name-only -z "$Target...$branch"))
 
 # One integration at a time across all worktrees. The OS drops the lock when this process ends, even on a crash.
 $lockPath = Join-Path $commonDir 'integrate.lock'
 $lock = $null
-$said = $false
-while (-not $lock) {
-  try { $lock = [System.IO.File]::Open($lockPath, 'OpenOrCreate', 'ReadWrite', 'None') }
-  catch {
-    if (-not $said) { Write-Host 'Another integration is running, waiting for it.'; $said = $true }
-    Start-Sleep -Seconds 15
+function Get-Lock {
+  $said = $false
+  while (-not $script:lock) {
+    try { $script:lock = [System.IO.File]::Open($lockPath, 'OpenOrCreate', 'ReadWrite', 'None') }
+    catch {
+      if (-not $said) { Write-Host 'Another integration is running, waiting for it.'; $said = $true }
+      Start-Sleep -Seconds 15
+    }
   }
 }
+Get-Lock
 
 # Optional: after OK the branch's own dev servers are useless and can hold a lot of memory, so stop node processes whose command
 # line contains the pattern and that run from inside that worktree. Never the main checkout, never anything outside.
@@ -210,7 +248,16 @@ function Stop-WorktreeDevServers {
     if ($root -ieq $main.Replace('/', '\').TrimEnd('\')) { Write-Host 'Dev servers: this is the main checkout, none stopped.'; return }
     $prefix = $root + '\'
     $stopped = @()
+    # Never stop a process this script itself runs under (for example an npm or node parent that started it).
+    $ancestors = @()
+    $current = $PID
+    for ($depth = 0; $depth -lt 10 -and $current; $depth++) {
+      $ancestors += $current
+      $parent = Get-CimInstance Win32_Process -Filter "ProcessId = $current" -ErrorAction SilentlyContinue
+      $current = if ($parent) { [int]$parent.ParentProcessId } else { 0 }
+    }
     foreach ($p in (Get-CimInstance Win32_Process -Filter "Name = 'node.exe'")) {
+      if ($ancestors -contains [int]$p.ProcessId) { continue }
       $cmd = [string]$p.CommandLine
       if ($cmd.IndexOf($DevServerPattern, [StringComparison]::OrdinalIgnoreCase) -lt 0) { continue }
       $cmdNorm = $cmd.Replace('/', '\')
@@ -257,7 +304,7 @@ try {
       if (-not $settled) { Pop-Location; Fail "$CheckCommand is red. $Target is unchanged, see the log above." }
     }
     $tested = (git rev-parse HEAD).Trim()
-    $changed = @(git diff --name-only $startTarget $tested)
+    $changed = Split-Z (git diff --name-only -z $startTarget $tested)
     Pop-Location
     git worktree remove --force $tmp
 
@@ -267,7 +314,12 @@ try {
       continue
     }
 
-    Wait-No-Overlap $changed
+    # Give the lock back while waiting for the main checkout's own work, so the wait never holds up other integrations.
+    if (@(Main-Dirty-Paths | Where-Object { $changed -contains $_ }).Count -gt 0) {
+      $lock.Dispose(); $lock = $null
+      Wait-No-Overlap $changed
+      Get-Lock
+    }
     if ((git rev-parse "refs/heads/$Target").Trim() -ne $startTarget) {
       Write-Host "$Target moved while waiting, merging and checking again."
       continue
@@ -302,5 +354,5 @@ try {
 }
 finally {
   if (Test-Path $tmp) { git worktree remove --force $tmp }
-  $lock.Dispose()
+  if ($lock) { $lock.Dispose() }
 }
