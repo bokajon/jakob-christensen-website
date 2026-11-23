@@ -1,4 +1,4 @@
-# live-layout-check - draft notes
+# measure-ui - draft notes
 
 ## Sources read
 - Private rules, section "Live checks in the built-in browser pane" and "Visual tweaks take the reference literally" (CLAUDE.md and long form). Material to generalize, not copied.
@@ -16,7 +16,7 @@
 - Not run in any browser. check_skill.py: exit 0. No trigger test of the description.
 
 ## Name
-`live-layout-check` is the working name. Alternatives from the reviews: `ui-verify` (two reviewers), `layout-probe`. Name not checked against the web.
+Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Name not checked against the web.
 
 ## Open questions
 - Should the skill ship a small JS snippet that prints the rects of a list of selectors as a table? Left out: it would be tool-specific and untested.

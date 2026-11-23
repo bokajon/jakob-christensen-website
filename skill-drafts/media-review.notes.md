@@ -1,4 +1,4 @@
-# generated-asset-check - draft notes
+# media-review - draft notes
 
 ## Sources read
 - Private rule, section "Honesty", the point on anything another model generates (music, images, voice) and on classifying images (read from the images, not from description text). Material to generalize, not copied.
@@ -14,7 +14,7 @@
 - Not tested in any agent, no generation run was done, no measurement script was run. check_skill.py: see commit.
 
 ## Name
-Working name `generated-asset-check`. Alternatives from the reviews: `asset-gate`, `media-check`, `media-review`. Name not checked against the web.
+Name chosen by Jakob (2026-11-23); earlier working name `generated-asset-check`. Name not checked against the web.
 
 ## Open questions
 - Which measurements should the skill name for audio and images? Left generic so no tool is promised that the user may not have. A small bundled script (image size and transparency, audio duration and peak) could be added if Jakob wants one; it would need a library for audio, so probably not standard-library only.

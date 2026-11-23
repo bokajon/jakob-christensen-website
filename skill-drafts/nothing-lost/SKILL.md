@@ -1,10 +1,10 @@
 ---
-name: backup-before-rewrite
+name: nothing-lost
 description: Before a large rewrite of text or data files, commit the current state, move text verbatim instead of retyping it, then run a bundled script that checks line by line that no old line was lost. Lists every old line found in none of the new files, and marks lines that changed on purpose instead of failing on them. Use when you restructure, shorten, split, merge or reformat documents, rule files, content or data, or when the user asks that nothing gets lost. Not for small edits.
 compatibility: Needs git and Python 3. The script uses only the standard library.
 ---
 
-# Backup before rewrite
+# Nothing lost
 
 Goal: a big rewrite of content or data loses nothing by accident. Git is the backup. The script is the proof that every old line either still exists, changed on purpose, or was meant to go.
 

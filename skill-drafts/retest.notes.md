@@ -1,4 +1,4 @@
-# measure-twice - draft notes
+# retest - draft notes
 
 ## Sources read
 - Private rule, section "Honesty" (state only what was checked; one run is not a reproduction; sizes, shares, rankings, "dead code" and "unused" measured; runtime values from the function the running app calls; the benefit of a recommendation measured). Material to generalize, not copied.
@@ -18,8 +18,7 @@ Part of the rule text overlaps with a possible claim-check rule (state only what
 - Not tested in any agent. check_skill.py: see commit.
 
 ## Name
-Working name `measure-twice`: three reviewers say it sounds like planning, and the web comparison found the name used with a different purpose. Alternatives (the reviews' own proposals): `bench-check`, `perf-verify`, `benchmark-check`. My pick: `bench-check` (short, but narrower than the content: the skill also covers sizes and shares). `benchmark-check` fits timing only. Name not checked against the web.
+Name chosen by Jakob (2026-11-23); earlier working name `measure-twice`. Name not checked against the web.
 
 ## Open questions
-- Name (see above). If the skill should cover "measured, not estimated" for sizes and shares, a name about benchmarks is too narrow. A fourth option would be `verify-numbers`.
 - Is five repetitions a good default?

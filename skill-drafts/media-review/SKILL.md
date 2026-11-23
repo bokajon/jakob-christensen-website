@@ -1,9 +1,9 @@
 ---
-name: generated-asset-check
+name: media-review
 description: Check media made by another model (images, music, voices, video) against the requirement before the user sees it or before more money is spent on it. Turns the requirement into measurable checks, runs them on the actual result and not on the prompt, and says up front which requirements cannot be measured. Use when you generate or receive generated assets, run a batch of generations, or are asked whether a generated result is good enough. Not for judging taste.
 ---
 
-# Generated asset check
+# Media review
 
 Goal: the user sees only generated results that were checked against what they asked for, and knows before any paid run which parts nobody can check by machine. A prompt that was good says nothing about the result.
 

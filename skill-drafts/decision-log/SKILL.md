@@ -1,11 +1,11 @@
 ---
-name: project-state
-description: Keep a project's memory in two files that every session reads first - STATE.md for the current state and open points (overwritten) and DECISIONS.md for decisions and fixed facts the user has stated (append only, each line dated with its source). Use at the start of a session in a project that has these files, when the user states a name, an assignment or a decision, when the user corrects you or repeats something, and at the end of a session that changed the state. Also use to set the two files up in a new project.
+name: decision-log
+description: Keep a project's decisions in DECISIONS.md, a decision log that every session reads first - names, assignments and choices the user has stated, append only, each line dated with its source - next to a short STATE.md for the current state and open points (overwritten). Use at the start of a session in a project that has these files, when the user states a name, an assignment or a decision, when the user corrects you or repeats something, and at the end of a session that changed the state. Also use to set the two files up in a new project.
 ---
 
-# Project state
+# Decision log
 
-Goal: what the next session must know is in two short files in the project, so the user never has to say the same thing twice and no session starts from a guess. Two files are enough; more files drift apart.
+Goal: the decisions the user has made are recorded where every session reads them, so the user never has to say the same thing twice, and the current state sits next to them. What the next session must know is in two short files in the project, so the user never has to say the same thing twice and no session starts from a guess. Two files are enough; more files drift apart.
 
 - `STATE.md`: where the project stands now. Rewritten, never a log.
 - `DECISIONS.md`: what the user has decided or fixed (names, assignments, rules, choices between options). Only appended to.

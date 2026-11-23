@@ -1,9 +1,9 @@
 ---
-name: measure-twice
+name: retest
 description: Verify a performance, timing, size or share claim by measuring it, repeating the measurement and reporting the spread, before calling it reproduced or true. Repeats a run, reports median and spread, checks the machine's load, takes runtime values from the running app and not from test fixtures, and measures sizes, shares, "largest" and "unused" instead of estimating them. Use before you report a speed-up, a regression, a frame rate, a file or bundle size, a ranking, a percentage, or dead code. Not for planning work.
 ---
 
-# Measure twice
+# Retest
 
 Goal: every number in a report was measured by you, repeated where it varies, and comes from the thing that actually runs. A single run is an anecdote, and a guess from names or sizes is not a measurement.
 

@@ -1,10 +1,10 @@
 ---
-name: live-layout-check
+name: measure-ui
 description: Check the layout and behavior of a web page in a real browser with measured numbers instead of judging by eye. Sets the viewport first, reports element sizes and positions as numbers, switches between items in more than one order, and keeps one tab open for before and after comparisons. Use after a visual or interaction change to a page, when the user says something looks off or asks whether a layout works, or before you say a UI change is done. Not for unit tests, which do no layout.
 compatibility: Needs an agent tool that can open a page in a real browser and run JavaScript in it. Without one, say the check was not run.
 ---
 
-# Live layout check
+# Measure UI
 
 Goal: a statement about how a page looks or behaves rests on numbers read from the running page, so a reader can compare them with what was wanted. A unit test in a simulated DOM does no layout and confirms nothing visual.
 

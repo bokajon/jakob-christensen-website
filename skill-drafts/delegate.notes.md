@@ -16,11 +16,7 @@
 - The claim "switching model re-reads the whole context uncached" comes from the private rules (checked against one tool's docs on 2026-11-19, other tools not checked).
 
 ## Name
-Working name `delegate`. Three alternatives for Jakob to choose:
-1. `delegate` (keep): short and clear, but the name is used by others (see NETZ-ABGLEICH).
-2. `hand-off-work`: says what happens.
-3. `helper-brief`: stresses the brief and the check, the two parts most similar skills skip.
-Name not checked against the web.
+Name `delegate` chosen by Jakob (2026-11-23). Name not checked against the web.
 
 ## Open questions
 - Does "ask the user first" for the strong role fit tools without an approval step? The text says "if the tool has one".

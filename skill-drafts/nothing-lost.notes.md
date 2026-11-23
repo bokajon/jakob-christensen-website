@@ -1,4 +1,4 @@
-# backup-before-rewrite - draft notes
+# nothing-lost - draft notes
 
 ## Sources read
 - Private rule, section "Back up before a large rewrite pass" (short and long form). Material to generalize, not copied.
@@ -22,9 +22,8 @@ Standard library only. Every non-blank old line, trimmed and white space collaps
 - Windows line endings and Git's CRLF warnings do not matter (lines are compared trimmed).
 
 ## Name
-Working name `backup-before-rewrite` no longer fits well (there is no backup step). Alternatives from the reviews: `no-loss-rewrite` (Gemini), `lossless-edit` (ChatGPT 1), `safe-rewrite` (ChatGPT 2), `diff-guard` (Gemini). My pick: `no-loss-rewrite`. Name not checked against the web.
+Name chosen by Jakob (2026-11-23); earlier working name `backup-before-rewrite`. Name not checked against the web.
 
 ## Open questions
-- Rename (see above).
 - Is 0.8 a good similarity limit? It is a starting value and was not tuned.
 - Should CHANGED lines fail the run with a flag (strict mode) for data files where any change is an error? Not built.

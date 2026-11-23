@@ -1,4 +1,4 @@
-# project-state - draft notes
+# decision-log - draft notes
 
 ## Sources read
 - Private rules: section "Rules and documents" (split project notes: current state, open commitments, deferred ideas, map, append-only log; end-of-session update) and the pinned-facts rule at the top of the global instruction file (a file of fixed facts that every session reads first, entries written at once, "in a contradiction the file wins, the contradiction is reported"). Material to generalize, not copied. The owner's own facts file was read for the format idea only (one line per fact with a date); none of its content is used.
@@ -22,7 +22,7 @@ Two files: `STATE.md` (overwritten) and `DECISIONS.md` (append only, each line w
 - Not checked: whether built-in memory features of some tools make the file redundant (reviewers' point).
 
 ## Name
-Working name `project-state`. Alternatives: `project-docs` (the old idea name, wider), `decision-log` (names only the second file). The reviews proposed `project-state` (two reviewers) and `decision-log`. Name not checked against the web.
+Name chosen by Jakob (2026-11-23); earlier working name `project-state`. Name not checked against the web.
 
 ## Other open questions
 - Should the files sit at the project root or in a folder? The draft says root or "the folder the project's instruction file names".
