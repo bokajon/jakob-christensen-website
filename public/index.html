@@ -263,6 +263,14 @@
         cover.hidden = true;
         document.getElementById("clip").contentWindow.postMessage(JSON.stringify({ event: "command", func: "playVideo", args: [] }), "*");
       });
+      function pause() {
+        document.getElementById("clip").contentWindow.postMessage(JSON.stringify({ event: "command", func: "pauseVideo", args: [] }), "*");
+      }
+      document.addEventListener("visibilitychange", function () { if (document.hidden) pause(); });
+      window.addEventListener("pagehide", pause);
+      window.addEventListener("blur", function () {
+        setTimeout(function () { if (!document.hasFocus()) pause(); }, 0);
+      });
     })();
     (function () {
       var all = document.querySelectorAll("ul.skills details");
