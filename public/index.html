@@ -84,14 +84,13 @@
     .desc { margin: 0; font-size: 0.95rem; color: var(--muted); flex: 1; }
     .link { font-size: 0.9rem; color: var(--accent); overflow-wrap: anywhere; }
     .coming { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
-    .skills { margin: 0.25rem 0 0; padding-left: 1.25rem; }
+    .skills { margin: 0.25rem 0 0; padding-left: 0; list-style: none; }
     .skills li + li { margin-top: 0.75rem; }
-    .skills li::marker { color: var(--accent); }
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
     .skill-head { cursor: pointer; list-style: none; }
     .skill-head::-webkit-details-marker { display: none; }
-    .skills h3::after { content: "▸"; display: inline-block; margin-left: 0.4rem; color: var(--muted); transition: transform 0.15s; }
-    details[open] .skills h3::after, details[open] h3::after { transform: rotate(90deg); }
+    .skills h3::before { content: "▸"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform 0.15s; }
+    details[open] h3::before { transform: rotate(90deg); }
     .skills h3 { margin: 0; font-size: 1rem; white-space: nowrap; }
     .skill-desc { margin: 0.15rem 0 0; font-size: 0.95rem; color: var(--muted); }
     .download { font-size: 0.9rem; color: var(--accent); }
