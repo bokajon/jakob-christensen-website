@@ -1,11 +1,11 @@
 ---
 name: fresh
-description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, and offers a fresh one. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows. Not for sessions with nothing to carry over, and never before the current request is done. Second mode, resume: after a crash, an abort or a bare "continue", check the real state of the work first, then pick up the interrupted step.
+description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, and offers a fresh one. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows. Not for sessions with nothing to carry over, and never before the current request is done. Second mode, resume: only after a crash, an abort, a hit limit, or in a new session that starts with "continue" and no other context, check the real state of the work first, then pick up the interrupted step.
 ---
 
 # Fresh
 
-Every message re-reads the whole context. Cached tokens are cheaper, but the cache expires after a pause (how soon depends on the tool and plan), and then the whole context is written again. A fresh session with a good handoff file is often cheaper and sharper than continuing.
+A fresh session with a good handoff file is often cheaper and sharper than a long one.
 
 ## Modes
 
@@ -21,12 +21,11 @@ Finish the user's current request first, then run this skill when any of these h
 - The user moves to a different task while the old one has unfinished work or decisions worth keeping. A side question is not a new task.
 - The work was image-heavy: in most tools images stay in context until it is compacted.
 - The task is committed and merged, and the user goes on with other work. If nothing follows, this skill does not apply.
-- The context was just compacted. Write only what is still known and mark the rest "unknown"; never fill a gap by guessing.
 
 ## Steps
 
 1. **Draft the handoff** with every item below that applies. Write "none" only where you checked that nothing exists, "unknown" where you could not find out, and never invent a value.
-   1. **Model and effort** for the next session as the first line under the title, both named, with one sentence why: the cheapest model the next session's tool offers that does the work well (a tier if you do not know its model names), and its effort level (Claude Code has one; leave it out only for a tool that has none). Name the steps that need a stronger model. Recommend the most expensive model only with a reason, and never switch to it yourself.
+   1. **Model and effort** for the next session as the first line under the title, both named, with one sentence why: the cheapest model the next session's tool offers that does the work well (a tier if you do not know its model names), and its effort level (Claude Code has one; leave it out only for a tool that has none). Name the steps that need a stronger model. Recommend a more expensive model only as a question to the user with the reason, never in the file as decided, and never switch to it yourself.
    2. **State**, one line each: the goal, what is done, what is open, approaches that failed, decisions made in this conversation that are not recorded elsewhere, key findings from images, and the last check results.
    3. **Exact absolute paths** of the files the next session needs, with line numbers where a spot matters; branch, worktree, last commit, uncommitted files, and running servers or background jobs. Never commit, stash or reset just to tidy up.
    4. **The commands that must be green** at the end, written out in full.
@@ -38,18 +37,19 @@ Finish the user's current request first, then run this skill when any of these h
 
 ## Resume mode
 
-Use it when the previous session crashed, was stopped or aborted, ran into a limit, or the user comes back with only "continue" or similar, in this session or a new one. Memory of what was done is not evidence: read the state first. If a handoff file exists, read it, but treat it as a claim about the state until step 1 confirms it.
+Use it when the previous session crashed, was stopped or aborted, ran into a limit, or this is a new session that starts with only "continue" or similar. When your own last message shows the step completed, just continue. Memory of what was done is not evidence: read the state first. If a handoff file exists, read it, but treat it as a claim about the state until step 1 confirms it.
 
 1. **Check the real state, read-only.** Make one or two shell calls, print short lines, never full logs:
    - the working folder and branch, `git status --short`, the last commit (`git log -1 --oneline`), and whether the branch is ahead of or behind its remote;
    - every worktree of the repository (`git worktree list`) and which one holds the interrupted work;
    - the newest log or result line of any build, test or merge-and-check script the work was running (read the file, do not rerun the script to find out);
-   - background jobs and servers the work started: which processes are running and which ports are held. Look at a process's command line before you say whose it is.
-2. **Compare with the last step.** Name the step that was interrupted, from the handoff file, the task list or the last messages, and say whether the files show it done, half done or not started. Mark anything you cannot tell as "unknown".
+   - background jobs and servers the work started: which processes are running and which ports are held. Look at a process's command line before you say whose it is;
+   - `.git/index.lock`, `MERGE_HEAD`, `CHERRY_PICK_HEAD` and `rebase-merge/`: if one exists, report it and what it blocks, and wait for the user.
+2. **Compare with the last step.** Name the step that was interrupted, from the handoff file, the task list or the last messages. If there is none of these, use `git log -5 --stat`, `git status` and the newest modified files to infer the step, mark it "inferred" and ask the user to confirm it in one line before you change anything. Say whether the files show it done, half done or not started. Mark anything you cannot tell as "unknown".
 3. **Report in a few lines**: what the state is, what looks interrupted, what you will do next.
 4. **Continue the interrupted step**, not a new idea. Finish or redo only that step, then go on with the plan. If the state contradicts the plan (other commits on the branch, files changed by someone else), say so and ask before you continue.
 
-Never end a process, release a lock or delete a locked or half-written folder as a way out. Name each one in the report with what holds it and let the user decide. Never stash, reset, clean or commit changes you did not make, and never rerun a step that publishes, deploys or deletes before step 2 shows it did not already run.
+Never end a process, release a lock or delete a locked or half-written folder as a way out. Name each one in the report with what holds it and let the user decide. Never stash, reset, clean or commit changes you did not make, and never run `merge --continue`, `rebase --continue` or remove a lock. A deploy, publish or delete that may have run is checked at its target (remote branch, live address, deployment list) with a read-only command before you rerun it; if you cannot check, ask the user.
 
 ## Hook setup (Claude Code only)
 
@@ -63,7 +63,7 @@ Install the hook only when the user explicitly asks for the hook. A yes to a fre
    ```
 
    Use whichever of `python3` or `python` exists on the machine.
-3. Check that the file is still valid JSON and that the script runs (`echo {} | python -I <path>` prints nothing and exits 0); if not, restore the backup and report. Tell the user the backup's path.
+3. Check that the file is still valid JSON and that the script runs: `python3 --version` must print a version (a Windows Store stub does not count), and the script run with `{"transcript_path": "<a real transcript path>"}` on stdin and `BIG` temporarily set to 1 must print the note. If not, restore the backup and report. Tell the user the backup's path.
 
 The limits are constants at the top of the script.
 
