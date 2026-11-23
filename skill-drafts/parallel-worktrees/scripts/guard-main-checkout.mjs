@@ -56,7 +56,7 @@ const file = real(target);
 if (main && inside(file, main) && !others.some((dir) => inside(file, dir))) {
   process.stderr.write(
     `Blocked: ${target} is in the main checkout, which is only the integration target. ` +
-      'Work in your own worktree (git worktree add ../<repo>-<name> -b <name>/<topic>, then install dependencies there) ' +
+      'Work in your own worktree (git worktree add ../<repo>-<name>-<topic> -b <name>/<topic> <default>, then install dependencies there) ' +
       'and integrate it with scripts/integrate.ps1.' +
       String.fromCharCode(10),
   );

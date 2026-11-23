@@ -36,6 +36,9 @@ param(
 # Native git and npm write progress to stderr; with 'Stop' PowerShell 5.1 would turn that into errors.
 # Every native call checks $LASTEXITCODE instead.
 $ErrorActionPreference = 'Continue'
+# git writes paths as UTF-8; without this Windows PowerShell 5.1 decodes umlauts in a worktree path wrongly.
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch { }
+$startDir = (Get-Location).Path
 
 function Fail($message) {
   Write-Host "FAILED: $message"
@@ -45,8 +48,8 @@ function Fail($message) {
 # Optional config file next to this script. A parameter given on the command line wins over it.
 $cfg = $null
 $cfgPath = Join-Path $PSScriptRoot 'integrate.config.json'
-if (Test-Path $cfgPath) {
-  try { $cfg = Get-Content -Raw $cfgPath | ConvertFrom-Json } catch { Fail "scripts/integrate.config.json is not valid JSON: $($_.Exception.Message)" }
+if (Test-Path -LiteralPath $cfgPath) {
+  try { $cfg = Get-Content -LiteralPath $cfgPath -Raw -Encoding UTF8 | ConvertFrom-Json } catch { Fail "scripts/integrate.config.json is not valid JSON: $($_.Exception.Message)" }
 }
 function Setting($value, $name) {
   if ($value) { return $value }
@@ -60,9 +63,14 @@ $RetryCheckCommand = Setting $RetryCheckCommand 'retryCheckCommand'
 $MainInstallCommand = Setting $MainInstallCommand 'mainInstallCommand'
 $DevServerPattern = Setting $DevServerPattern 'devServerPattern'
 
-$branch = (git rev-parse --abbrev-ref HEAD).Trim()
+$branch = [string](git rev-parse --abbrev-ref HEAD 2>$null)
+if ($LASTEXITCODE -ne 0 -or -not $branch) { Fail 'this is not a git repository with a commit, run the script from a branch worktree' }
+$branch = $branch.Trim()
 if ($branch -eq 'HEAD') { Fail 'HEAD is detached, check out a feature branch first' }
-$commonDir = (git rev-parse --path-format=absolute --git-common-dir).Trim()
+$commonDir = [string](git rev-parse --path-format=absolute --git-common-dir 2>$null)
+if ($LASTEXITCODE -ne 0 -or -not $commonDir) { Fail 'could not find the git directory (git 2.31 or newer is needed)' }
+$commonDir = $commonDir.Trim()
+$branchTip = ([string](git rev-parse HEAD)).Trim()
 # Log and pid file are named after the branch plus a short hash of its exact name, so "a/b" and "a-b" never share a log.
 $safeName = $branch -replace '[^A-Za-z0-9._-]', '-'
 $md5 = [System.Security.Cryptography.MD5]::Create()
@@ -83,21 +91,21 @@ function Wait-Result {
   $deadline = $start.AddMinutes(180)
   while ((Get-Date) -lt $deadline) {
     $result = $null
-    if (Test-Path $log) {
-      $result = Select-String -Path $log -Pattern '^(OK|FAILED): ' -ErrorAction SilentlyContinue | Select-Object -Last 1
+    if (Test-Path -LiteralPath $log) {
+      $result = Select-String -LiteralPath $log -Pattern '^(OK|FAILED): ' -ErrorAction SilentlyContinue | Select-Object -Last 1
     }
     if ($result) {
-      Get-Content $log -Tail 8
+      Get-Content -LiteralPath $log -Tail 8
       if ($result.Line -like 'OK: *') { exit 0 } else { exit 1 }
     }
     # The detached process creates the log a moment after it starts, so the first minute is not an error.
     $worker = $null
-    if (Test-Path $pidFile) {
-      $workerId = [int](Get-Content $pidFile -ErrorAction SilentlyContinue | Select-Object -First 1)
+    if (Test-Path -LiteralPath $pidFile) {
+      $workerId = [int](Get-Content -LiteralPath $pidFile -ErrorAction SilentlyContinue | Select-Object -First 1)
       if ($workerId) { $worker = Get-Process -Id $workerId -ErrorAction SilentlyContinue }
     }
     if (-not $worker -and ((Get-Date) - $start).TotalSeconds -gt 60) {
-      if (Test-Path $log) { Write-Host "FAILED: the detached run ended without a result line, see $log" }
+      if (Test-Path -LiteralPath $log) { Write-Host "FAILED: the detached run ended without a result line, see $log" }
       else { Write-Host "FAILED: no detached run is going and there is no log $log. Start the script again with -Detach." }
       exit 1
     }
@@ -154,14 +162,18 @@ if (-not $CheckCommand) {
 
 if ($Detach) {
   # An old log's result line would end a -Wait at once.
-  Remove-Item $log, $pidFile -ErrorAction SilentlyContinue
-  $inner = "& '$PSCommandPath'"
+  Remove-Item -LiteralPath $log, $pidFile -ErrorAction SilentlyContinue
+  # The start folder goes into the command, because Start-Process -WorkingDirectory treats [ ] in a path as wildcards.
+  $inner = "Set-Location -LiteralPath '" + ($startDir -replace "'", "''") + "'; & '" + ($PSCommandPath -replace "'", "''") + "'"
   foreach ($pair in @(@('Target', $Target), @('CheckCommand', $CheckCommand), @('InstallCommand', $InstallCommand), @('RetryCheckCommand', $RetryCheckCommand), @('MainInstallCommand', $MainInstallCommand), @('DevServerPattern', $DevServerPattern))) {
     if ($pair[1]) { $inner += " -$($pair[0]) '" + ($pair[1] -replace "'", "''") + "'" }
   }
-  $inner += " *> '$log'"
-  $worker = Start-Process powershell -PassThru -WindowStyle Hidden -WorkingDirectory (Get-Location).Path -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', $inner
-  Set-Content -Path $pidFile -Value $worker.Id
+  # Out-File -LiteralPath, because the redirection operator treats [ ] in the log path as wildcards.
+  $inner += " *>&1 | Out-File -LiteralPath '" + ($log -replace "'", "''") + "' -Encoding Unicode"
+  # -EncodedCommand keeps double quotes, apostrophes and umlauts in the check command exactly as given.
+  $encoded = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($inner))
+  $worker = Start-Process -FilePath (Join-Path $PSHOME 'powershell.exe') -WorkingDirectory $env:SystemRoot -PassThru -WindowStyle Hidden -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', $encoded
+  Set-Content -LiteralPath $pidFile -Value $worker.Id
   Write-Host "Started in the background. Log (result line starts with OK: or FAILED:): $log"
   if ($Wait) { Wait-Result }
   Write-Host "To wait for it: run this script again with -Wait"
@@ -170,13 +182,13 @@ if ($Detach) {
 
 # Runs a PowerShell command string and returns its exit code as an int. Non-zero when a native call exited non-zero,
 # when the command threw, or when it wrote a PowerShell error (checked through -ErrorVariable, because $? would
-# describe Out-Host here). The command's output goes to the host so it never becomes part of the return value.
+# describe Out-Host here). A native program's stderr text is no error by itself: only its exit code counts. The command's output goes to the host so it never becomes part of the return value.
 function Run-Command($command) {
   $global:LASTEXITCODE = 0
   $ok = $true
   try {
     Invoke-Expression $command -ErrorVariable commandErrors | Out-Host
-    if (@($commandErrors).Count -gt 0) { $ok = $false }
+    if (@($commandErrors | Where-Object { $_.FullyQualifiedErrorId -ne 'NativeCommandError' }).Count -gt 0) { $ok = $false }
   } catch {
     Write-Host "error: $($_.Exception.Message)"
     return 1
@@ -220,7 +232,7 @@ function Wait-No-Overlap($changedPaths) {
 }
 
 # Wait before taking the lock, so a wait here never holds up other integrations.
-Wait-No-Overlap @(Split-Z (git diff --name-only -z "$Target...$branch"))
+Wait-No-Overlap @(Split-Z (git diff --no-renames --name-only -z "$Target...$branchTip"))
 
 # One integration at a time across all worktrees. The OS drops the lock when this process ends, even on a crash.
 $lockPath = Join-Path $commonDir 'integrate.lock'
@@ -229,10 +241,11 @@ function Get-Lock {
   $said = $false
   while (-not $script:lock) {
     try { $script:lock = [System.IO.File]::Open($lockPath, 'OpenOrCreate', 'ReadWrite', 'None') }
-    catch {
+    catch [System.IO.IOException] {
       if (-not $said) { Write-Host 'Another integration is running, waiting for it.'; $said = $true }
       Start-Sleep -Seconds 15
     }
+    catch { Fail "could not open the lock file $lockPath ($($_.Exception.Message))" }
   }
 }
 Get-Lock
@@ -279,7 +292,7 @@ try {
     if ($LASTEXITCODE -ne 0) { Fail 'could not create the temporary worktree' }
 
     Push-Location $tmp
-    git merge --no-edit -m "Merge $branch into $Target" $branch
+    git merge --no-edit -m "Merge $branch into $Target" $branchTip
     if ($LASTEXITCODE -ne 0) {
       $conflicts = @(git diff --name-only --diff-filter=U)
       git merge --abort
@@ -304,7 +317,7 @@ try {
       if (-not $settled) { Pop-Location; Fail "$CheckCommand is red. $Target is unchanged, see the log above." }
     }
     $tested = (git rev-parse HEAD).Trim()
-    $changed = @(Split-Z (git diff --name-only -z $startTarget $tested))
+    $changed = @(Split-Z (git diff --no-renames --name-only -z $startTarget $tested))
     Pop-Location
     git worktree remove --force $tmp
 
@@ -325,8 +338,8 @@ try {
       continue
     }
 
-    # Git refuses on its own if the fast-forward would overwrite any local change.
-    git -C $main merge --ff-only $tested
+    # Git refuses on its own if the fast-forward would overwrite a local change; --no-overwrite-ignore extends that to ignored local files.
+    git -C $main merge --ff-only --no-overwrite-ignore $tested
     if ($LASTEXITCODE -ne 0) { Fail "fast-forward into $Target was refused. $Target and the main checkout are unchanged." }
 
     # Without this the main checkout's dev server shows a failed import until someone installs the new package there.
@@ -353,6 +366,8 @@ try {
   Fail "$Target kept moving during five attempts. Run again."
 }
 finally {
-  if (Test-Path $tmp) { git worktree remove --force $tmp }
+  # The temporary worktree cannot be removed while this process stands inside it.
+  Set-Location -LiteralPath $startDir
+  if (Test-Path -LiteralPath $tmp) { git worktree remove --force $tmp }
   if ($lock) { $lock.Dispose() }
 }
