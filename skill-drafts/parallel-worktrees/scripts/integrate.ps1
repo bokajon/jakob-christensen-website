@@ -189,7 +189,7 @@ function Run-Command($command) {
 # Every path the main checkout has changed, both sides of a rename or copy included.
 function Main-Dirty-Paths {
   $paths = @()
-  $records = Split-Z (git -C $main status --porcelain=v1 -uall -z)
+  $records = @(Split-Z (git -C $main status --porcelain=v1 -uall -z))
   $i = 0
   while ($i -lt $records.Count) {
     $paths += $records[$i].Substring(3)
@@ -220,7 +220,7 @@ function Wait-No-Overlap($changedPaths) {
 }
 
 # Wait before taking the lock, so a wait here never holds up other integrations.
-Wait-No-Overlap (Split-Z (git diff --name-only -z "$Target...$branch"))
+Wait-No-Overlap @(Split-Z (git diff --name-only -z "$Target...$branch"))
 
 # One integration at a time across all worktrees. The OS drops the lock when this process ends, even on a crash.
 $lockPath = Join-Path $commonDir 'integrate.lock'
@@ -304,7 +304,7 @@ try {
       if (-not $settled) { Pop-Location; Fail "$CheckCommand is red. $Target is unchanged, see the log above." }
     }
     $tested = (git rev-parse HEAD).Trim()
-    $changed = Split-Z (git diff --name-only -z $startTarget $tested)
+    $changed = @(Split-Z (git diff --name-only -z $startTarget $tested))
     Pop-Location
     git worktree remove --force $tmp
 

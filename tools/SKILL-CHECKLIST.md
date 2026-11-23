@@ -119,6 +119,17 @@ Released by Jakob on 2026-11-23 with the wording "Tested in Claude Code and Code
 - Codex 0.169.1: `$fresh` 2 of 2, hook note 2 of 2. The run without the skill passed too, because `~/.codex/AGENTS.md` points to fresh (section 7.8). (Test)
 - Results and lessons: `D:\Temp\agent-skills-tests\fresh-test-round-2.md`, `fresh-test-hook-setup-2.md`, `fresh-test-round-codex.md`, `fresh-lessons.md`. Not durable.
 
+## 8c. Test numbers of the parallel-worktrees script (2026-11-23)
+
+`integrate.ps1` changed paths, Windows PowerShell 5.1, scratch repos in new folders, one run per case. Not yet released. (Test)
+
+- Found and fixed: with exactly one dirty path in the main checkout `Split-Z` returned a string, `Main-Dirty-Paths` threw, the run ended without a result line. Call sites now wrap `@(Split-Z ...)`.
+- Dead pid: worker killed mid-check gives FAILED after 61 s; stale pid file with no log gives FAILED after 60 s; both exit 1, main unchanged.
+- Lock release: main dirty on `ä.txt` while X waits, Y integrated in 1 s with no lock message, X then re-merged and finished OK at 74 s; main clean, both changes in.
+- Stop-Process: ancestor node survived 1 of 1, in-worktree decoy stopped 1 of 1, outside decoy survived 1 of 1.
+- Red PowerShell checks: 4 of 4 (`Get-Item` of a missing path, `Write-Error`, `cmd /c exit 3`, `throw`) FAILED with exit 1 and main unchanged; green check with double quotes OK.
+- Details and limits: `D:\Temp\agent-skills-tests\parallel-worktrees-test-round.md`. Not durable. Not tested: Codex, two waiting integrations at once.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
