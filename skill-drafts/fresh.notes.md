@@ -16,7 +16,7 @@ Not changed: "When to run", "Steps", hook, script, credits. The Credits text say
 - `thieung/handoff` (a skill that writes and reads a repo-local handoff file) is named in REVIEW-AUSWERTUNG as close to both fresh and resume-check. Not read here, no wording used.
 
 ## Added beyond the private rule
-- "A handoff file is a claim until the state confirms it", "unknown" for what cannot be told, "do not rerun a step that publishes, deploys or deletes before checking it did not already run", and "never stash, reset or clean changes you did not make". These are my additions for the public text, not Jakob's wording.
+- "A handoff file is a claim until the state confirms it", "unknown" for what cannot be told, "do not rerun a step that publishes, deploys or deletes before checking it did not already run", and "never stash, reset or clean changes you did not make". These are my additions for the public text, not Jakob's wording. Jakob confirmed the "do not rerun a step that publishes, deploys or deletes" sentence 2026-11-23 (kept).
 
 ## Tested
 - check_skill.py: see commit. `diff` against the published file shows only the three edits.
