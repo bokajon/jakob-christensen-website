@@ -157,7 +157,7 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 - Baseline without the skill: 2 of 2 pushed `trunk` only, unasked, with a bare `git push` (no SHA refspec, no guard flags). (Test)
 - Codex 0.169.1, `-s workspace-write`: 12 of 12 stopped safely at the read-only `.git` (`FETCH_HEAD` permission denied), 0 pushes, so the content was not exercised there. The "Tested in" wording must not claim Codex.
 - Not tested, no fixture: differing push URL, repository without a remote, failing `ls-remote`, no local default branch. The button answers "Push only this one" and "Stop" are not testable headless.
-- Raw data: `D:\Tempgent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
+- Raw data: `D:\Temp\agent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
 
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
