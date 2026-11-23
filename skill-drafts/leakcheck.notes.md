@@ -2,7 +2,7 @@
 
 ## Quellen und Herkunft
 - Jakobs Eigenbau: aus seinem privaten Skript `tools/check_skill.py` (Website-Repo) abgeleitet, als Skill mit gebündeltem Skript `scripts/leakcheck.py` neu geschrieben. Keine Teile aus Matt Pococks Skills. Frontmatter-Regeln aus der Agent-Skills-Spezifikation (agentskills.io/specification, laut check_skill.py am 2026-11-22 gelesen, hier nicht neu geprüft).
-- Name `leakcheck`: von Jakob gewählt (2026-11-23). Vorher `preflight`, umbenannt wegen Nähe zu `skill-preflight` (github.com/agent-contracts/skill-preflight, existiert, MIT). Kollisionsprüfung `leakcheck`: kein Treffer gesehen, aber GitHub-Codesuche braucht Login, Teile der Repo-Suche waren abgeschnitten, npm 403, PyPI Challenge: nicht bestätigt, vor dem Release im Browser prüfen. Verworfene Namen: prerelease (zu generisch), clearance (sagt nichts), shipcheck (Zweitplatz).
+- Name `leakcheck`: von Jakob gewählt (2026-11-23). Vorher `preflight`, umbenannt wegen Nähe zu `skill-preflight` (github.com/agent-contracts/skill-preflight, existiert, MIT). Kollisionsprüfung `leakcheck` im Browser (2026-11-23): PyPI `leakcheck` 2.0.0 ist der offizielle Python-Wrapper der LeakCheck API (leakcheck.io, kommerzielle Datenleck-Suchmaschine; GitHub LeakCheck/leakcheck-api, 49 Sterne); npm `leakcheck` ist ein ML-Datenleck-Prüfer; github.com/globalmpc/agent-leakcheck (npm `@globalmpc/agent-leakcheck`, 15 Sterne, 12 Tage alt) prüft, was Claude Code, Codex, Cursor und Gemini CLI auf dem Rechner erreichen, also dasselbe Publikum. Zweitplatz `shipcheck` ist noch belegter: github.com/lohani-mohit/shipcheck ist ein Claude-Code-Skill, dazu npm `shipcheck`, PyPI `shipcheck`. Verworfene Namen: prerelease (zu generisch), clearance (sagt nichts), shipcheck (Zweitplatz).
 - Verwandt: NVIDIA SkillEvaluator (Apache 2.0) macht Ähnliches. Nicht getestet, nicht gelesen, nur als Hinweis bekannt.
 
 ## Verallgemeinert
@@ -10,7 +10,7 @@
 - Der Deutsch-Check ist nur noch optional (`--english`) und nur ein Hinweis, der nie fehlschlägt.
 - Gedankenstriche werden nur mit `--no-dashes` gemeldet (Jakobs Stilregel, nicht allgemein).
 - Muster in der Skriptdatei sind aus Teilen gebaut (`TOOL_ONLY`, `HOME`), damit sich die Datei nicht selbst meldet.
-- Gegenüber dem Eigenbau korrigiert: das Windows-Pfad-Muster fand nur Schrägstriche (`[\/]`), jetzt auch Backslashes (`[\/]`).
+- Windows-Pfad-Muster unverändert aus dem Eigenbau: `[\\/]` trifft Backslash und Schrägstrich (geprüft 2026-11-23 mit `C:\x` und `C:/x`). Die frühere Notiz, der Eigenbau finde nur Schrägstriche, war falsch.
 
 ## Offene Fragen
 - Entschieden (Jakob 2026-11-23): die Deutsch-Wortliste `GERMAN_HINTS` ist aus Teilen gebaut, damit `--english` leakcheck.py nicht mehr als "teilweise Deutsch" meldet. Geprüft mit `--english` auf dem eigenen Ordner.
@@ -27,7 +27,7 @@ Ohne `--no-dashes` und ohne `--words` bleibt der jeweilige Fehler unbemerkt (OK,
 - Das Verhalten eines Agenten, der den Skill liest (kein Trigger-Test der Beschreibung).
 
 ## 3-KI-Review 2026-11-23 (Gemini, ChatGPT bis P16, Copilot) und was eingebaut wurde
-Rohantworten: `D:\Tempeview-answers-preflight-2026-11-23.md`. ChatGPT brach in P17 ab (keine Credits), Part 5 fehlt dort. Jeder Punkt gegen den Code geprüft.
+Rohantworten: `D:\Temp\review-answers-preflight-2026-11-23.md`. ChatGPT brach in P17 ab (keine Credits), Part 5 fehlt dort. Jeder Punkt gegen den Code geprüft.
 Eingebaut: Fund-Ausgabe maskiert (erste 4 und letzte 4 Zeichen, vorher bis 40 Zeichen im Klartext); SKILL.md nicht UTF-8, BOM, fehlende `--words`-Datei, unlesbare Dateien ohne Absturz; Symlinks nicht gefolgt (Hint); `.git`, `node_modules`, `__pycache__` im Skript übersprungen statt Kopie anzulegen; private Wörter mit Wortgrenzen und auch im Dateipfad; Schlüsselmuster um `sk-proj-`, `sk-ant-`, `gh[pousr]_`, `github_pat_`, `AIza`, PEM-Header erweitert (`sk-` mit Lookbehind, damit `task-...` nicht trifft); Meldung "works in one tool only" ersetzt durch "tool-specific"; SKILL.md: Python zuerst prüfen, Beschreibung in dritter Person ("Always write in third person", Anthropic Best Practices, Abschnitt "Writing effective descriptions", gelesen), "safe" raus, Abbruch nach drei Läufen = nicht bereit, Links offline = "not opened", Report in drei kurzen Abschnitten, Hinweis auf gitleaks/trufflehog und "kein vollständiger YAML-Parser".
 Abgelehnt (mit Grund): Bindestrich-Regeln fehlen (Copilot; `NAME_RE` verbietet sie schon), Frontmatter fehlt (Paste-Effekt), Unicode-Namen (Spec widerspricht sich, ASCII bleibt), metadata-Parser und Typprüfung (kein falscher Treffer, Werte sind immer Strings), Tilde-Pfade, Geschmackspunkte von Copilot (P6, P13, P15, P18, P20).
 Faktencheck: Claude Code dokumentiert `disable-model-invocation` und `user-invocable` (code.claude.com/docs/en/skills). Ob Cursor `disable-model-invocation` als Feld dokumentiert: nicht bestätigt (Mitte der Seite abgeschnitten).
