@@ -1,4 +1,6 @@
-# push - draft notes
+# strays - draft notes
+
+Renamed from `push` to `strays` on 2026-11-23 (Jakob: "push ist bisl zu vage"). The private NiagaraUI copy stays `/push`.
 
 ## Sources read
 - Current `.claude/skills/push/SKILL.md` in the NiagaraUI repo (commit 6f09573f, 2026-11-20, "Make requested pushes autonomous").
