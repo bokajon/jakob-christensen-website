@@ -138,6 +138,16 @@ Draft at commit ea3a780, Claude desktop app, three throwaway sessions, one run, 
 - Open worktree question: after `archive_session` on `tidytest-dirty` (done by me to measure), the worktree folder and the uncommitted `tidytest-dirty.txt` were still there. One example, not a guarantee for other cases.
 - Not tested: parent with a running child, aborted session, squash merge, pinned or open-on-screen refusal texts. `startedBy` of the test sessions named a session that is not in the family list (origin not checked).
 
+## 8e. Test numbers of the blindtest skill (2026-11-23)
+
+Draft after review batch fd28d37 plus a8e5cdc, Claude Code headless, Sonnet, throwaway folder per run, skill installed in `.claude/skills/blindtest/`, 12 runs in total (2 per case). Not yet released. (Test)
+
+- Without approval (8 runs): without the skill 2 of 2 ran the test at once, with no approval, no anonymizing, no 2-judge flow. With `/blindtest` 4 of 4 (Compare 2, Audit 2) stopped at step 1 with setup, criteria and cost and started no run. Natural prompt: skill loaded by itself 2 of 2, then stopped at step 1. Too small for an auto-trigger claim.
+- Compare with approval (2 runs): script called from the skill folder, key outside the blind folder, 2 judges in reversed order, README written. Verdict "inconclusive" (v1 and v2 5 of 5 coverage, baseline 90 percent). One judge run was discarded (the author mis-pasted the prompt), logged in the README and redone.
+- Audit with approval (2 runs): calibration at least 10 known violations and 25 clean entries, both readers 10 of 10 with 0 false alarms, then corpus: 4 violations (e03, e07, e15, e23), all 4 confirmed against the live source. The pass mark was stated in the chat before the readers, not in a file: SKILL.md now says "into the log file before the first reader".
+- Limits: calibration sets were LLM-generated and easy, so 10 of 10 says little; one case per Compare run; Codex not tested; whether any run wrote outside its folder not checked.
+- Script `anonymize.mjs` retested after the fixes (leak check, H2 title, `..` group, no partial write on a read error). Raw data and analysis: `D:\Tempgent-skills-testst-round1-A`, `bt-round1-B`, `analyze_bt.py`, `blindtest-triage-2.md`. Not durable.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
