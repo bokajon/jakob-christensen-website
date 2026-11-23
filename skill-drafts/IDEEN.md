@@ -93,3 +93,15 @@ Grenzen: "gelesen" heißt bei den Agenten, dass ein kleines Modell die Seite zus
 | 12 skill-check | nein (mehrfach) | gleich: NVIDIA SkillEvaluator (PII, Geheimnisse, lokale Kennungen, Frontmatter, Tool-Kompatibilität) | nur leichter, eigene Wortliste, Gedankenstriche, deutscher Text | ja, NVIDIA-Doku gelesen |
 | 13 rule-edit | ja | ähnlich, nah, deutlich bei Matt (writing-for-agents, retro) | kaum | nein |
 | 14 proof (claim-check + measure-twice + generated-asset-check) | ja (nah: proof-of-work, proof-agent) | ähnlich, nah: obra verification-before-completion, proof-of-work | Durchsicht des fertigen Berichts mit Etikett je Aussage, dazu die Regeln für Zeitmessung, Laufzeitwerte und generierte Medien | ja, obra gelesen |
+
+## E. Grill space/freeup (2026-11-23), entschieden
+
+Jakob hat je Punkt genau eine Antwort gegeben. Gebaut ist noch nichts.
+- **Skill**: Idee 15 (Platz auf C schaffen). **Name: `freeup`** (`/freeup`), in einer Namensrunde gewählt (Kandidaten sweep, headroom, spring-clean verworfen). Netz-Abgleich nicht gemacht.
+- **Privat zuerst**, Website-Entwurf und Release später, dann nach `tools/SKILL-CHECKLIST.md`.
+- **Start**: per `/freeup` und automatisch bei freien Worten wie "schaff Platz auf C".
+- **Löschen**: Tabelle mit Größen, ein Ja, dann alles Gezeigte löschen. Sicherheitsregeln aus Idee 15 bleiben (nichts jünger als 1 Stunde, `Temp\claude` erst ab 1 Tag, gesperrte Dateien bleiben, Blockade wird nicht umgangen).
+- **D:** nur zeigen (Worktrees, Logs mit Größe), nie anfassen.
+- **Downloads**: nur zeigen, nie löschen.
+- **Geplante Aufgabe**: vorerst nein, nur manuell.
+- **Offen**: Netz-Abgleich für den Namen (vor Veröffentlichung); Plattform (Windows und C: nur) für die öffentliche Fassung; Größe von Worktrees und Logs auf D: nicht gemessen.
