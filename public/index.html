@@ -186,8 +186,17 @@
     <footer>© 2026 Jakob Christensen</footer>
 
     <div class="video">
-      <iframe src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw?enablejsapi=1" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe id="clip" src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw?enablejsapi=1" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   </main>
+<script>
+    (function () {
+      try {
+        var n = (parseInt(localStorage.getItem("visits"), 10) || 0) + 1;
+        localStorage.setItem("visits", n);
+        if (n === 2) document.getElementById("clip").src = "https://www.youtube-nocookie.com/embed/WzY2pWrXB_0?enablejsapi=1";
+      } catch (e) {}
+    })();
+  </script>
 </body>
 </html>
