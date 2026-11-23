@@ -247,6 +247,15 @@
         document.getElementById("clip").src = "https://www.youtube-nocookie.com/embed/" + id + "?enablejsapi=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1";
       } catch (e) {}
     })();
+    (function () {
+      var all = document.querySelectorAll("ul.skills details");
+      all.forEach(function (d) {
+        d.addEventListener("toggle", function () {
+          if (!d.open) return;
+          all.forEach(function (o) { if (o !== d) o.open = false; });
+        });
+      });
+    })();
   </script>
 </body>
 </html>
