@@ -91,7 +91,7 @@
     .skills h3 { margin: 0; font-size: 1rem; white-space: nowrap; }
     .skill-desc { margin: 0.15rem 0 0; font-size: 0.95rem; color: var(--muted); }
     .download { font-size: 0.9rem; color: var(--accent); }
-    .install { margin: 0; font-size: 0.85rem; color: var(--muted); }
+    .install { margin: 0 0 0.5rem; font-size: 0.85rem; font-style: italic; color: var(--muted); }
     code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.9em; overflow-wrap: anywhere; }
     .skill-desc a { color: var(--accent); text-underline-offset: 2px; }
     .skill-desc code { font-weight: 700; white-space: nowrap; overflow-wrap: normal; }
@@ -113,6 +113,7 @@
         <div class="card">
           <h2>Jakob's Agent Skills</h2>
           <p class="desc">A set of agent skills I've built for my own workflow and refined project by project. Most of what I do with AI runs through them. If one fits how you work, take it and adapt it.</p>
+          <p class="install">To install a skill, download the file and tell your AI: "Install this skill." Then start it by typing its name, for example <code>/workaround</code> (in Codex: <code>$workaround</code>).</p>
           <ul class="skills">
             <li>
               <div class="skill-head">
@@ -129,7 +130,6 @@
               <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. This skill carries your work over to a fresh session at a natural break, like a large context, a long pause, a new topic or a finished task. It writes a handoff file, names the recommended model and effort for the next session and offers to start it. The handoff file builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes the file when you call it. <code>/fresh</code> also decides when it is time, and an optional Claude Code hook nudges it when the context gets large or after a long pause. The hook is only set up if you ask for it. Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
             </li>
           </ul>
-          <p class="install">To install, download a skill and tell your AI: "Install this skill." Then start it by typing its name, for example <code>/workaround</code> (in Codex: <code>$workaround</code>).</p>
         </div>
       </li>
       <li>
