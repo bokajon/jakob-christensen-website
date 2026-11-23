@@ -1,10 +1,10 @@
 ---
-name: blindtest
+name: blindfold
 description: Blind, countable evidence of whether a prompt, skill or agent change really does better than the old version and than a baseline without it, or an audit that calibrates blind readers on known bad and good examples before a clean result over many texts is trusted. Use when the user asks for a blind or counted test of whether a change helps, or wants many texts read by calibrated blind readers. Not for wording or typo fixes, plain diffs or changes that add no new logic.
 compatibility: Needs a way to start independent agent runs in fresh contexts, and Node.js 18+ for scripts/anonymize.mjs. Judges should be a different model from the author where the tool offers one.
 ---
 
-# Blindtest
+# Blindfold
 
 Two modes. **Compare** answers "is the new version better than the old one and than no version at all". **Audit** answers "can the blind readers find what we need them to find", before a clean result over many texts is trusted.
 
@@ -32,8 +32,8 @@ Two modes. **Compare** answers "is the new version better than the old one and t
 
 ## Compare
 
-1. **Name the setup and get the user's OK first**: what is compared, the biases that remain (the author rates their own prompts, hand-picked cases, unequal effort), the fairer option (another model or humans as judges, equal effort on both sides, real cases with real critique, several runs), and the cost (runs, judges, time). Also name which texts go to which model or provider, whether a web search for public cases is allowed, a cap on runs, and the folder `blindtest/<topic>/` if it will be created. Start nothing before the OK. Write down the ordered criteria, the margin that counts as a win, and the allowed verdicts including "inconclusive".
-2. **Cases**: look in the project for an existing test folder or fixed set first, otherwise create `blindtest/<topic>/` and mark which variants are required. Take 2 to 4 cases with different kinds of flaw or different scenarios. For a new case, prefer a real public one with a published review, peer review or audit report that you can cite and find yourself, ideally published after the model's knowledge cutoff. Otherwise another model, which does not know what is tested, writes documents with several realistic flaws and lists them as the solution list.
+1. **Name the setup and get the user's OK first**: what is compared, the biases that remain (the author rates their own prompts, hand-picked cases, unequal effort), the fairer option (another model or humans as judges, equal effort on both sides, real cases with real critique, several runs), and the cost (runs, judges, time). Also name which texts go to which model or provider, whether a web search for public cases is allowed, a cap on runs, and the folder `blindfold/<topic>/` if it will be created. Start nothing before the OK. Write down the ordered criteria, the margin that counts as a win, and the allowed verdicts including "inconclusive".
+2. **Cases**: look in the project for an existing test folder or fixed set first, otherwise create `blindfold/<topic>/` and mark which variants are required. Take 2 to 4 cases with different kinds of flaw or different scenarios. For a new case, prefer a real public one with a published review, peer review or audit report that you can cite and find yourself, ideally published after the model's knowledge cutoff. Otherwise another model, which does not know what is tested, writes documents with several realistic flaws and lists them as the solution list.
 3. **Fix the truth before reading any answer** (new cases only): real reviews are the solution list where they exist. Add a blind list from another model that reads only the document. Write your own list first only if you did not write the change, and name where it differs. If you wrote it, add only the points you dispute. The list also covers expert findings that are not visible in the document (law, responsibility, domain knowledge, typical mistakes of the field), but only those that matter for the task and have a checkable source.
 4. **Runs**, each in a fresh context, at least 2 per variant, on the same model, only what is not saved. Run steps 4 to 7 on one case first (early stop). Give each variant its own run folder that holds only that variant's skill, installed as it would be used, and put no variant label in the prompt. Global or project skills and rules the tool loads on its own also reach the runs: check in each run's log which skills loaded, start the runs from a clean folder outside the project where the tool allows it, and list in the weaknesses what could not be switched off. The variants:
    - the new version and the old version, with the case as input.
