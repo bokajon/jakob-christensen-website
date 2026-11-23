@@ -5,7 +5,7 @@ description: Keep a project's decisions in DECISIONS.md, a decision log that eve
 
 # Decision log
 
-Goal: the decisions the user has made are recorded where every session reads them, so the user never has to say the same thing twice, and the current state sits next to them. What the next session must know is in two short files in the project, so the user never has to say the same thing twice and no session starts from a guess. Two files are enough; more files drift apart.
+Goal: the decisions the user has made are recorded where every session reads them, so the user never has to say the same thing twice, and the current state sits next to them. What the next session must know is in two short files in the project, so no session starts from a guess. Two files are enough; more files drift apart.
 
 - `STATE.md`: where the project stands now. Rewritten, never a log.
 - `DECISIONS.md`: what the user has decided or fixed (names, assignments, rules, choices between options). Only appended to.
