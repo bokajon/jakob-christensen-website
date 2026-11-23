@@ -145,14 +145,14 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/newrun</h3>
-                <a class="download" href="agent-skills/newrun/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+                <h3>/fresh</h3>
+                <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
               </summary>
               <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. <strong>This skill carries your work over to a fresh session at a natural break</strong>, like a large context, a long pause, a new topic or a finished task.</p>
                 <p class="skill-desc">It writes a summary of the work so far, names the recommended model and effort for the next session and offers to start it. The summary builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes one when you call it.</p>
-                <p class="skill-desc"><code>/newrun</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. The hook is only set up if you ask for it.</p>
+                <p class="skill-desc"><code>/fresh</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. The hook is only set up if you ask for it.</p>
                 <p class="skill-desc">It also works the other way round: when a session starts from a handoff file, or you say to continue after a crash or stop, it first checks the real state (git, branch, background jobs), lists what differs from the handoff, then carries on and never kills a process to get around a block.</p>
-                <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/newrun</code>.</p>
+                <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
               </details>
             </li>
             <li>
