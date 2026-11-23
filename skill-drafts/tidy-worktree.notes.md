@@ -18,9 +18,9 @@ Gelesen: `skill-drafts/push/SKILL.md`, `skill-drafts/lanes/SKILL.md`.
 - Ergebnis: Überschneidung nein bei Zweck und Auswahl, ja nur bei den Entfernungsbefehlen von lanes. Im SKILL.md steht die Abgrenzung in der Beschreibung.
 
 ## Offene Fragen an Jakob
-- Soll tidy-worktree vor dem Aufräumen auf "auf dem Remote vorhanden" prüfen (wie strays)? Aktuell reicht "im Standardbranch gelandet" lokal. Ein gelandeter, aber nie gepushter Standardbranch bleibt also lokal die einzige Kopie, der Skill löscht dann nur Branches, deren Arbeit lokal im Standardbranch steckt, das ist sicher, aber nicht remote gesichert.
+- Entschieden (Jakob 2026-11-23): keine zusätzliche Prüfung "auf dem Remote vorhanden". Gelandet heißt: im Standardbranch (`origin/<default>`, sonst lokal). Strays pusht, tidy-worktree räumt; ohne Remote ist der Standardbranch die einzige Kopie, das bleibt so.
 - Branch ohne Reflog (z. B. frischer Klon): ein ganz neuer, leerer Branch auf älterer Basis würde als gelandet erkannt und entfernt. Schaden gering (keine Arbeit darin), aber eine Session, die gerade dort startet, verliert ihren Branch.
-- Prunable: Meldung plus Nachfrage. Alternative wäre, `git worktree prune` direkt auszuführen (löscht nur Verwaltungsdaten). Ich habe die vorsichtige Variante gewählt.
+- Entschieden (Jakob 2026-11-23): Prunable nur melden, `git worktree prune` erst nach einem Ja. Steht so im Skill.
 
 ## Getestet (2026-11-23, Git 2.55.0 Windows, Wegwerf-Repo im Scratchpad)
 Die Schritte des Skills wurden als Shell-Skript nachgebaut (`.../scratchpad/tw/judge.sh`) und gegen ein Repo mit diesen Fällen gelaufen:
