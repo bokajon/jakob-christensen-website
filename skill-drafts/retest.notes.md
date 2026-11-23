@@ -7,7 +7,7 @@
 ## Generalized
 - Kept: repeat before "reproduced", load check, runtime value from the running app and a check against one known ratio, sizes and shares computed not estimated, "unused" needs a reference trace, recommendation benefit measured or "not checked".
 - Added from the reviews: warm-up, median with spread, number of runs, "difference smaller than the spread is no difference measured", report table.
-- Added by me: "at least five measured repetitions" is a starting value, not measured or taken from the private rules. Jakob decides.
+- Added by me: "at least five measured repetitions" is a starting value, not measured or taken from the private rules. Jakob confirmed it 2026-11-23.
 - Dropped: the owner's incident (a scale taken from a test fixture) as a story, and project-specific tools. The "same single tab" point is shared with live-layout-check.
 - No scripts bundled. A small timing script could be added, but the right tool depends on the language.
 
@@ -21,4 +21,4 @@ Part of the rule text overlaps with a possible claim-check rule (state only what
 Name chosen by Jakob (2026-11-23); earlier working name `measure-twice`. Name not checked against the web.
 
 ## Open questions
-- Is five repetitions a good default?
+- Decided (Jakob 2026-11-23): keep "at least five measured repetitions" as the default. The number is still an untuned starting value.
