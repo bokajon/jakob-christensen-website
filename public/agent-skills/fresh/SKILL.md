@@ -114,3 +114,7 @@ try:
 except Exception:
     pass
 ```
+
+## Credits
+
+Four rules for the handoff contents build on Matt Pocock's handoff skill ([mattpocock/skills](https://github.com/mattpocock/skills), MIT license): links instead of copies and recommended skills (steps 1.6 and 1.7), removing secrets and saving the file outside the repository (step 2).
