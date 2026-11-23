@@ -168,6 +168,12 @@ Draft at commit ea3a780, Claude desktop app, three throwaway sessions, one run, 
 - Edge case: a final report that ends with a request to look at the page ("Fertig und live ... Schau bitte kurz auf die Seite") fits neither "settled" nor an open question. The skill keeps it in group 4 under **Needs your attention**; whether that is the right group is Jakob's call.
 - Not tested: full archive run with the groups, parent with a running child under the new step 4, the German private copies headless.
 
+**Addendum 2026-11-23, private tidy may start by itself.** In the private Claude and Codex copies `disable-model-invocation: true` is removed, the description names state questions as triggers, and the first paragraph says archiving needs `/tidy` or an explicit "aufräumen" or "archivieren"; any other start, also an automatic one, shows the overview only. Backups: `D:/Temp/backup-skills-2026-11-23-b/`. Headless start test, Claude Code, Sonnet, throwaway folder with the private copy, prompt "welche Sessions warten gerade auf meine Antwort?", 2 runs. (Test)
+
+- The Skill tool loaded tidy 2 of 2 by itself (before: impossible, the file was user-invoked only). `archive_session` was called 0 of 2 times (counted from the tool-call names; the word appears only in tool searches and answer text).
+- Both runs stopped at step 0: the headless CLI has no session tools (`list_sessions`, `list_events`, `archive_session`), so the overview itself was not exercised here, only start and no-archive behaviour. One run listed agents via `ListAgents` instead, which is not what the skill asks for.
+- `check_skill.py` on the private copies reports only the private word "jakob" (expected there, the check is meant for the public files); 0 dashes. Codex copy not run headless.
+
 ## 8e. Test numbers of the blindtest skill (2026-11-23)
 
 Draft after review batch fd28d37 plus a8e5cdc, Claude Code headless, Sonnet, throwaway folder per run, skill installed in `.claude/skills/blindtest/`, 12 runs in total (2 per case). Not yet released. (Test)
