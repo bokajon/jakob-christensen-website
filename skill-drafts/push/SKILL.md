@@ -26,10 +26,10 @@ Done when every local branch has exactly one category.
 
 ## 2. Overview and release
 
-Show a numbered table `No. | Branch | Topic | Commits (count, short tip) | Status` for LOCAL ONLY, LOCAL IN DEFAULT and ON REMOTE. Below it, one line each for SPECIAL branches, uncommitted worktrees and detached HEADs. Then ask the user once whether to push the LOCAL ONLY branches and the default-branch fast-forward (if there is one), naming the branch count and commit count. This step pushes nothing.
+Show a numbered table `No. | Branch | Topic | Commits (count, short tip) | Status` for LOCAL ONLY, LOCAL IN DEFAULT and ON REMOTE. Below it, one line each for SPECIAL branches, uncommitted worktrees and detached HEADs. Then ask the user once, naming the LOCAL ONLY branches, the commit count and the default-branch fast-forward (if there is one), with three answers: "Push all", "Push only this one" (when there are several branches, the user names it) and "Stop". Use the tool's choice buttons where it has them, otherwise ask in text. This step pushes nothing.
 
 - An explicit "push everything" in the request is that answer. Skip the question and go on to step 3.
-- If the user wants to decide per branch, ask for each LOCAL ONLY entry in table order, with the commit count and tip, and offer "next", "all remaining" and "stop".
+- "Push only this one" releases that branch alone. If the user wants to decide per branch, ask for each LOCAL ONLY entry in table order, with the commit count and tip, and offer "next", "all remaining" and "stop".
 - "Stop" ends every write at once. Anything not released stays unpushed.
 
 ## 3. Branch pushes
