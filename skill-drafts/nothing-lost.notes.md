@@ -25,5 +25,5 @@ Standard library only. Every non-blank old line, trimmed and white space collaps
 Name chosen by Jakob (2026-11-23); earlier working name `backup-before-rewrite`. Name not checked against the web.
 
 ## Open questions
-- Is 0.8 a good similarity limit? It is a starting value and was not tuned.
+- Decided (Jakob 2026-11-23): keep 0.8 as the default similarity limit. It is still an untuned starting value, adjustable with `--similar`.
 - Should CHANGED lines fail the run with a flag (strict mode) for data files where any change is an error? Not built.
