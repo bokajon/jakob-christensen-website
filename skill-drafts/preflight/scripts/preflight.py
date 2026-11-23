@@ -30,7 +30,7 @@ TOOL_ONLY = [
     "Skill" + " tool", "Send" + "Message", "disable-model-" + "invocation",
     "user-" + "invocable", "$ARG" + "UMENTS", "CLAUDE" + "_",
 ]
-GERMAN_HINTS = [" und ", " der ", " die ", " das ", " nicht ", " ist ", " mit ", " f\u00fcr "]
+GERMAN_HINTS = [" " + w + " " for w in ("un" + "d", "de" + "r", "di" + "e", "da" + "s", "nich" + "t", "is" + "t", "mi" + "t", "fü" + "r")]
 DASHES = "[" + chr(0x2013) + chr(0x2014) + "]"
 HOME = r"(/Us" + r"ers/|/ho" + r"me/|~[\\/]\." + r"(claude|codex|agents|gemini))"
 

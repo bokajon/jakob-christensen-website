@@ -13,7 +13,7 @@
 - Gegenüber dem Eigenbau korrigiert: das Windows-Pfad-Muster fand nur Schrägstriche (`[\/]`), jetzt auch Backslashes (`[\/]`).
 
 ## Offene Fragen
-- `--english` meldet das Skript selbst als "teilweise Deutsch" (die Liste GERMAN_HINTS enthält deutsche Wörter). Nur ein Hinweis, stört nicht; Jakob kann es lassen oder die Liste aus Teilen bauen.
+- Entschieden (Jakob 2026-11-23): die Deutsch-Wortliste `GERMAN_HINTS` ist aus Teilen gebaut, damit `--english` preflight.py nicht mehr als "teilweise Deutsch" meldet. Geprüft mit `--english` auf dem eigenen Ordner.
 - Das Muster "long secret-like string" (40+ Zeichen) kann bei langen URLs oder Hashes Fehlalarme geben. Nicht gemessen.
 
 ## Getestet (2026-11-23, Python -I, Wegwerf-Skills im Scratchpad)
