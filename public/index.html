@@ -80,10 +80,11 @@
     a.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .card.is-soon { cursor: default; }
     .card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.25rem 1rem; }
-    .card-head .coming { margin-top: 0.2rem; }
+    .card-head .link, .card-head .coming { margin-top: 0.2rem; }
     .card h2 { margin: 0; font-size: 1.15rem; }
     .nowrap { white-space: nowrap; }
     .desc { margin: 0; font-size: 0.95rem; color: var(--muted); flex: 1; }
+    .link { font-size: 0.9rem; color: var(--accent); font-weight: 400; overflow-wrap: anywhere; text-align: right; }
     .coming { font-size: 0.9rem; font-weight: 400; color: var(--muted); text-align: right; }
     .skills { margin: 0.25rem 0 0; padding-left: 0; list-style: none; }
     .skills li + li { margin-top: 0.75rem; }
@@ -176,6 +177,7 @@
         <a class="card" href="https://studentbenefits.page">
           <div class="card-head">
             <h2>Student Handbook</h2>
+            <span class="link">studentbenefits.page</span>
           </div>
           <p class="desc">A guide for animation students at the Salzburg University of Applied Sciences (FH Salzburg) in Austria. It explains the equipment and software the school gives students access to. It also lists student events, film festivals, job offers and discounts.</p>
         </a>
@@ -184,6 +186,7 @@
         <a class="card" href="students-on-the-loose/">
           <div class="card-head">
             <h2>Students on the Loose <span class="nowrap">(incl. Inca 3D &amp; Pict 2D)</span></h2>
+            <span class="link">jakobchristensen.com/students-on-the-loose</span>
           </div>
           <p class="desc">Small pixel students walk across the page and react to objects you place there. You create and place the objects with two built-in browser programs: Inca for 3D and Pict for 2D drawing.</p>
         </a>
@@ -192,6 +195,7 @@
         <a class="card" href="https://choirtool.com">
           <div class="card-head">
             <h2>Choir · Critique Orchestrator</h2>
+            <span class="link">choirtool.com</span>
           </div>
           <p class="desc">A tool for getting feedback on a concept from many sides, using an AI like Claude or ChatGPT. It writes the prompts, and each side is played by a simulated persona. Many parts work together behind the scenes, so the feedback you get is varied and detailed rather than one generic answer.</p>
         </a>
@@ -200,6 +204,7 @@
         <a class="card" href="niagara-workshop/">
           <div class="card-head">
             <h2>Niagara Card Lab</h2>
+            <span class="link">jakobchristensen.com/niagara-workshop</span>
           </div>
           <p class="desc">A teaching tool made for Realtime Art &amp; Visual Effects students at the Salzburg University of Applied Sciences (FH Salzburg), for a workshop on visual effects in Unreal Engine. It shows each Niagara module as a card, so the modules are easier to understand. A particle emitter in the browser lets you try them out, and an export script brings the setup into Unreal.</p>
         </a>
