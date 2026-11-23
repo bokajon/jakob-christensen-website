@@ -25,3 +25,9 @@ Checklist 2.3: the desktop app drops user-invoked skills, and tidy works only th
 
 ## Tested
 - check_skill.py: exit 0. Not tested live (it would archive Jakob's real sessions).
+
+## Overview (2026-11-23, merged from the idea "Session-Übersicht")
+- Before archiving, tidy now shows every session in five groups (waiting for you, working or waiting for a result, unmerged or uncommitted work, stopped and should continue, settled), first match wins. The old "only asks what would be archived" path (step 4/5) is the same mode: overview only, group 5 headed "Would archive". A question about one group shows that group in full.
+- Steps 4 to 7 are new (sort, show, archive, report); steps 0 to 3 unchanged. The goal text, the dry-run wording in step 1 and the description changed.
+- Private copies (Claude and Codex): same new part in German, still user-invoked. `/tidy Übersicht` only shows the overview. Open for Jakob: because they are user-invoked, a plain question like "welche Sessions warten auf Antwort" does not start them.
+- Tested: see `tools/SKILL-CHECKLIST.md` 8d (addendum).
