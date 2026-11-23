@@ -1,4 +1,4 @@
-# Notes: parallel-worktrees
+# Notes: lanes
 
 ## Read
 - D:\Projekt-Vorlage: ANLEITUNG.md, CLAUDE.md, AGENTS.md, .claude\settings.json, scripts\integrate.ps1 (182 lines), scripts\guard-main-checkout.mjs.

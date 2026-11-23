@@ -11,7 +11,7 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 | strays | Findet lokale Arbeit, die noch nicht auf dem Remote ist, zeigt eine Übersicht und pusht erst nach einem Ja (nur per SHA, nie force). | Einmal fragen (Entwurf), pro Branch fragen oder gar nicht fragen? Startet auch ohne Slash-Befehl. |
 | tidy | Archiviert erledigte Sessions in der Claude-Desktop-App, prüft dabei Behauptungen wie "gemergt" in git. | Nur Desktop-App. Startet ohne Slash-Befehl, weil die App solche Skills sonst versteckt. Nicht live getestet. |
 | blindtest | Blinder, zählbarer Vergleich: neue Version gegen alte und gegen ohne. Zweiter Modus "audit" kalibriert blinde Leser an bekannten Fehlern. | Bestehgrenze 80 Prozent gesetzt, nicht gemessen. Kein echter Blindtest gelaufen. |
-| parallel-worktrees | Mehrere Sessions in einem Repo: eigener Worktree, sauberer Haupt-Checkout, `integrate.ps1` (Ziel-Branch und Prüfbefehl einstellbar), optionaler Guard-Hook. | Nur Windows PowerShell, Mac/Linux später? Smoke-Test grün (2 Branches OK, Konflikt FAILED mit Dateiname). |
+| lanes | Mehrere Sessions in einem Repo: eigener Worktree, sauberer Haupt-Checkout, `integrate.ps1` (Ziel-Branch und Prüfbefehl einstellbar), optionaler Guard-Hook. | Nur Windows PowerShell, Mac/Linux später? Smoke-Test grün (2 Branches OK, Konflikt FAILED mit Dateiname). |
 
 ## B. Ideen ohne Entwurf
 
@@ -29,7 +29,7 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 ### Dateien und Wissen
 8. **history-first**: Vor dem Neubau oder Umschreiben von etwas Bestehendem die Commits des Originals lesen und jede Korrektur des Nutzers übernehmen. Ein Brief wie "wie bei den Klassikern" hebt keine frühere Entscheidung auf. Woher: Regel "Rebuilding a UI element", so auch für die vier Entwürfe gemacht. Meinung: klein, wirksam, kaum verbreitet.
 9. **backup-before-rewrite**: Vor einem großen Umbau von Text- oder Datendateien alles in einen Ordner mit Datum sichern, Text wörtlich verschieben, danach per Skript Zeile für Zeile prüfen, dass nichts fehlt. Meinung: solide, aber viele halten git für genug.
-10. **project-docs**: Getrennte Projekt-Notizen (Stand, offene Zusagen, verschobene Ideen, Karte, Log) und am Sessionende stimmig halten. Meinung: stark bei langen Projekten, könnte auch Teil von parallel-worktrees werden.
+10. **project-docs**: Getrennte Projekt-Notizen (Stand, offene Zusagen, verschobene Ideen, Karte, Log) und am Sessionende stimmig halten. Meinung: stark bei langen Projekten, könnte auch Teil von lanes werden.
 11. **pinned-facts**: Festlegungen des Nutzers (Namen, Zuordnungen, Entscheidungen) sofort in eine Datei schreiben, die jede Session zuerst liest. Bei Widerspruch gilt die Datei, der Widerspruch wird gemeldet. Woher: deine FAKTEN.md. Meinung: löst "das musste ich schon wieder sagen", überschneidet sich teils mit dem eingebauten Gedächtnis der Tools.
 
 ### Skills und Regeln
