@@ -18,7 +18,7 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 ### Agenten steuern
 1. **delegate**: Wählt pro Teilaufgabe das billigste Modell, das sie gut kann (als Rolle billig, mittel, stark, weil Modellnamen veralten), nennt Modell und Aufwand, fragt vor mehr als 2 Agenten. Parallele Agenten bekommen einen gemeinsamen Brief plus eigene Dateiliste, das Gesamtergebnis prüft ein Skript. Ein "fehlgeschlagen" wird gegen die echten Dateien geprüft. Woher: "Subagents and sessions", 4 Korrekturen. Meinung: größter Geldnutzen für andere. Geht im Vorschlag budget auf (siehe "Zusammenführen").
 2. **decision-box**: Stellt eine Entscheidung so, dass sie ohne Kontext verständlich ist: Empfehlung und Befund zuerst, jede Option mit dem vollen Text und was sie ändert, eine Frage pro Entscheidung. Woher: "Talking to Jakob", 6 Korrekturen, die meisten von allen. Meinung: echter Nutzen, aber schwer zu testen, und die Tools geben schon einiges vor.
-3. **resume-check**: Nach Absturz oder Stopp erst den echten Stand prüfen (git status, Branch, letztes Log, laufende Hintergrundjobs), dann den unterbrochenen Schritt fortsetzen. Nie Prozesse beenden oder gesperrte Ordner löschen, sondern melden. Woher: Regel "weiter after a crash". Meinung: klein, oft gebraucht, leicht zu testen. **Umgesetzt 2026-11-23 als zweiter Teil von fresh** (siehe "Zusammenführen"), keine eigene Idee mehr.
+3. **resume-check**: Nach Absturz oder Stopp erst den echten Stand prüfen (git status, Branch, letztes Log, laufende Hintergrundjobs), dann den unterbrochenen Schritt fortsetzen. Nie Prozesse beenden oder gesperrte Ordner löschen, sondern melden. Woher: Regel "weiter after a crash". Meinung: klein, oft gebraucht, leicht zu testen. **Umgesetzt 2026-11-23 als zweiter Teil von newrun** (siehe "Zusammenführen"), keine eigene Idee mehr.
 
 ### Ergebnisse prüfen
 4. **claim-check**: Vor jedem Bericht nur Geprüftes behaupten, sonst "nicht geprüft". Eine Ursache gilt erst, wenn sie gezeigt ist. Größen, Anteile und "unbenutzt" erst messen, auch den Nutzen einer Empfehlung. Woher: "Honesty". Meinung: stark und allgemein, meine zweite Wahl. Heute selbst verletzt (die ungezählte Behauptung zu delegate).
@@ -49,7 +49,7 @@ Quelle: 6.540 deiner Prompts aus allen Claude- und Codex-Verläufen (`~/.claude/
 - **tidy + Session-Übersicht**: tidy zeigt zuerst, welche Sessions auf dich warten, arbeiten, ungemergte Arbeit haben oder fertig sind, dann archiviert es. Woher: 6 Mal "welche Sessions warten auf Antworten / haben noch nicht committet / sind noch offen / sollten weitermachen". Nachteil: ändert den fertigen Entwurf. **Umgesetzt 2026-11-23** in `skill-drafts/tidy/SKILL.md` (Gruppen und Übersicht, Nur-Übersicht-Modus), Jakob: "der fertige entwurf ändert sich ist kein nachteil". Zahlen in `tools/SKILL-CHECKLIST.md` 8d.
 - **no-loss** = history-first (8) + backup-before-rewrite (9) + Verlustprüfung. Vorher Commits lesen und sichern, nachher Zeile für Zeile prüfen, bei "fehlt" `git log -G`. Woher: 4 Mal "wurde etwas Wichtiges gelöscht?" am 9.11. Meinung: drei kleine Ideen werden ein brauchbarer Skill.
 - **ledger** = pinned-facts (11) + project-docs (10). Woher: "wie halte ich den Befund fest, damit alle Chats ihn kennen?" (18.11.), "gibt es für Ideen ein eigenes Dokument?" (1.11.). Nachteil: überschneidet sich mit dem eingebauten Gedächtnis.
-- **resume-check (3) als zweiter Teil von fresh**: fresh schreibt die Übergabe, resume-check liest sie danach. Nachteil: ändert die veröffentlichte fresh. **Umgesetzt 2026-11-23** als Abschnitt "Resume" in `public/agent-skills/fresh/SKILL.md`, Zahlen in `tools/SKILL-CHECKLIST.md` 8g. Online erst nach Jakobs Ok und Deploy.
+- **resume-check (3) als zweiter Teil von newrun**: newrun schreibt die Übergabe, resume-check liest sie danach. Nachteil: ändert die veröffentlichte newrun. **Umgesetzt 2026-11-23** als Abschnitt "Resume" in `public/agent-skills/newrun/SKILL.md`, Zahlen in `tools/SKILL-CHECKLIST.md` 8g. Online erst nach Jakobs Ok und Deploy.
 - **ship-skill** = `tools/SKILL-CHECKLIST.md` + skill-check (12) + Herkunftsprüfung + Netz-Abgleich + Kartentext-Regeln. Am 22. und 23.11. 6 Mal von Hand durchlaufen (Abschnitte 8a-8f). Meinung: für dich sehr nützlich, öffentlich eher nicht (überschneidet sich mit NVIDIA SkillEvaluator und skill-creator).
 
 ## C. Geprüft und verworfen
@@ -58,7 +58,7 @@ Quelle: 6.540 deiner Prompts aus allen Claude- und Codex-Verläufen (`~/.claude/
 - **Civ-VII-Mod-Regeln**: nicht von dir.
 - **Prompt-Dateien**: Projektinhalt, keine Skills.
 - **Credits- und Inspirationslisten, Art-Galerie, Choir-Kritik** (gesichtet 2026-11-23): Projektinhalt oder dein eigenes Produkt.
-- **session-close**: überschneidet sich mit fresh.
+- **session-close**: überschneidet sich mit newrun.
 - **Dev-Server unter Windows stoppen**: zu schmal für einen eigenen Skill.
 - **no-dashes-Hook, usage-report.py, statusline.py, die Agenten builder, checker und searcher**: keine Skills.
 - **Matt-Pocock-Skills und OpenAI-Systemskills**: nie (siehe FAKTEN.md).
@@ -74,7 +74,7 @@ Grenzen: "gelesen" heißt bei den Agenten, dass ein kleines Modell die Seite zus
 | Skill oder Idee | Name frei? | Gibt es schon? | Was bei uns anders ist | Nachgeprüft |
 |---|---|---|---|---|
 | workaround (online) | ja | ähnlich: getting-unstuck | Pflichtschritt "ist der Blocker eine Schutzvorrichtung?", Wahl der Route, Bericht | nein |
-| fresh (online) | ja (nah: fresh-start) | ähnlich: Matts handoff, fresh-start (baut auf handoff auf) | Auslöser, Modell und Aufwand, grüne Befehle, Abnahme, Hook. Die vier Inhaltsregeln von handoff (Datei im Temp-Ordner, Links statt Kopien, Geheimes raus, empfohlene Skills) stehen auch in fresh, schon in der ersten Fassung vom 2026-11-22, in eigenem Wortlaut | ja, handoff gelesen |
+| newrun (online) | ja (nah: fresh-start) | ähnlich: Matts handoff, fresh-start (baut auf handoff auf) | Auslöser, Modell und Aufwand, grüne Befehle, Abnahme, Hook. Die vier Inhaltsregeln von handoff (Datei im Temp-Ordner, Links statt Kopien, Geheimes raus, empfohlene Skills) stehen auch in newrun, schon in der ersten Fassung vom 2026-11-22, in eigenem Wortlaut | ja, handoff gelesen |
 | blindfold (online, Entwurf heißt noch blindtest) | blindtest ja. blindfold: als Skillname nicht gefunden, nah ist agent-blindfold (anderer Job: Anmeldung, ohne dass der Agent das Passwort sieht), nur Suchergebnis | ähnlich: blinde A/B-Vergleiche (skill-creator, skill-auditor, blinded-eval), nur Suchergebnis | Zählkriterien gegen feste Lösungsliste, Lauf ohne Skill, Audit-Modus | nein |
 | lanes (online) | nein: tavinathanson/lanes, ein Claude-Code-Skill für parallele Worktrees; auch parallel-worktrees ist vergeben (codervisor) | ähnlich | Haupt-Checkout nur Integrationsziel, Integration nacheinander mit Sperre, voller Check, nur fast-forward | ja, Repo gelesen |
 | strays (Entwurf) | ja | nichts Gleiches | Übersicht ungepushter Arbeit, Push per SHA, nie force | nein |

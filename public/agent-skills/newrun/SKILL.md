@@ -1,5 +1,5 @@
 ---
-name: fresh
+name: newrun
 description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, and offers a fresh one. Also resumes work from a handoff file or after a crash or stop: it checks the real state first, names every difference from the handoff, then continues. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows; and, to resume, when a session starts from a handoff file or the user says to continue after a crash or stop. Not for sessions with nothing to carry over, and never before the current request is done.
 ---
 
@@ -29,7 +29,7 @@ Finish the user's current request first, then run this skill when any of these h
    6. **Links, not copies**: name where specs, plans, issues, commits and files live instead of copying them. Never paste file contents, code or diffs: the next session reads the files and runs `git diff` itself.
    7. **Recommended skills** for the next session, only ones you saw in this tool's skill list; "none" if the next session runs in another tool.
 2. **Clean and save, without asking.** Re-read the draft and remove keys, tokens, passwords, cookies, secret URLs and any personal data the work does not need. Then save it in the folder the user's instruction files (such as `CLAUDE.md` or `AGENTS.md`) name for handoffs, else in the session's scratchpad or the system temp folder, outside the repository. Name it after the task plus date and time; if that name exists, add a number, never overwrite. Then list the saved file with its size from a shell; the write tool's success message alone does not count as saved. If writing fails, or the next session cannot reach that path (another machine, a cloud agent), put the cleaned text in your reply instead.
-3. **Close with one message**: which case above applied (one line); a recap of two or three sentences saying what is done, what is open and what was not checked; the recommended model and effort, both by name, as in the file; the file's full path, as a link where the tool renders links; and a first line for the new session, ready to paste, such as "Read <path> and continue." If the case was size or images and the user is still on the same task, add that compacting (`/compact` in Claude Code) is the alternative; after a pause or for a new task, recommend the fresh session. End the message with the offer: if your tool can start a session, one yes/no question that opens with this skill's name (`/fresh`), so the user sees which skill is asking, and names both the model and the effort, using its question or button UI if it has one, and start it only on a yes; otherwise say how to open a new session with that model and effort.
+3. **Close with one message**: which case above applied (one line); a recap of two or three sentences saying what is done, what is open and what was not checked; the recommended model and effort, both by name, as in the file; the file's full path, as a link where the tool renders links; and a first line for the new session, ready to paste, such as "Read <path> and continue." If the case was size or images and the user is still on the same task, add that compacting (`/compact` in Claude Code) is the alternative; after a pause or for a new task, recommend the fresh session. End the message with the offer: if your tool can start a session, one yes/no question that opens with this skill's name (`/newrun`), so the user sees which skill is asking, and names both the model and the effort, using its question or button UI if it has one, and start it only on a yes; otherwise say how to open a new session with that model and effort.
 
 ## Resume (a handoff file, or "continue" after a crash or stop)
 
@@ -45,7 +45,7 @@ Run this when a session starts from a handoff file, or when the user says to con
 Install the hook only when the user explicitly asks for the hook. A yes to a fresh session is not a yes to the hook: it changes the user-level settings for every project.
 
 1. If `context-checkpoint.py` is not in this skill's folder, create it there from the block at the end of this file, exactly as given.
-2. Copy the user-level `settings.json` to `settings.json.bak-fresh` next to it (add a number if that exists) and keep that backup, then merge this into the settings, keeping every existing setting and hook and not adding the entry twice:
+2. Copy the user-level `settings.json` to `settings.json.bak-newrun` next to it (add a number if that exists) and keep that backup, then merge this into the settings, keeping every existing setting and hook and not adding the entry twice:
 
    ```json
    {"hooks": {"UserPromptSubmit": [{"hooks": [{"type": "command", "command": "python -I \"<absolute path to this folder>/context-checkpoint.py\""}]}]}}
@@ -59,7 +59,7 @@ The limits are constants at the top of the script.
 ### context-checkpoint.py
 
 ```python
-"""Claude Code only: UserPromptSubmit hook that nudges the agent to run /fresh.
+"""Claude Code only: UserPromptSubmit hook that nudges the agent to run /newrun.
 
 Reads the last usage record of the session transcript. When the context is large, or the
 prompt cache has probably expired on a sizeable context, it adds one short note for the agent.
@@ -110,11 +110,11 @@ def main():
     if ctx >= BIG:
         note = (f"Context checkpoint: the context is about {ctx // 1000}k tokens and is re-read on every turn. "
                 "At the end of this turn, tell the user in one line why a fresh session pays off, "
-                "then follow the /fresh skill.")
+                "then follow the /newrun skill.")
     elif gap >= STALE_MIN and ctx >= STALE_CTX:
         note = (f"Context checkpoint: the user was away for over {int(gap)} minutes, so the prompt cache has probably "
                 f"expired and the context (about {ctx // 1000}k tokens) is now rewritten in full. "
-                "Say so in one line and follow the /fresh skill if the topic changes or the task is done.")
+                "Say so in one line and follow the /newrun skill if the topic changes or the task is done.")
     if note:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": note}}))
 
