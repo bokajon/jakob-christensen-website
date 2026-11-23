@@ -148,6 +148,17 @@ Draft after review batch fd28d37 plus a8e5cdc, Claude Code headless, Sonnet, thr
 - Limits: calibration sets were LLM-generated and easy, so 10 of 10 says little; one case per Compare run; Codex not tested; whether any run wrote outside its folder not checked.
 - Script `anonymize.mjs` retested after the fixes (leak check, H2 title, `..` group, no partial write on a read error). Raw data and analysis: `D:\Temp\agent-skills-tests\bt-round1-A`, `bt-round1-B`, `analyze_bt.py`, `blindtest-triage-2.md`. Not durable.
 
+## 8f. Test numbers of the strays skill (2026-11-23)
+
+Public name of the former push skill. Final SKILL.md 8,165 characters, live on main (b6fff6f), released file identical to `a054216:skill-drafts/strays/SKILL.md`. Notes with rounds 1-3: `git show claude/strays-test-c6dd86:skill-drafts/strays.notes.md`.
+
+- Claude Code headless (Sonnet, 2 runs per case), final text round 3: `/strays push everything` 2 of 2 pushed exactly the expected set (localonly, feature-x, wt-branch by SHA refspec, trunk fast-forward), 0 forbidden pushes, 0 without guard flags, `diverged` and the dirty file untouched; trunk label "ahead, fast-forward" correct in 4 of 4 overviews (2 of 4 before round 3). (Test)
+- Cases the change did not touch, last run round 2: `/strays` 2 of 2 table plus question, 0 pushes; clean repo 2 of 2 "Nothing to push."; natural prompt "Push my local work." 2 of 2 started the skill, 0 pushes; edge fixture (branch deleted on the remote, merged `backup/old`, diverged trunk) 2 of 2 table, 2 of 2 pushed exactly `gone` and `localonly`. (Test)
+- Baseline without the skill: 2 of 2 pushed `trunk` only, unasked, with a bare `git push` (no SHA refspec, no guard flags). (Test)
+- Codex 0.169.1, `-s workspace-write`: 12 of 12 stopped safely at the read-only `.git` (`FETCH_HEAD` permission denied), 0 pushes, so the content was not exercised there. The "Tested in" wording must not claim Codex.
+- Not tested, no fixture: differing push URL, repository without a remote, failing `ls-remote`, no local default branch. The button answers "Push only this one" and "Stop" are not testable headless.
+- Raw data: `D:\Tempgent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
