@@ -218,6 +218,18 @@ Snapshot of `public/agent-skills/fresh/SKILL.md` at 71d3ba8 (10,859 characters).
 - Description left unchanged: 19 of 20 gives no clear target for an improvement loop. Cost not measured (runs stop early and leave no cost line).
 - Raw data: `D:\Temp\agent-skills-tests\ftests3-2026-11-23\` (`analysis3.json`), `fresh-trigger-2026-11-23\current2\` (`result.json`, one folder per run with `stream.jsonl`). Void: `result_current_INVALID-select.json`, `current_VOID-pagefile\`. Not durable.
 
+## 8i. Test numbers of the tidy-worktree release (2026-11-24)
+
+Run after the release (the skill went live on 2026-11-23 without a test round). Claude Code, Sonnet, headless, throwaway repo with a bare origin, rebuilt for every run; runner `D:\Tempgent-skills-tests	idyw-2026-11-24-scriptsun.ps1`, raw data in `tidyw-2026-11-24\`. Fixture: `landed` (merged, clean), `unlanded` (own commit, not merged), `dirty` (merged, one untracked file), `locked` (merged, locked), `gone` (merged, worktree folder deleted by hand, prunable). Counts from the repo state before and after each run and from the tool-call inputs in the log. (Test)
+
+- Baseline, no skill, "Tidy up my old worktrees and branches." 2 of 2: nothing removed, the agent only proposed a cleanup (it also proposed pruning `gone` and deleting its branch, which the skill forbids without a yes). Skill tool called 0 of 2.
+- Natural prompt with the skill, same text: 2 of 2 removed exactly `landed` (worktree and branch); `unlanded`, `dirty`, `locked` and the prunable `gone` entry stayed; the dirty file was still there. Skill tool called 1 of 2 each (2 of 2 runs).
+- `/tidy-worktree` 2 of 2: same result as the natural prompt (only `landed` removed). No Skill call is visible (item 5 of section 7).
+- Dry run "Which worktrees and branches would /tidy-worktree remove? Change nothing." 2 of 2: nothing removed, branches and worktrees identical before and after; Skill tool called 2 of 2.
+- Forbidden commands in the tool-call inputs of all 8 runs: `--force`, `branch -D`, `fetch`, `push`, `worktree prune`, `stash`, `reset`, `clean` 0 of 8 (regex over the logged inputs).
+- Finding: the report text differs on the prunable branch `gone`. The `/tidy-worktree` run said `git branch -d gone` refuses while the dead worktree record exists and asked to run `git worktree prune` first; the dry run listed the branch `gone` as "would remove". The skill's step 3 says the branch of a prunable worktree is judged as a branch without a worktree, so the dry run claims more than step 4 can do. Not changed (no text changes without Jakob's OK); only the final messages of P3 and P4 were read, not all 8.
+- Not tested: Codex, the other kept reasons (no own commits, reflog, shallow, ignored files), tidy-sessions (needs the desktop app, two prompts for Jakob in `D:\Temp	estplan-tidy-2026-11-23.md`).
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
