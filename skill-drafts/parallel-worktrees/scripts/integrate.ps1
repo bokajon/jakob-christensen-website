@@ -145,13 +145,14 @@ if ($Detach) {
   exit 0
 }
 
-# Runs a PowerShell command string and returns its exit code (non-zero when the last native call failed).
+# Runs a PowerShell command string and returns its exit code as an int (non-zero when the last native call failed).
+# The command's output goes to the host so it never becomes part of the return value.
 function Run-Command($command) {
   $global:LASTEXITCODE = 0
-  Invoke-Expression $command
-  $code = $LASTEXITCODE
+  Invoke-Expression $command | Out-Host
+  $code = [int]$LASTEXITCODE
   if ($code -eq 0 -and -not $?) { $code = 1 }
-  return $code
+  return [int]$code
 }
 
 # Every path the main checkout has changed, both sides of a rename included.
@@ -244,14 +245,14 @@ try {
     $install = $InstallCommand
     if (-not $install -and (Test-Path (Join-Path $tmp 'package-lock.json'))) { $install = 'npm ci --silent --no-audit --no-fund' }
     if ($install -and $install -ne 'none') {
-      if ((Run-Command $install) -ne 0) { Pop-Location; Fail "install failed: $install" }
+      if ([int](Run-Command $install) -ne 0) { Pop-Location; Fail "install failed: $install" }
     }
-    if ((Run-Command $CheckCommand) -ne 0) {
+    if ([int](Run-Command $CheckCommand) -ne 0) {
       $settled = $false
       if ($RetryCheckCommand) {
         # A flaky red (for example test workers dying of memory while other sessions run checks) settles on a second try.
         Write-Host "$CheckCommand failed, running the retry command."
-        $settled = (Run-Command $RetryCheckCommand) -eq 0
+        $settled = [int](Run-Command $RetryCheckCommand) -eq 0
       }
       if (-not $settled) { Pop-Location; Fail "$CheckCommand is red. $Target is unchanged, see the log above." }
     }
@@ -284,7 +285,7 @@ try {
       $mainInstall = $MainInstallCommand
       if (-not $mainInstall) { $mainInstall = 'npm install --no-save --prefer-offline --no-audit --no-fund' }
       Push-Location $main
-      $installed = (Run-Command $mainInstall) -eq 0
+      $installed = [int](Run-Command $mainInstall) -eq 0
       Pop-Location
       if ($installed) {
         foreach ($config in (Get-ChildItem -Path $main -Filter 'vite.config.*' -File -ErrorAction SilentlyContinue)) { $config.LastWriteTime = Get-Date }

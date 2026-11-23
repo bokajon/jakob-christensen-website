@@ -1,45 +1,107 @@
 // Anonymizes answers for blind judges: random ids, optional framing removed, key written to a separate file.
 // Usage: node anonymize.mjs <runs-folder> <blind-folder> <key-file> [options]
-//   --strip-fence        remove one code fence that wraps the whole answer
-//   --strip-title        remove a first line that is a markdown title
+//   --strip-fence        remove a code fence around the whole answer (only when first and last line are fences)
+//   --strip-title        remove a first line that is a markdown title (done after the fence)
 //   --strip-line <regex> remove every line matching the regex (repeatable), for tool or prompt framing
-//   --ext <.ext>         file extension to read (default .md)
+//   --ext <.ext>         file extension to read, with the dot (default .md)
 // File names: <group>_<variant>_<run>.<ext>. The group is everything before the last two underscore
 // parts (for example case1_new_2.md: group case1, variant new, run 2). One subfolder per group is
 // written, with Answer_<ID>.<ext> files under random letters. The key file maps group/ID to the
-// original file name and word count. Keep the key outside the blind folder and out of the judges' reach.
-// After writing, the script warns when an answer still contains a variant name.
+// original file name and word count.
+// Safety: the blind folder must be empty or missing, the key file must not exist yet and must lie
+// outside the blind folder. All input errors are collected and reported before anything is written
+// (exit 1). Afterwards the script prints what stripping did and warns when an answer still contains
+// a variant name as a whole word.
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 
+const USAGE =
+  "Usage: node anonymize.mjs <runs-folder> <blind-folder> <key-file> [--strip-fence] [--strip-title] [--strip-line <regex>] [--ext .md]";
 const args = process.argv.slice(2);
 const positional = [];
+const errors = [];
 const opts = { stripFence: false, stripTitle: false, stripLines: [], ext: ".md" };
 for (let i = 0; i < args.length; i++) {
   const a = args[i];
   if (a === "--strip-fence") opts.stripFence = true;
   else if (a === "--strip-title") opts.stripTitle = true;
-  else if (a === "--strip-line") opts.stripLines.push(new RegExp(args[++i]));
-  else if (a === "--ext") opts.ext = args[++i];
+  else if (a === "--strip-line") {
+    const src = args[++i];
+    if (src === undefined) errors.push("--strip-line needs a regex.");
+    else {
+      try {
+        opts.stripLines.push(new RegExp(src));
+      } catch (e) {
+        errors.push(`Bad regex for --strip-line: ${src} (${e.message})`);
+      }
+    }
+  } else if (a === "--ext") {
+    const e = args[++i];
+    if (e === undefined || !e.startsWith(".") || e.length < 2) errors.push(`--ext needs a value with a dot, for example .md (got ${e}).`);
+    else opts.ext = e;
+  } else if (a.startsWith("--")) errors.push(`Unknown option ${a}.`);
   else positional.push(a);
 }
 const [src, dst, keyFile] = positional;
-if (!keyFile) {
-  console.log("Usage: node anonymize.mjs <runs-folder> <blind-folder> <key-file> [--strip-fence] [--strip-title] [--strip-line <regex>] [--ext .md]");
-  process.exit(1);
-}
-const rel = path.relative(path.resolve(dst), path.resolve(keyFile));
-if (!rel.startsWith("..") && !path.isAbsolute(rel)) {
-  console.error("The key file must not be inside the blind folder.");
+if (!keyFile || positional.length > 3) {
+  console.log(USAGE);
   process.exit(1);
 }
 
+const rel = path.relative(path.resolve(dst), path.resolve(keyFile));
+if (!rel.startsWith("..") && !path.isAbsolute(rel)) errors.push("The key file must not be inside the blind folder.");
+if (fs.existsSync(keyFile)) errors.push(`The key file ${keyFile} already exists. Choose a new name, it is never overwritten.`);
+if (fs.existsSync(dst)) {
+  if (!fs.statSync(dst).isDirectory()) errors.push(`${dst} exists and is not a folder.`);
+  else if (fs.readdirSync(dst).length > 0) errors.push(`The blind folder ${dst} is not empty. Use a new or empty folder.`);
+}
+
+const groups = {};
+const variants = new Set();
+let files = [];
+if (!fs.existsSync(src) || !fs.statSync(src).isDirectory()) errors.push(`Runs folder ${src} not found.`);
+else files = fs.readdirSync(src).filter((n) => n.endsWith(opts.ext)).sort();
+for (const f of files) {
+  const parts = f.slice(0, -opts.ext.length).split("_");
+  if (parts.length < 3 || parts.some((p) => p === "")) {
+    errors.push(`Misnamed file ${f}: name must be <group>_<variant>_<run>${opts.ext}`);
+    continue;
+  }
+  variants.add(parts[parts.length - 2]);
+  const g = parts.slice(0, -2).join("_");
+  (groups[g] = groups[g] || []).push(f);
+}
+if (files.length > 0 && Object.keys(groups).length === 0 && errors.length === 0) errors.push("No matching files found.");
+if (files.length === 0 && errors.length === 0) errors.push(`No ${opts.ext} files found in ${src}.`);
+for (const [g, list] of Object.entries(groups)) {
+  if (list.length > 26) errors.push(`Group ${g} has ${list.length} answers, the limit is 26 (one letter each).`);
+}
+if (errors.length) {
+  console.error("Nothing written. Fix these first:\n- " + errors.join("\n- "));
+  process.exit(1);
+}
+
+fs.mkdirSync(path.dirname(path.resolve(keyFile)), { recursive: true });
+const stats = { fence: 0, title: 0, lines: 0 };
 function strip(text) {
-  let t = text.replace(/\r\n/g, "\n");
-  if (opts.stripTitle) t = t.replace(/^\s*# [^\n]*\n/, "");
-  if (opts.stripFence) t = t.replace(/^\s*`{3,}[^\n]*\n/, "").replace(/\n`{3,}\s*$/, "");
-  for (const re of opts.stripLines) t = t.split("\n").filter((l) => !re.test(l)).join("\n");
+  let t = text.replace(/\r\n/g, "\n").trim();
+  if (opts.stripFence) {
+    const ls = t.split("\n");
+    if (ls.length >= 2 && /^`{3,}/.test(ls[0]) && /^`{3,}\s*$/.test(ls[ls.length - 1])) {
+      t = ls.slice(1, -1).join("\n").trim();
+      stats.fence++;
+    }
+  }
+  if (opts.stripTitle && /^# [^\n]*(\n|$)/.test(t)) {
+    t = t.replace(/^# [^\n]*(\n|$)/, "").trim();
+    stats.title++;
+  }
+  if (opts.stripLines.length) {
+    const kept = t.split("\n").filter((l) => !opts.stripLines.some((re) => re.test(l)));
+    stats.lines += t.split("\n").length - kept.length;
+    t = kept.join("\n");
+  }
   return t.trim();
 }
 
@@ -51,33 +113,12 @@ function shuffle(list) {
   return list;
 }
 
-const groups = {};
-const variants = new Set();
-for (const f of fs.readdirSync(src).filter((n) => n.endsWith(opts.ext)).sort()) {
-  const parts = f.slice(0, -opts.ext.length).split("_");
-  if (parts.length < 3) {
-    console.error(`Skipped ${f}: name must be <group>_<variant>_<run>${opts.ext}`);
-    continue;
-  }
-  variants.add(parts[parts.length - 2]);
-  const g = parts.slice(0, -2).join("_");
-  (groups[g] = groups[g] || []).push(f);
-}
-if (Object.keys(groups).length === 0) {
-  console.error("No matching files found.");
-  process.exit(1);
-}
-
 const key = {};
 const written = [];
-for (const [g, files] of Object.entries(groups)) {
-  if (files.length > 26) {
-    console.error(`Group ${g} has more than 26 answers.`);
-    process.exit(1);
-  }
-  const ids = shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")).slice(0, files.length);
+for (const [g, list] of Object.entries(groups)) {
+  const ids = shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")).slice(0, list.length);
   fs.mkdirSync(path.join(dst, g), { recursive: true });
-  files.forEach((f, i) => {
+  list.forEach((f, i) => {
     const text = strip(fs.readFileSync(path.join(src, f), "utf8"));
     const out = path.join(dst, g, `Answer_${ids[i]}${opts.ext}`);
     fs.writeFileSync(out, text);
@@ -85,14 +126,15 @@ for (const [g, files] of Object.entries(groups)) {
     key[`${g}/${ids[i]}`] = `${f.slice(0, -opts.ext.length)} (${text.split(/\s+/).filter(Boolean).length} words)`;
   });
 }
-fs.writeFileSync(keyFile, JSON.stringify(key, null, 1));
+fs.writeFileSync(keyFile, JSON.stringify(key, null, 1), { flag: "wx" });
 
 console.log(Object.entries(groups).map(([g, f]) => `${g}: ${f.length}`).join("\n"));
+console.log(`Stripping: ${stats.fence} fence(s), ${stats.title} title(s), ${stats.lines} line(s) removed.`);
 const leaks = [];
 for (const { out, text } of written) {
   const words = new Set(text.toLowerCase().split(/[^a-z0-9]+/));
   for (const v of variants) {
-    if (v.length >= 3 && words.has(v.toLowerCase())) leaks.push(`${out} mentions "${v}"`);
+    if (words.has(v.toLowerCase())) leaks.push(`${out} mentions "${v}"`);
   }
 }
 if (leaks.length) console.log("WARNING, possible leaks of a variant name (check by hand):\n" + leaks.join("\n"));

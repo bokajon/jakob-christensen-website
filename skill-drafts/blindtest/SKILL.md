@@ -1,6 +1,6 @@
 ---
 name: blindtest
-description: Blind, countable proof of whether a prompt, skill or agent change really does better than the old version and than a baseline without it, or an audit that calibrates blind readers on known bad and good examples before a clean result over many texts is trusted. Use when the user asks whether a change helps, wants to compare versions or prompts, or wants a read over many texts checked by blind readers. Not for wording fixes, typo fixes or changes that add no new logic.
+description: Blind, countable proof of whether a prompt, skill or agent change really does better than the old version and than a baseline without it, or an audit that calibrates blind readers on known bad and good examples before a clean result over many texts is trusted. Use when the user asks whether a change helps, wants to compare versions or prompts, or wants a read over many texts checked by blind readers. Not for wording or typo fixes or changes that add no new logic.
 compatibility: Needs a way to start independent agent runs in fresh contexts, and Node.js 18+ for scripts/anonymize.mjs. Judges should be a different model from the author where the tool offers one.
 ---
 
@@ -13,8 +13,8 @@ Two modes. **Compare** answers "is the new version better than the old one and t
 - The evidence is countable, blind and measured against a truth fixed before any answer is read. A general impression or a ranking by usefulness is never the verdict.
 - Length is not a quality measure and appears in no judge prompt as a criterion. Do not write "shorter is better" or "to the point" either: it makes length count. Weight counts only as order: is the most important finding first?
 - The author never judges their own work. Cases, solution lists and ratings come from another model that does not know what is being tested.
-- At least 2 runs per variant and at least 2 blind judges who read in a different order. Never cut this: a judge varies on the same answer.
-- Look up numbers such as effort, cost and duration where the project or tool knows them, and mark every estimate as an estimate.
+- At least 2 runs per variant and at least 2 blind judges, each reading every answer once in a different order. Never cut this. If the tool offers no other model, use same-model judges in fresh contexts and list it as a weakness.
+- Look up effort, cost and duration where known, and mark every estimate.
 
 ## Choosing the test
 
@@ -32,39 +32,39 @@ Two modes. **Compare** answers "is the new version better than the old one and t
 
 ## Compare
 
-1. **Name the setup and get the user's OK first**: what is compared, the biases that remain (the author rates their own prompts, hand-picked cases, unequal effort), the fairer option (another model or humans as judges, equal effort on both sides, real cases with real critique, several runs), and the cost (runs, judges, time). Start nothing before the OK.
-2. **Cases**: 2 to 4 from the fixed set, covering different areas. For a new case, prefer a real public one with real expert critique that you find yourself, ideally published after the model's knowledge cutoff, such as a published report with its review, a public peer review or an audit report. Otherwise another model writes realistic documents of average quality without knowing what is tested. The user may approve the case choice, nothing more is needed from them.
-3. **Fix the truth before reading any answer** (new cases only): real reviews are the solution list where they exist. Add a blind list from another model that reads only the document. Write your own list first and name where it differs. The list also covers expert findings that are not visible in the document (law, responsibility, domain knowledge, typical mistakes of the field).
-4. **Runs**, each in a fresh context, at least 2 per variant, on the same model, only what is not saved:
-   - the new version and the old version, with the case as input;
-   - the full setup (all its parts, not one part), when the question is whether the setup is worth having;
-   - the baseline as a single, well-phrased plain question;
+1. **Name the setup and get the user's OK first**: what is compared, the biases that remain (the author rates their own prompts, hand-picked cases, unequal effort), the fairer option (another model or humans as judges, equal effort on both sides, real cases with real critique, several runs), and the cost (runs, judges, time). Start nothing before the OK. Write down the ordered criteria, the margin that counts as a win, and the allowed verdicts including "inconclusive".
+2. **Cases**: look in the project for an existing test folder or fixed set first, otherwise create `blindtest/<topic>/` and mark which variants are required. Take 2 to 4 cases covering different areas. For a new case, prefer a real public one with real expert critique that you find yourself, ideally published after the model's knowledge cutoff, such as a published report with its review, a public peer review or an audit report. Otherwise another model writes realistic documents of average quality without knowing what is tested.
+3. **Fix the truth before reading any answer** (new cases only): real reviews are the solution list where they exist. Add a blind list from another model that reads only the document. Write your own list first only if you did not write the change, and name where it differs. If you wrote it, add only the points you dispute. The list also covers expert findings that are not visible in the document (law, responsibility, domain knowledge, typical mistakes of the field).
+4. **Runs**, each in a fresh context, at least 2 per variant, on the same model, only what is not saved. Give each variant its own run folder that holds only that variant's skill, installed as it would be used, and put no variant label in the prompt:
+   - the new version and the old version, with the case as input.
+   - the full setup (all its parts, not one part), when the question is whether the setup is worth having.
+   - the baseline as a single, well-phrased plain question.
    - the baseline as a conversation with follow-ups ("what am I still missing?") at the same effort as the setup.
-5. **Anonymize**: `node scripts/anonymize.mjs <runs-folder> <blind-folder> <key-file>`. Name the files `<case>_<variant>_<run>.md`. Add `--strip-fence`, `--strip-title` or `--strip-line <regex>` to remove framing that gives the variant away, and read its leak warnings. Keep the key file outside the project and out of the judges' reach until judging ends.
+5. **Anonymize**: `node scripts/anonymize.mjs <runs-folder> <blind-folder> <key-file>`. Name the files `<case>_<variant>_<run>.md`. Add `--strip-fence`, `--strip-title` or `--strip-line <regex>` to remove framing that gives the variant away, and read its leak warnings. The script refuses a non-empty blind folder and an existing key file, and prints what stripping did. Keep the key file in a folder outside the judges' reach, and copy it into the README only after judging ends.
 6. **Pool of extra findings**: collect every finding from any side that is not on the solution list. A blind judge rates each one: correct or not, visible in the document or expert knowledge, significant or not. An expert finding counts only with a checkable source (a law, a standard, literature), which the judge verifies.
-7. **Blind judges** (another model, random ids, two passes in different reading order). Count per answer:
-   - hits against the solution list (yes 1, partly 0.5);
-   - **coverage**: the share of the correct baseline findings that the setup under test also has (target 100 percent), with every missing one listed;
-   - **extra**: correct findings only the setup has, and how many of them are expert knowledge from outside the document;
-   - false alarms (criticizes what is correctly in the document);
-   - invented or unmarked claims;
+7. **Blind judges** (another model, random ids, 2 judges, each reading once in a different order). Tell them to ignore length and format. Count per answer:
+   - hits against the solution list (yes 1, partly 0.5).
+   - **coverage**: the share of the correct baseline findings that the setup under test also has (target 100 percent), with every missing one listed.
+   - **extra**: correct findings only the setup has, and how many of them are expert knowledge from outside the document.
+   - false alarms (criticizes what is correctly in the document).
+   - invented or unmarked claims.
    - order: is the most important finding in the first lines?
 8. **Spot check**: verify at least one judge statement yourself against the run.
-9. **Verdict** in the order of criteria fixed in step 1 (accuracy, closeness to reality, then order is a sensible default). State the weaknesses of the setup openly: all models from one family, number of runs, training data, recognizable structure of one variant, and a prompt that asks for what is then counted (an advantage there proves little).
-10. **Store** the setup, key, result and weaknesses in a README in the project's test folder, with the cases, prompts, runs and ratings beside it, and record the result where the project keeps test results.
+9. **Verdict** in the order of criteria fixed in step 1 (for example accuracy, closeness to reality, order). State the weaknesses of the setup openly: all models from one family, number of runs, training data, recognizable structure of a variant, and a prompt that asks for what is then counted.
+10. **Store** the setup, result and weaknesses, and the key after judging, in a README in the project's test folder, with the cases, prompts, runs and ratings beside it. Record the result where the project keeps test results.
 
 ## Audit
 
 Use before trusting that a clean result over many texts really means nothing is there.
 
-1. **Name the setup and the cost first and get the user's OK**: what is read, which biases remain, how many readers, which model, and the corpus size (about 4 characters per token, an estimate, per reader and pass). Run the calibration alone first.
+1. **Name the setup and the cost first and get the user's OK**: what is read and the live source (read only), which biases remain, how many readers, which model, and the corpus size (about 4 characters per token, an estimate, per reader and pass). Run the calibration alone first.
 2. **Calibration set, built by script and not read by you**: earlier versions that held a known violation (known bad), mixed with their fixed versions and untouched entries (known good), shuffled, under random ids.
-3. **Fix the pass mark before any reader runs and write it down.** Default: at least 80 percent of the known violations found and at most 1 false alarm per 5 clean entries. These numbers are set, not measured: revisit them after the first run.
+3. **Fix the pass mark before any reader runs and write it down.** Default: at least 80 percent of the known violations found and at most 1 false alarm per 5 clean entries. These numbers are set, not measured. Change them only by a logged decision before a new run, never after seeing results. Below the mark, fix the reader prompt and calibrate again.
 4. **Readers** run in a fresh context, know nothing about the calibration, are at least 2 and read in different entry order. They get only the rule text and the entries, and judge wording and logic only. Their opinion about outside facts is not a source. Per finding: location, exact quote, rule broken, and why it matters. Whoever wrote or fixed the texts is not a reader.
 5. **Count per reader**: hits, misses, false alarms. Below the pass mark, stop and report: the corpus is not run.
 6. **Corpus run** in batches. A finding from both readers goes on the main list, a finding from one reader on a second list.
 7. **Check every finding against the live source**, never an export or backup. Reject what does not hold and count the rejections.
-8. **Fixes** follow the project's normal rules: back up first, and leave texts that already say it correctly alone.
+8. **Fixes** start only after the user approves an exact list. Follow the project's normal rules: back up first, and leave texts that already say it correctly alone. On a large corpus, check a sample of the findings.
 9. **Log the counts**, including what was not covered, and close the related open item.
 
 Known limits, always stated in the log: all readers are one model family, and the calibration set holds only violations that earlier keyword searches found, so a good score says little about violations without marker words. New findings from the corpus run are the only evidence for those.
