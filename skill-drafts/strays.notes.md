@@ -63,3 +63,16 @@ Triage with a verdict and reason per point: `D:\Tempgent-skills-tests\strays-ex
 | XE edge fixture, `/strays push everything` | not run | pushed exactly `gone` and `localonly`, trunk and `backup/old` untouched (2 of 2) |
 
 Observed, not a change: in 2 of 4 overviews on the dirty fixture (N2, S2) the status of trunk read "diverged, fast-forward possible" although trunk was only ahead; the push itself was correct. Not changed: one wording slip in 4 tables, no push effect. Not checked: differing push URL, repository without a remote, a failing `ls-remote`, no local default branch (no fixture); XE2 and Z1 show no Skill call in the transcript (a `/strays` start leaves none, judged by behaviour). Codex was not rerun (stops at read-only `.git`, see round 1).
+
+## Round 3: trunk status label, 2026-11-23
+Cause of the slip in round 2 (N2, S2: "diverged, fast-forward possible" for a default branch that was only ahead): the overview sentence said "ahead ... or diverged (status "diverged", ...)", so the word "diverged" hung on both states. Changed in `skill-drafts/strays/SKILL.md` (8165 characters, description 489, `check_skill` OK): the overview row now defines "ahead, fast-forward" (remote tip is an ancestor of the local tip) and "diverged" (neither tip is an ancestor of the other, with its local-only count) in one place, and step 1 repeats the two states with the `git merge-base --is-ancestor` test instead of a diverged-only sentence.
+
+Rerun, Claude Code (Sonnet), frozen copy, folder `D:\Temp\agent-skills-tests\strays-round3-2026-11-23\`, label read from the transcripts:
+
+| Case | Round 2 label for trunk (ahead only) | Round 3 label |
+|---|---|---|
+| N `Push my local work.` | N1 "ahead", N2 "diverged, fast-forward possible" | N1 "default branch, ahead, fast-forward", N2 "ahead, fast-forward" |
+| S `/strays` | S1 "ahead", S2 "diverged, ahead, fast-forwardable" | S1 and S2 "ahead, fast-forward" |
+| XE edge fixture (trunk really diverged) | pushed `gone` and `localonly`, trunk left | same, both runs name trunk as diverged and push nothing for it |
+
+Result: 0 wrong labels in 4 of 4 overviews (2 of 4 before), 0 forbidden pushes, 0 pushes without guard flags. Not checked: the other unchecked cases of round 2 (differing push URL, no remote, failing `ls-remote`, no local default branch).

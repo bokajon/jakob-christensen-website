@@ -23,14 +23,14 @@ Push URLs: if `git remote get-url --push --all origin` prints several URLs or an
   - **LOCAL IN DEFAULT**: in the local default, not in the remote default. Goes with the default-branch push.
   - **ON REMOTE**: `git ls-remote --heads origin` lists the same branch name at the same SHA, yet the branch is in neither default.
   - **LOCAL ONLY**: everything else. These are the push candidates. Their commit count is `git rev-list --count <sha> --not <tip SHAs from git ls-remote --heads origin>`, because a remote-tracking ref can outlive a branch deleted on the remote. It is 0 for a new branch name on commits that are already on the remote.
-- A diverged local default (remote default tip not an ancestor of the local tip, local tip not an ancestor of it) keeps its local-only commit count.
+- Default branch states: "ahead, fast-forward" (remote tip is an ancestor of the local tip) and "diverged" (neither tip is an ancestor of the other, keeps its local-only commit count). Test with `git merge-base --is-ancestor`.
 - For each worktree from `git worktree list`, run `git -C <path>` to count the uncommitted files. Note a detached HEAD only if `git -C <path> rev-list --count HEAD --not --branches --remotes` is above 0.
 
 Done when every local branch has exactly one category.
 
 ## 2. Overview and release
 
-Show a numbered table `No. | Branch | Topic | Commits (count, short tip) | Status` for LOCAL ONLY, LOCAL IN DEFAULT and ON REMOTE, plus a row for the default branch when its local tip is ahead of the remote default or diverged from it (status "diverged", with its local-only count). Below it, one line each for SPECIAL branches, uncommitted worktrees and detached HEADs. If nothing is LOCAL ONLY and the default branch is neither ahead nor diverged, say "Nothing to push." and end here. If the request only asks what is local, show the overview and end here without the question.
+Show a numbered table `No. | Branch | Topic | Commits (count, short tip) | Status` for LOCAL ONLY, LOCAL IN DEFAULT and ON REMOTE, plus a row for the default branch when its local tip differs from the remote default. Its status is "ahead, fast-forward" when the remote tip is an ancestor of the local tip, and "diverged" with its local-only count when neither tip is an ancestor of the other. Below it, one line each for SPECIAL branches, uncommitted worktrees and detached HEADs. If nothing is LOCAL ONLY and the default branch is neither ahead nor diverged, say "Nothing to push." and end here. If the request only asks what is local, show the overview and end here without the question.
 
 Only LOCAL ONLY entries and a fast-forwardable default branch can be released. Rows for LOCAL IN DEFAULT, ON REMOTE and a diverged default are information: if the user selects one, explain why nothing is pushed for it.
 
