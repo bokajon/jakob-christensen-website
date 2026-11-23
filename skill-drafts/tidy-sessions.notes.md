@@ -1,4 +1,4 @@
-# tidy - draft notes
+# tidy-sessions - draft notes (formerly tidy)
 
 ## Sources read
 - `C:\Users\fhs30332\.claude\skills\tidy\SKILL.md` (current), packaged plugin repo `D:\claude-skills` (`skills/productivity/tidy/SKILL.md`, one commit 6c700c3 "Add tidy skill as MIT plugin repo (0.1.0)", README/CHANGELOG/LICENSE not copied), backup `D:\Niagarama-Backup\...\tidy\SKILL.md` (identical to current).
@@ -25,3 +25,10 @@ Checklist 2.3: the desktop app drops user-invoked skills, and tidy works only th
 
 ## Tested
 - check_skill.py: exit 0. Not tested live (it would archive Jakob's real sessions).
+
+## Rename 2026-11-23
+- `tidy` was split in two by Jakob's decision: `tidy-sessions` (this one, desktop add-on, content unchanged) and `tidy-worktree` (generic, git only). Renamed: folder, `name:`, heading, notes file. The description and the intro now point to `tidy-worktree` for git-only cleanup.
+- Added a caveat: whether the app also deletes ignored files when it removes a worktree is not checked, so the text does not claim it.
+- Hook rewrite of `archive_session` stays out (FAKTEN 2026-11-23).
+- Name not checked against the net (known: `tidy` is taken at finolabs with a different job; `tidy-sessions` and `tidy-worktree` not searched).
+- Rename tested: check_skill exit 0 only. Skill not run live.

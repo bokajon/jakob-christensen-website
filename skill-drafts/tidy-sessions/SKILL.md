@@ -1,12 +1,14 @@
 ---
-name: tidy
-description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived. Not for deleting sessions and not for the running session.
+name: tidy-sessions
+description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived. Not for deleting sessions and not for the running session. To remove landed git worktrees and branches without the desktop app, use the tidy-worktree skill.
 compatibility: Claude desktop app (Code tab) only. Needs its session tools list_sessions, list_events, get_session and archive_session, and git.
 ---
 
-# Tidy
+# Tidy sessions
 
-Goal: archive every session whose work is **settled**, and keep the rest. The user's request to tidy is their permission to archive every session that counts as settled below. The session itself can be restored (the Archived list, `unarchive_session`), but uncommitted changes in its worktree can be lost when it is archived, so the dirty check in step 3 is what protects the work (it does not see ignored files). With that check in place, decide per session yourself and do not ask first. If the user named a scope (a project, a title, "older than a day"), tidy only that scope. If they only ask what would be archived, stop in step 4 right after its parent and child check, before any `archive_session` call, and give the step 5 report in the conditional ("would archive"), including kept sessions and **Needs your attention**.
+This skill works on the app's sessions. Checking git worktrees and branches alone, without the app, is the job of the `tidy-worktree` skill.
+
+Goal: archive every session whose work is **settled**, and keep the rest. The user's request to tidy is their permission to archive every session that counts as settled below. The session itself can be restored (the Archived list, `unarchive_session`), but uncommitted changes in its worktree can be lost when it is archived, so the dirty check in step 3 is what protects the work (it does not see ignored files, and it is not checked whether the app also deletes ignored files when it removes a worktree). With that check in place, decide per session yourself and do not ask first. If the user named a scope (a project, a title, "older than a day"), tidy only that scope. If they only ask what would be archived, stop in step 4 right after its parent and child check, before any `archive_session` call, and give the step 5 report in the conditional ("would archive"), including kept sessions and **Needs your attention**.
 
 A session is **settled** when nothing will happen in it any more and no question to the user is open. That means one of these:
 - It ended with a final report that names no open question and no remaining step.
