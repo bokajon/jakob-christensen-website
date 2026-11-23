@@ -37,9 +37,9 @@ HOME = r"(/Us" + r"ers/|/ho" + r"me/|~[\\/]\." + r"(claude|codex|agents|gemini))
 PATTERNS = {
     "absolute Windows path": re.compile(r"\b[A-Za-z]:[\\/]"),
     "home path": re.compile(HOME),
-    "email address": re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+"),
+    "email address": re.compile(r"[\w.+-]+@[A-Za-z][\w-]*(\.[\w-]+)*\.[A-Za-z]{2,}"),
     "key or token": re.compile(r"(sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|xox[bap]-[A-Za-z0-9-]{10,})"),
-    "long secret-like string": re.compile(r"\b[A-Za-z0-9+/_-]{40,}\b"),
+    "long secret-like string": re.compile(r"\b(?=[A-Za-z0-9+/_-]*[A-Z])(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*\d)[A-Za-z0-9+/_-]{40,}\b"),
 }
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
