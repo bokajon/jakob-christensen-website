@@ -27,3 +27,12 @@ Original is user-invoked. Checklist 2.3: the desktop app drops user-invoked skil
 ## Tested
 - Smoke test in `D:\Temp\skill-draft-tests\push` (bare origin with default branch `trunk`, clone, branches pushed / localonly / merged / backup/x). Ran the draft's analysis commands: default detected as `trunk` (both methods agree); pushed -> ON REMOTE, localonly -> LOCAL ONLY, merged -> MERGED; default ahead by 1 and a fast-forward; pushed localonly and trunk by SHA refspec to the bare repo, `ls-remote` confirmed.
 - Not checked: the LOCAL IN DEFAULT and SPECIAL (diverged remote branch) paths were not exercised. `backup/x` pointing at a merged commit landed in MERGED because MERGED is matched first (same ordering as the original). Not run in any agent tool, no reachability/trigger test of the description. check_skill.py: exit 0.
+
+## Test round 1 (2026-11-23, Claude Code, Sonnet, 2 runs per case)
+Fixture: bare origin (default `trunk`), branches merged / onremote / localonly (2 commits) / feature-x (1 commit), trunk 1 ahead, one untracked file. Runner `D:\Temp\agent-skills-tests\run-strays-round.ps1`, raw data `D:\Temp\agent-skills-tests\strays-round1`.
+- Baseline "Push my local work." (no skill), 2 of 2: pushed only `trunk`, left the rest, offered to push `localonly` / the other branches. No overview.
+- Natural prompt with skill, 2 of 2: Skill called, overview table shown, 0 pushes, remote unchanged (localonly, feature-x not created). The skill's question was not visible in the result head (not checked in full text).
+- `/strays`, 2 of 2: overview table, 0 pushes, remote unchanged (no Skill call visible in stream-json, as the checklist says).
+- `/strays push everything`, 2 of 2: pushed feature-x and localonly (SHA refspec, `--no-follow-tags --recurse-submodules=no`), fast-forwarded trunk, left `onremote` and the untracked file alone, five-line report. Remote tips match the local SHAs.
+- No force, no `--all`, no commit/merge/reset in any run (push commands read from the transcripts).
+- Not checked: diverged remote branch, protected default, hook failure, auth failure paths; Codex; the per-branch "next / all remaining" flow; the question text with the three answers (headless run, no one to answer).
