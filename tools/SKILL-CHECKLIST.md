@@ -146,7 +146,7 @@ Draft after review batch fd28d37 plus a8e5cdc, Claude Code headless, Sonnet, thr
 - Compare with approval (2 runs): script called from the skill folder, key outside the blind folder, 2 judges in reversed order, README written. Verdict "inconclusive" (v1 and v2 5 of 5 coverage, baseline 90 percent). One judge run was discarded (the author mis-pasted the prompt), logged in the README and redone.
 - Audit with approval (2 runs): calibration at least 10 known violations and 25 clean entries, both readers 10 of 10 with 0 false alarms, then corpus: 4 violations (e03, e07, e15, e23), all 4 confirmed against the live source. The pass mark was stated in the chat before the readers, not in a file: SKILL.md now says "into the log file before the first reader".
 - Limits: calibration sets were LLM-generated and easy, so 10 of 10 says little; one case per Compare run; Codex not tested; whether any run wrote outside its folder not checked.
-- Script `anonymize.mjs` retested after the fixes (leak check, H2 title, `..` group, no partial write on a read error). Raw data and analysis: `D:\Tempgent-skills-testst-round1-A`, `bt-round1-B`, `analyze_bt.py`, `blindtest-triage-2.md`. Not durable.
+- Script `anonymize.mjs` retested after the fixes (leak check, H2 title, `..` group, no partial write on a read error). Raw data and analysis: `D:\Temp\agent-skills-tests\bt-round1-A`, `bt-round1-B`, `analyze_bt.py`, `blindtest-triage-2.md`. Not durable.
 
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
