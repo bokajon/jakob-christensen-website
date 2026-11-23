@@ -88,6 +88,10 @@
     .skills li + li { margin-top: 0.75rem; }
     .skills li::marker { color: var(--accent); }
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
+    .skill-head { cursor: pointer; list-style: none; }
+    .skill-head::-webkit-details-marker { display: none; }
+    .skills h3::after { content: "B8"; display: inline-block; margin-left: 0.4rem; color: var(--muted); transition: transform 0.15s; }
+    details[open] .skills h3::after, details[open] h3::after { transform: rotate(90deg); }
     .skills h3 { margin: 0; font-size: 1rem; white-space: nowrap; }
     .skill-desc { margin: 0.15rem 0 0; font-size: 0.95rem; color: var(--muted); }
     .download { font-size: 0.9rem; color: var(--accent); }
@@ -116,18 +120,22 @@
           <p class="install">To install a skill, download the file, drag it into your AI's chat and write: "Install this skill." Then start it by typing its name, for example <code>/workaround</code> (in Codex: <code>$workaround</code>).</p>
           <ul class="skills">
             <li>
-              <div class="skill-head">
+              <details>
+              <summary class="skill-head">
                 <h3>/workaround</h3>
                 <a class="download" href="agent-skills/workaround/SKILL.md" download="SKILL.md">Download</a>
-              </div>
+              </summary>
               <p class="skill-desc">AI agents sometimes keep running into the same wall instead of looking for a way around it. This skill finds another way to your goal when something outside your control blocks the direct one, like a failing tool or a missing feature. It checks that the new route really works and tells you what it cost. It stops at permission and security checks instead of getting around them, and asks before system-wide changes like a global install or before deleting something that can't be restored. Start it with <code>/workaround</code>.</p>
+              </details>
             </li>
             <li>
-              <div class="skill-head">
+              <details>
+              <summary class="skill-head">
                 <h3>/fresh</h3>
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md">Download</a>
-              </div>
+              </summary>
               <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. This skill carries your work over to a fresh session at a natural break, like a large context, a long pause, a new topic or a finished task. It writes a handoff file, names the recommended model and effort for the next session and offers to start it. The handoff file builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes the file when you call it. <code>/fresh</code> also decides when it is time, and an optional Claude Code hook nudges it when the context gets large or after a long pause. The hook is only set up if you ask for it. Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
+              </details>
             </li>
           </ul>
         </div>
