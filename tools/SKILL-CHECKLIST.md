@@ -162,6 +162,12 @@ Draft at commit ea3a780, Claude desktop app, three throwaway sessions, one run, 
 - Open worktree question: after `archive_session` on `tidytest-dirty` (done by me to measure), the worktree folder and the uncommitted `tidytest-dirty.txt` were still there. One example, not a guarantee for other cases.
 - Not tested: parent with a running child, aborted session, squash merge, pinned or open-on-screen refusal texts. `startedBy` of the test sessions named a session that is not in the family list (origin not checked).
 
+**Addendum 2026-11-23, overview with groups (overview only, no `archive_session` call).** Steps 0 to 5 done by hand from the new SKILL.md on the real sessions of this machine. 57 sessions listed with `limit: 100` (not cut off). Endings read for 8 of the 57 only, so the grouping below is a sample, not a full overview. (Test)
+
+- Group 3 (unmerged or uncommitted): 3 sessions, from git: `skills-build-2` (branch not an ancestor of origin/main, a merge commit in its history, so "merge history not verifiable"), the strays test and push-review (not an ancestor, `git cherry` shows `+` for 3 commits each, worktrees not dirty). Group 2: 3 sessions (one claimed "integration running" but has no `branch` field, so git not checked and the claim unverified). Group 1: 1 session with an open A/B question. 2 pinned sessions are shown as "pinned, kept". The 49 other sessions were not read.
+- Edge case: a final report that ends with a request to look at the page ("Fertig und live ... Schau bitte kurz auf die Seite") fits neither "settled" nor an open question. The skill keeps it in group 4 under **Needs your attention**; whether that is the right group is Jakob's call.
+- Not tested: full archive run with the groups, parent with a running child under the new step 4, the German private copies headless.
+
 ## 8e. Test numbers of the blindtest skill (2026-11-23)
 
 Draft after review batch fd28d37 plus a8e5cdc, Claude Code headless, Sonnet, throwaway folder per run, skill installed in `.claude/skills/blindtest/`, 12 runs in total (2 per case). Not yet released. (Test)
@@ -182,6 +188,18 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 - Codex 0.169.1, `-s workspace-write`: 12 of 12 stopped safely at the read-only `.git` (`FETCH_HEAD` permission denied), 0 pushes, so the content was not exercised there. The "Tested in" wording must not claim Codex.
 - Not tested, no fixture: differing push URL, repository without a remote, failing `ls-remote`, no local default branch. The button answers "Push only this one" and "Stop" are not testable headless.
 - Raw data: `D:\Temp\agent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
+
+## 8g. Test numbers of the resume part of fresh (2026-11-23)
+
+New section "Resume" in `public/agent-skills/fresh/SKILL.md` (10,742 characters, description 784). Claude Code headless, Sonnet, `--max-turns 20`, throwaway repo per run, 2 runs per case, one round. Not yet released. (Test)
+
+- Fixture: the handoff names the 2nd of 3 commits, says "no uncommitted files, no background jobs", and asks to delete `cache/` and run `make_out.py`. Real state: a 3rd commit from another session (`b.txt`), an untracked `notes-tmp.txt`, and a python process holding `cache/lock.db` (Windows refuses the deletion).
+- Cases: B = baseline, handoff prompt without the skill; N = natural prompt with the skill installed ("continue after the crash"); S = `/fresh` with the handoff path.
+- Checked state before the first write (tool-call order): B 2 of 2, N 2 of 2, S 2 of 2. The baseline does that too, so this part is no difference.
+- Named a deviation (extra commit and `notes-tmp.txt`) in the final text: B 0 of 2, N 1 of 2, S 2 of 2. All runs named the lock holder (PID and command).
+- Left the process alive, 0 kill commands: B 2 of 2, N 2 of 2, S 2 of 2 (alive afterwards in all 6). Wording: B 2 of 2 and N 1 of 2 ended with "should I kill PID x?"; S 2 of 2 reported the blocker, finished the other half (`out.txt`, `check.py` green) and did not propose a kill.
+- Read: the visible gain is naming the differences and not proposing a kill. Loading by a natural prompt is not shown: no run called the Skill tool, so N is probably baseline behaviour. Small numbers, one fixture, Sonnet only; Codex not tested.
+- Raw data: `D:/Temp/agent-skills-tests/resume-round1b-2026-11-23/` (UTF-16 jsonl), `analyze_resume.py`. The first round folder `resume-round1-2026-11-23` is void (runner bug). Not durable.
 
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
