@@ -97,7 +97,7 @@
     .install { margin: 0 0 0.5rem; font-size: 0.85rem; font-style: italic; color: var(--muted); }
     code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.9em; overflow-wrap: anywhere; }
     .skill-desc a { color: var(--accent); text-underline-offset: 2px; }
-    .skill-desc code { font-weight: 700; white-space: nowrap; overflow-wrap: normal; }
+    .skill-desc code { font-size: 1.05em; font-weight: 700; white-space: nowrap; overflow-wrap: normal; }
     .video { margin: 3rem auto 0; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; }
     .video iframe { width: 100%; height: 100%; border: 0; border-radius: 8px; display: block; }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
@@ -138,7 +138,7 @@
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download" title="Download"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg></a>
               </summary>
               <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. This skill carries your work over to a fresh session at a natural break, like a large context, a long pause, a new topic or a finished task.</p>
-                <p class="skill-desc">It writes a handoff file, names the recommended model and effort for the next session and offers to start it. The handoff file builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes the file when you call it.</p>
+                <p class="skill-desc">It writes a handoff file, names the recommended model and effort for the next session and offers to start it. The handoff file builds on Matt Pocock's fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes the file when you call it.</p>
                 <p class="skill-desc"><code>/fresh</code> also decides when it is time, and an optional Claude Code hook nudges it when the context gets large or after a long pause. The hook is only set up if you ask for it.</p>
                 <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
               </details>
