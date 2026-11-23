@@ -1,2 +1,6 @@
 # Skill downloads must stay byte-identical to the released file, whatever core.autocrlf says.
+# Text files (SKILL.md, scripts/*) are LF, so a ZIP built from them holds LF too.
 public/agent-skills/** text=auto eol=lf
+# A released ZIP is binary: never converted, committed exactly as built.
+public/agent-skills/**/*.zip binary
+public/agent-skills/*.zip binary
