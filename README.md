@@ -10,7 +10,7 @@ Drei Projekte liegen vorerst als Kopie unter dieser Domain:
 
 - `public/students-on-the-loose/` - aus `D:\Projects\students-on-the-loose\public`
 - `public/niagara-tutor-ui/` - Vite-Build aus `D:\NiagaraUI` (ohne Service Worker, also ohne Offline-Modus)
-- `public/little-lights/` - Vite-Build von „Little Lights: Alpine Retreat“ (früher „Little Lights, Long Nights“ und Niagarama) aus `D:\NiagaraUI` (master), hinter dem Art-Passwort (siehe unten). Liegt nicht in Git (über 100 MB, vor allem Audio und Bilder).
+- `public/little-lights/` - Vite-Build von „Little Lights: An Alpine Retreat“ (früher „Little Lights, Long Nights“ und Niagarama) aus `D:\NiagaraUI` (master), hinter dem Art-Passwort (siehe unten). Liegt nicht in Git (über 100 MB, vor allem Audio und Bilder).
 
 Diese Ordner nicht von Hand ändern. Zum Aktualisieren `python tools/sync_projects.py` ausführen, dann committen und pushen.
 

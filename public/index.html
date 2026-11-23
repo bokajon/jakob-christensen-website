@@ -79,21 +79,36 @@
     }
     a.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .card.is-soon { cursor: default; }
+    .card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.25rem 1rem; }
+    .card-head .link, .card-head .coming { margin-top: 0.5px; }
     .card h2 { margin: 0; font-size: 1.15rem; }
     .nowrap { white-space: nowrap; }
     .desc { margin: 0; font-size: 0.95rem; color: var(--muted); flex: 1; }
-    .link { font-size: 0.9rem; color: var(--accent); overflow-wrap: anywhere; }
-    .coming { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
-    .skills { margin: 0.25rem 0 0; padding-left: 1.25rem; }
+    .link { font-size: 0.9rem; color: var(--accent); font-weight: 400; overflow-wrap: anywhere; text-align: right; }
+    .coming { font-size: 0.9rem; font-weight: 400; color: var(--muted); text-align: right; }
+    .skills { margin: 0.25rem 0 0; padding-left: 0; list-style: none; }
     .skills li + li { margin-top: 0.75rem; }
-    .skills li::marker { color: var(--accent); }
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
+    .skill-head { cursor: pointer; list-style: none; }
+    .skill-head::-webkit-details-marker { display: none; }
+    .skills h3::before { content: "▸"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform 0.15s; }
+    details[open]:not(.is-closing) h3::before { transform: rotate(90deg); }
+    .skill-head { position: relative; }
+    .skill-head[data-tip]::after { content: attr(data-tip); position: absolute; left: 1.1rem; top: calc(100% + 0.25rem); z-index: 10; width: max-content; max-width: min(28rem, calc(100vw - 4rem)); padding: 0.5rem 0.7rem; border-radius: 6px; background: var(--fg); color: var(--bg); font-size: 0.85rem; font-weight: 400; line-height: 1.4; box-shadow: 0 4px 14px rgba(0,0,0,0.25); pointer-events: none; opacity: 0; visibility: hidden; }
+    .skill-head[data-tip]:hover::after { opacity: 1; visibility: visible; }
+    details[open] > .skill-head[data-tip]::after { display: none; }
     .skills h3 { margin: 0; font-size: 1rem; white-space: nowrap; }
-    .skill-desc { margin: 0.15rem 0 0; font-size: 0.95rem; color: var(--muted); }
-    .download { font-size: 0.9rem; color: var(--accent); }
-    .install { margin: 0; font-size: 0.85rem; color: var(--muted); }
+    .skill-desc { margin: 0.5rem 0 0; font-size: 0.95rem; color: var(--muted); }
+    .download { color: var(--accent); display: inline-flex; align-items: center; gap: 0.35rem; vertical-align: middle; margin-left: 0.4rem; text-decoration: none; }
+    .download .ext { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; }
+    .download:hover .ext { opacity: 1; }
+    .install { margin: 0 0 0.5rem; font-size: 0.85rem; font-style: italic; color: var(--muted); }
+    .desc, .install, .skill-desc { margin-left: 1.1rem; }
     code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.9em; overflow-wrap: anywhere; }
-    .skill-desc code { font-weight: 700; white-space: nowrap; overflow-wrap: normal; }
+    .skill-desc a { color: var(--accent); text-underline-offset: 2px; }
+    .skill-desc code { font-size: 1.05em; font-weight: 700; white-space: nowrap; overflow-wrap: normal; }
+    .video { margin: 3rem auto 0; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; position: relative; overflow: hidden; border-radius: 8px; }
+    .video iframe { position: absolute; width: 125%; height: 125%; left: -12.5%; top: -20%; border: 0; display: block; }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
     @media (prefers-reduced-motion: reduce) {
       .card { transition: none; }
@@ -111,64 +126,174 @@
       <li>
         <div class="card">
           <h2>Jakob's Agent Skills</h2>
-          <p class="desc">A set of agent skills I've built for my own workflow and refined project by project. Most of what I do with AI runs through them. If one fits how you work, take it and adapt it. They use the open SKILL.md format, so they work in Claude Code, Codex, Cursor and other tools that support it.</p>
+          <p class="desc">Agent skills from my own workflow, shaped by use: every project showed me something to fix. Most of what I do with AI runs through them. If one fits how you work, take it and adapt it.</p>
+          <p class="install">To install a skill, download it, drag it into your AI's chat and write: "Install this skill." Once it's installed, start it by typing its name, for example <code>/workaround</code> (in Codex: <code>$workaround</code>).</p>
           <ul class="skills">
             <li>
-              <div class="skill-head">
+              <details>
+              <summary class="skill-head">
                 <h3>/workaround</h3>
-                <a class="download" href="agent-skills/workaround/SKILL.md" download="SKILL.md">Download</a>
-              </div>
-              <p class="skill-desc">Finds another way to your goal when something outside your control blocks the direct one, like a failing tool or a missing feature. It checks that the new route really works and tells you what it cost. It stops at permission and security checks instead of getting around them, and asks before system-wide changes like a global install or before deleting something that can't be restored. Tested in Claude Code and Codex. Start it with <code>/workaround</code>.</p>
+                <a class="download" href="agent-skills/workaround/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+              </summary>
+              <p class="skill-desc">AI agents sometimes keep running into the same wall instead of looking for a way around it. <strong>This skill finds another way to your goal when something outside your control blocks the direct one</strong>, like a failing tool or a missing feature.</p>
+                <p class="skill-desc">It checks that the new route really works and tells you what it cost. It stops at permission and security checks instead of getting around them, and asks before system-wide changes like a global install or before deleting something that can't be restored.</p>
+                <p class="skill-desc">Start it with <code>/workaround</code>.</p>
+              </details>
             </li>
             <li>
-              <div class="skill-head">
+              <details>
+              <summary class="skill-head">
                 <h3>/fresh</h3>
-                <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md">Download</a>
-              </div>
-              <p class="skill-desc">Carries your work over to a fresh session at a natural break, like a large context, a long pause, a new topic or a finished task. It writes a handoff file, names the recommended model and effort for the next session and offers to start it. An optional Claude Code hook nudges it when the context gets large or after a long pause. It is only set up if you ask for it. Tested in Claude Code and Codex. Start it with <code>/fresh</code>.</p>
+                <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+              </summary>
+              <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. <strong>This skill carries your work over to a fresh session at a natural break</strong>, like a large context, a long pause, a new topic or a finished task.</p>
+                <p class="skill-desc">It writes a summary of the work so far, names the recommended model and effort for the next session and offers to start it. The summary builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes one when you call it.</p>
+                <p class="skill-desc"><code>/fresh</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. The hook is only set up if you ask for it.</p>
+                <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h3>/blindfold</h3>
+                <a class="download" href="agent-skills/blindfold.zip" download="blindfold.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+              </summary>
+              <p class="skill-desc">Whether a changed prompt, skill or agent really does better is easy to believe and hard to know. <strong>This skill runs a blind, counted test of the new version against the old one and against no version at all</strong>, or an audit that calibrates blind readers on known bad and good examples before a clean result over many texts is trusted.</p>
+                <p class="skill-desc">It fixes the right answers before any answer is read, hides which version wrote what, lets two judges score each answer in a different order and counts hits, misses, extras and false alarms. It tells you the setup, its weaknesses and the cost first and starts nothing before your OK.</p>
+                <p class="skill-desc">Start it with <code>/blindfold</code>.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h3>/strays</h3>
+                <a class="download" href="agent-skills/strays/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+              </summary>
+              <p class="skill-desc">Committed work that never reached the remote is easy to forget: a side branch, a few commits on the wrong branch, a worktree nobody pushed. <strong>This skill finds those stray commits and shows them in one table before anything is sent.</strong></p>
+                <p class="skill-desc">It pushes only after your OK, with safe pushes only: no force, each branch by its exact commit, and the default branch only as a fast-forward. A diverged branch is reported and left to you, and uncommitted changes are never touched.</p>
+                <p class="skill-desc">Start it with <code>/strays</code>, or add "push everything" to skip the question. It only works with committed work.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h3>/lanes</h3>
+                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+              </summary>
+              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every session its own worktree and branch</strong>, keeps the main checkout clean as the place where finished work lands, and stages only named files.</p>
+                <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
+                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>, and it only sets up a project when you ask for it.</p>
+              </details>
             </li>
           </ul>
-          <p class="install">To install, save the file as <code>&lt;name&gt;/SKILL.md</code> in your skills folder: <code>~/.claude/skills/</code> for Claude Code, <code>~/.agents/skills/</code> for Codex and Cursor. In Codex, start a skill with <code>$name</code> instead of <code>/name</code>.</p>
         </div>
       </li>
       <li>
-        <a class="card" href="https://studentbenefits.page">
-          <h2>Student Handbook</h2>
-          <p class="desc">A guide for animation students at the Salzburg University of Applied Sciences (FH Salzburg) in Austria. It explains the equipment and software the school gives students access to. It also lists student events, film festivals, job offers and discounts.</p>
-          <span class="link">studentbenefits.page</span>
-        </a>
+        <div class="card is-soon" aria-disabled="true">
+          <div class="card-head">
+            <h2>Little Lights: An Alpine Retreat</h2>
+            <span class="coming">Coming soon</span>
+          </div>
+          <p class="desc">Lost lanterns against the mountain dark.</p>
+        </div>
       </li>
       <li>
-        <a class="card" href="students-on-the-loose/">
-          <h2>Students on the Loose <span class="nowrap">(incl. Inca 3D &amp; Pict 2D)</span></h2>
-          <p class="desc">Small pixel students walk across the page and react to objects you place there. You create and place the objects with two built-in browser programs: Inca for 3D and Pict for 2D drawing.</p>
-          <span class="link">jakobchristensen.com/students-on-the-loose</span>
+        <a class="card" href="niagara-workshop/">
+          <div class="card-head">
+            <h2>Niagara Card Lab</h2>
+            <span class="link">jakobchristensen.com/niagara-workshop</span>
+          </div>
+          <p class="desc">A teaching tool made for Realtime Art &amp; Visual Effects students at the Salzburg University of Applied Sciences (FH Salzburg), for a workshop on visual effects in Unreal Engine. It shows each Niagara module as a card, so the modules are easier to understand. A particle emitter in the browser lets you try them out, and an export script brings the setup into Unreal.</p>
         </a>
       </li>
       <li>
         <a class="card" href="https://choirtool.com">
-          <h2>Choir · Critique Orchestrator</h2>
-          <p class="desc">A tool for getting feedback on a concept from many sides, using an AI like Claude or ChatGPT. It writes the prompts, and each side is played by a simulated persona.</p>
-          <span class="link">choirtool.com</span>
+          <div class="card-head">
+            <h2>Choir · Critique Orchestrator</h2>
+            <span class="link">choirtool.com</span>
+          </div>
+          <p class="desc">A tool for getting feedback on a concept from many sides, using an AI like Claude or ChatGPT. It writes the prompts, and each side is played by a simulated persona. Many parts work together behind the scenes, so the feedback you get is varied and detailed rather than one generic answer.</p>
         </a>
       </li>
       <li>
-        <a class="card" href="niagara-workshop/">
-          <h2>Niagara Card Lab</h2>
-          <p class="desc">A teaching tool made for Realtime Art &amp; Visual Effects students at the Salzburg University of Applied Sciences (FH Salzburg), for a workshop on visual effects in Unreal Engine. It shows each Niagara module as a card, so the modules are easier to understand. A particle emitter in the browser lets you try them out, and an export script brings the setup into Unreal.</p>
-          <span class="link">jakobchristensen.com/niagara-workshop</span>
+        <a class="card" href="students-on-the-loose/">
+          <div class="card-head">
+            <h2>Students on the Loose <span class="nowrap">(incl. Inca 3D &amp; Pict 2D)</span></h2>
+            <span class="link">jakobchristensen.com/students-on-the-loose</span>
+          </div>
+          <p class="desc">Small pixel students walk across the page and react to objects you place there. You create and place the objects with two built-in browser programs: Inca for 3D and Pict for 2D drawing.</p>
         </a>
       </li>
       <li>
-        <div class="card is-soon" aria-disabled="true">
-          <h2>Little Lights: Alpine Retreat</h2>
-          <p class="desc">Lone lanterns against the mountain dark.</p>
-          <span class="coming">Coming soon</span>
-        </div>
+        <a class="card" href="https://studentbenefits.page">
+          <div class="card-head">
+            <h2>Student Handbook</h2>
+            <span class="link">studentbenefits.page</span>
+          </div>
+          <p class="desc">A guide for animation students at the Salzburg University of Applied Sciences (FH Salzburg) in Austria. It explains the equipment and software the school gives students access to. It also lists student events, film festivals, job offers and discounts.</p>
+        </a>
       </li>
     </ul>
 
     <footer>© 2026 Jakob Christensen</footer>
+
+    <div class="video">
+      <iframe id="clip" src="https://www.youtube-nocookie.com/embed/Ix6WHKxFWNw?enablejsapi=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
   </main>
+<script>
+    (function () {
+      var clips = ["Ix6WHKxFWNw", "WzY2pWrXB_0", "16GmbZe_PYQ", "_3RFhIca_fU"];
+      try {
+        var n = (parseInt(localStorage.getItem("visits"), 10) || 0) + 1;
+        localStorage.setItem("visits", n);
+        var id = clips[(n - 1) % clips.length];
+        document.getElementById("clip").src = "https://www.youtube-nocookie.com/embed/" + id + "?enablejsapi=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1";
+      } catch (e) {}
+    })();
+    (function () {
+      var all = document.querySelectorAll("ul.skills details");
+      var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var opts = { duration: 250, easing: "ease" };
+      function run(d, from, to, done) {
+        if (d._anim) d._anim.cancel();
+        d.style.overflow = "hidden";
+        var a = d._anim = d.animate({ height: [from + "px", to + "px"] }, opts);
+        a.onfinish = a.oncancel = function () {
+          if (d._anim !== a) return;
+          d._anim = null;
+          d.style.overflow = "";
+          done();
+        };
+      }
+      function closeIt(d) {
+        if (!d.open || d.classList.contains("is-closing")) return;
+        d.classList.add("is-closing");
+        var fin = function () { d.open = false; d.classList.remove("is-closing"); };
+        if (still) return fin();
+        run(d, d.offsetHeight, d.querySelector("summary").offsetHeight, fin);
+      }
+      function openIt(d) {
+        d.classList.remove("is-closing");
+        var from = d.offsetHeight;
+        d.open = true;
+        if (still) return;
+        run(d, from, d.offsetHeight, function () {});
+      }
+      all.forEach(function (d) {
+        var strong = d.querySelector(".skill-desc strong");
+        if (strong) d.querySelector("summary").setAttribute("data-tip", strong.textContent);
+      });
+      all.forEach(function (d) {
+        d.querySelector("summary").addEventListener("click", function (e) {
+          if (e.target.closest("a")) return;
+          e.preventDefault();
+          if (d.open && !d.classList.contains("is-closing")) return closeIt(d);
+          all.forEach(function (o) { if (o !== d) closeIt(o); });
+          openIt(d);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
