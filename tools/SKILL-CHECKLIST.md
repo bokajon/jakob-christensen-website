@@ -230,6 +230,8 @@ Run after the release (the skill went live on 2026-11-23 without a test round). 
 - Finding: the report text differs on the prunable branch `gone`. The `/tidy-worktree` run said `git branch -d gone` refuses while the dead worktree record exists and asked to run `git worktree prune` first; the dry run listed the branch `gone` as "would remove". The skill's step 3 says the branch of a prunable worktree is judged as a branch without a worktree, so the dry run claims more than step 4 can do. Not changed (no text changes without Jakob's OK); only the final messages of P3 and P4 were read, not all 8.
 - Not tested: Codex, the other kept reasons (no own commits, reflog, shallow, ignored files), tidy-sessions (needs the desktop app, two prompts for Jakob in `D:\Temp	estplan-tidy-2026-11-23.md`).
 
+- **Addendum 2026-11-24, after the prunable fix (21334b4).** The sentence on prunable entries in step 3 now says the entry and its branch are kept and listed under Needs your attention, also in a dry run. Dry run repeated, 2 runs, new round folder `tidyw-2026-11-24-r2`: 2 of 2 changed nothing (branches and worktrees identical before and after), 2 of 2 listed `gone` under kept or Needs your attention and not under "would remove", `landed` as the only "would remove" entry, 0 of 2 forbidden commands, Skill tool called 2 of 2. Only the final messages were read. (Test)
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
