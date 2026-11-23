@@ -7,7 +7,7 @@ Usage:
 
 --old     files or folders holding the content before the rewrite. With --git-ref the
           paths are read from that commit (default use: HEAD, run inside the repository,
-          paths relative to the repository root as `git show REF:path` expects).
+          run from the repository root, paths relative to it).
 --new     files or folders holding the content after the rewrite. Together they count as
           one pool of lines: moving a line to another file, or into a detail document, is fine.
 --allow   a text file with lines that were meant to go (one per line, compared the same way).
@@ -22,7 +22,8 @@ counts as LOST):
   CHANGED  similar line found (listed with the nearest new line), does not fail the run
   ALLOWED  listed in the --allow file, does not fail the run
   LOST     nothing similar found: fails the run, exit code 1
-Exit codes: 0 no lost line, 1 at least one lost line, 2 wrong call or unreadable input.
+Files that look binary are skipped and listed as "skipped"; UTF-16 files with a byte order mark are
+read. Exit codes: 0 no lost line, 1 at least one lost line, 2 wrong call or unreadable input.
 
 Set semantics: a line that occurs three times before and once after is not reported (the check
 asks whether the text still exists, not how often). Standard library only.
@@ -53,11 +54,21 @@ def fs_files(path):
     raise FileNotFoundError(path)
 
 
-def read_text(path):
-    data = Path(path).read_bytes()
+SKIPPED = []  # names of files that were not read (binary)
+
+
+def decode(data, name):
+    """Text of a file, or None (and a note in SKIPPED) when it is binary."""
+    if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        return data.decode("utf-16", "replace")
     if b"\0" in data[:4096]:
+        SKIPPED.append(name)
         return None
     return data.decode("utf-8", "replace")
+
+
+def read_text(path):
+    return decode(Path(path).read_bytes(), str(path))
 
 
 def git(args):
@@ -69,15 +80,14 @@ def git(args):
 
 def git_texts(ref, path):
     """Yield (name, text) for a file or folder as it was at ref."""
-    names = git(["ls-tree", "-r", "--name-only", ref, "--", path]).decode("utf-8", "replace").split("\n")
-    names = [n for n in names if n]
+    raw = git(["ls-tree", "-r", "-z", "--full-name", "--name-only", ref, "--", path])
+    names = [n.decode("utf-8", "replace") for n in raw.split(b"\0") if n]
     if not names:
         raise FileNotFoundError(f"{ref}:{path}")
     for n in names:
-        data = git(["show", f"{ref}:{n}"])
-        if b"\0" in data[:4096]:
-            continue
-        yield n, data.decode("utf-8", "replace")
+        text = decode(git(["show", f"{ref}:{n}"]), n)
+        if text is not None:
+            yield n, text
 
 
 def collect(paths, ref=None):
@@ -91,6 +101,16 @@ def collect(paths, ref=None):
                 if t is not None:
                     out.append((str(f), t))
     return out
+
+
+def word_diff(a, b):
+    """Only the words that differ, so a change at the end of a long line is visible."""
+    x, y = a.split(), b.split()
+    out = []
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, x, y).get_opcodes():
+        if tag != "equal":
+            out.append("[" + " ".join(x[i1:i2]) + "] -> [" + " ".join(y[j1:j2]) + "]")
+    return "; ".join(out)[:300]
 
 
 def main(argv):
@@ -173,12 +193,15 @@ def main(argv):
         else:
             lost.append((name, i, orig))
 
+    for name in SKIPPED:
+        print(f"skipped (binary, not checked): {name}")
     print(f"old lines (non-blank): {total}, distinct missing from new pool: {len(missing)}")
     print(f"LOST {len(lost)}, CHANGED {len(changed)}, ALLOWED {len(allowed)}")
     for name, i, orig in lost:
         print(f"LOST    {name}:{i}: {orig[:200]}")
     for name, i, orig, near, where in changed:
         print(f"CHANGED {name}:{i}: {orig[:120]}\n        -> {where}: {near[:120]}")
+        print(f"        differing words: {word_diff(norm(orig, keep), near)}")
     for name, i, orig in allowed:
         print(f"ALLOWED {name}:{i}: {orig[:120]}")
     print("OK: no old line is lost" if not lost else f"FAILED: {len(lost)} old line(s) found nowhere in the new files")
