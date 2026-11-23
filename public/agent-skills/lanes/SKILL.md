@@ -4,7 +4,7 @@ description: How several agent sessions work on one git repository at the same t
 compatibility: The integration script needs Windows PowerShell 5.1 or newer and git (2.31 or newer, because the script uses `git rev-parse --path-format=absolute`). The guard hook is an optional Claude Code PreToolUse hook and needs Node.js. No macOS or Linux version of the script is bundled.
 ---
 
-# Parallel worktrees
+# Lanes
 
 Goal: any number of sessions change one repository at once, and the default branch only ever moves to a state that passed the full check. Below, `<default>` is the repository's default branch (main or master) and `<repo>` the folder name of the main checkout. `<name>` is a short tag for your tool, only lowercase letters, digits and hyphens (for example `claude`) and `<topic>` is 2 to 4 lowercase words joined by hyphens for the change. Two sessions of the same tool differ by `<topic>`, so keep topics distinct.
 
