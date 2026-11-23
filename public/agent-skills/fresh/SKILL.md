@@ -1,6 +1,6 @@
 ---
 name: fresh
-description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, and offers a fresh one. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows. Not for sessions with nothing to carry over, and never before the current request is done.
+description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, and offers a fresh one. Also resumes work from a handoff file or after a crash or stop: it checks the real state first, names every difference from the handoff, then continues. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows; and, to resume, when a session starts from a handoff file or the user says to continue after a crash or stop. Not for sessions with nothing to carry over, and never before the current request is done.
 ---
 
 # Fresh
@@ -30,6 +30,15 @@ Finish the user's current request first, then run this skill when any of these h
    7. **Recommended skills** for the next session, only ones you saw in this tool's skill list; "none" if the next session runs in another tool.
 2. **Clean and save, without asking.** Re-read the draft and remove keys, tokens, passwords, cookies, secret URLs and any personal data the work does not need. Then save it in the folder the user's instruction files (such as `CLAUDE.md` or `AGENTS.md`) name for handoffs, else in the session's scratchpad or the system temp folder, outside the repository. Name it after the task plus date and time; if that name exists, add a number, never overwrite. If writing fails, or the next session cannot reach that path (another machine, a cloud agent), put the cleaned text in your reply instead.
 3. **Close with one message**: which case above applied (one line); a recap of two or three sentences saying what is done, what is open and what was not checked; the recommended model and effort, both by name, as in the file; the file's full path, as a link where the tool renders links; and a first line for the new session, ready to paste, such as "Read <path> and continue." If the case was size or images and the user is still on the same task, add that compacting (`/compact` in Claude Code) is the alternative; after a pause or for a new task, recommend the fresh session. End the message with the offer: if your tool can start a session, one yes/no question that opens with this skill's name (`/fresh`), so the user sees which skill is asking, and names both the model and the effort, using its question or button UI if it has one, and start it only on a yes; otherwise say how to open a new session with that model and effort.
+
+## Resume (a handoff file, or "continue" after a crash or stop)
+
+Run this when a session starts from a handoff file, or when the user says to continue after a crash or stop. Read the handoff file first, if there is one.
+
+1. **Check the real state before you act.** Read, never change: `git status`, the current branch, the worktrees, the last commit against the one the handoff names, the last integration or build log if the project writes one, and running background jobs and servers. Done when you have each value or "not found".
+2. **Name every difference from the handoff** in one short list (another commit, extra uncommitted files, a job still running or gone, a missing branch). Where the handoff and the real state disagree, the real state wins. If the next step is unclear after that, ask one question.
+3. **Continue the interrupted step**: the handoff's first open item, or after a crash the last step the handoff or the transcript shows. Finish with the commands the handoff lists as must-be-green.
+4. **Leave running processes and locked folders alone.** Report the process (its PID and command) or the folder and what it blocks, and go on with whatever does not depend on it. Never kill a process or force-delete a locked folder as a workaround.
 
 ## Hook setup (Claude Code only)
 
