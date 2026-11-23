@@ -1,7 +1,7 @@
 // Anonymizes answers for blind judges: random ids, optional framing removed, key written to a separate file.
 // Usage: node anonymize.mjs <runs-folder> <blind-folder> <key-file> [options]
 //   --strip-fence        remove a code fence around the whole answer (only when first and last line are fences)
-//   --strip-title        remove a first line that is a markdown title (done after the fence)
+//   --strip-title        remove a first line that is a markdown title of level 1 to 3 (done after the fence)
 //   --strip-line <regex> remove every line matching the regex (repeatable), for tool or prompt framing
 //   --ext <.ext>         file extension to read, with the dot (default .md)
 // File names: <group>_<variant>_<run>.<ext>. The group is everything before the last two underscore
@@ -9,8 +9,8 @@
 // written, with Answer_<ID>.<ext> files under random letters. The key file maps group/ID to the
 // original file name and word count.
 // Safety: the blind folder must be empty or missing, the key file must not exist yet and must lie
-// outside the blind folder. All input errors are collected and reported before anything is written
-// (exit 1). Afterwards the script prints what stripping did and warns when an answer still contains
+// outside the blind folder. All input errors, including unreadable files, are collected and reported
+// before anything is written (exit 1). Afterwards the script prints what stripping did and warns when an answer still contains
 // a variant name as a whole word.
 import fs from "fs";
 import path from "path";
@@ -70,6 +70,10 @@ for (const f of files) {
   }
   variants.add(parts[parts.length - 2]);
   const g = parts.slice(0, -2).join("_");
+  if (g === "." || g === "..") {
+    errors.push(`Misnamed file ${f}: the group name must not be "${g}".`);
+    continue;
+  }
   (groups[g] = groups[g] || []).push(f);
 }
 if (files.length > 0 && Object.keys(groups).length === 0 && errors.length === 0) errors.push("No matching files found.");
@@ -93,8 +97,8 @@ function strip(text) {
       stats.fence++;
     }
   }
-  if (opts.stripTitle && /^# [^\n]*(\n|$)/.test(t)) {
-    t = t.replace(/^# [^\n]*(\n|$)/, "").trim();
+  if (opts.stripTitle && /^#{1,3} [^\n]*(\n|$)/.test(t)) {
+    t = t.replace(/^#{1,3} [^\n]*(\n|$)/, "").trim();
     stats.title++;
   }
   if (opts.stripLines.length) {
@@ -113,18 +117,39 @@ function shuffle(list) {
   return list;
 }
 
+// Read and plan everything first, so that nothing is written when one input fails.
 const key = {};
 const written = [];
+const dstRoot = path.resolve(dst);
+const readErrors = [];
 for (const [g, list] of Object.entries(groups)) {
   const ids = shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")).slice(0, list.length);
-  fs.mkdirSync(path.join(dst, g), { recursive: true });
   list.forEach((f, i) => {
-    const text = strip(fs.readFileSync(path.join(src, f), "utf8"));
+    let text;
+    try {
+      text = strip(fs.readFileSync(path.join(src, f), "utf8"));
+    } catch (e) {
+      readErrors.push(`Cannot read ${f}: ${e.message}`);
+      return;
+    }
     const out = path.join(dst, g, `Answer_${ids[i]}${opts.ext}`);
-    fs.writeFileSync(out, text);
-    written.push({ out, text });
+    const inside = path.relative(dstRoot, path.resolve(out));
+    if (inside.startsWith("..") || path.isAbsolute(inside)) {
+      readErrors.push(`Output for ${f} would lie outside the blind folder.`);
+      return;
+    }
+    written.push({ g, out, text });
     key[`${g}/${ids[i]}`] = `${f.slice(0, -opts.ext.length)} (${text.split(/\s+/).filter(Boolean).length} words)`;
   });
+}
+if (readErrors.length) {
+  console.error("Nothing written. Fix these first:\n- " + readErrors.join("\n- "));
+  process.exit(1);
+}
+fs.mkdirSync(path.dirname(path.resolve(keyFile)), { recursive: true });
+for (const { g, out, text } of written) {
+  fs.mkdirSync(path.join(dst, g), { recursive: true });
+  fs.writeFileSync(out, text);
 }
 fs.writeFileSync(keyFile, JSON.stringify(key, null, 1), { flag: "wx" });
 
@@ -132,9 +157,10 @@ console.log(Object.entries(groups).map(([g, f]) => `${g}: ${f.length}`).join("\n
 console.log(`Stripping: ${stats.fence} fence(s), ${stats.title} title(s), ${stats.lines} line(s) removed.`);
 const leaks = [];
 for (const { out, text } of written) {
-  const words = new Set(text.toLowerCase().split(/[^a-z0-9]+/));
+  const lower = text.toLowerCase();
   for (const v of variants) {
-    if (words.has(v.toLowerCase())) leaks.push(`${out} mentions "${v}"`);
+    const esc = v.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (new RegExp("(?<![a-z0-9])" + esc + "(?![a-z0-9])").test(lower)) leaks.push(`${out} mentions "${v}"`);
   }
 }
 if (leaks.length) console.log("WARNING, possible leaks of a variant name (check by hand):\n" + leaks.join("\n"));
