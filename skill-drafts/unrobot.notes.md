@@ -69,6 +69,23 @@ Applied (Jakob chose "Batch 7 Punkte"), each reproduced with a fixture first:
 
 Not applied: G4 (a "syntax error" in the script), C-P13, C-P14, C-P15 (paste artifacts: the script compiles and runs); G9 CRLF frontmatter (not reproduced, a CRLF fixture with front matter gives 0 hits); G11 (git history as evidence: contradicts the decided no-`git log` rule); C-P5 (description 667 characters, already excludes proofreading), C-P6, C-P7, C-P12, C-P16, C-P17 (no problem shown or already stated); C-P18 and G12 (Python availability: not checked, fallback already in step 3); C-P19 (compatibility field: not checked against the spec); C-P1 to C-P4, C-P20, G1 (the reviewer could not open the sources; origin answered by the measured overlap).
 
+## Test round 2026-11-24 (checklist section 7)
+
+Setup: Sonnet, `claude -p`, one throwaway folder per run, skill in `.claude/skills/unrobot`, `--setting-sources project`, max 20 turns. Raw data: `D:/Temp/unrobot-tests-2026-11-24-r1/<case>-<n>/stream.jsonl` (not durable). 9 runs, 2 per case, one `/unrobot` start.
+
+| Case | Prompt | Skill started | Result |
+|---|---|---|---|
+| blog, natural (2 runs) | "Make this blog paragraph ... sound less like AI and fix it in place." | 0 of 2 | Rewritten without the skill; scanner still 1-2 hits left per run. |
+| email, natural (2 runs) | "Please remove the AI tells from email.txt, it goes to a real client." | 0 of 2 | Rewritten without the skill; scanner 1 hit left per run. |
+| blog, `/unrobot post.md` (1 run) | slash start | no trace (expected) | Scanner 9 hits to 0, judgement signs named by number, no invented fact. |
+| site, 12 HTML files (2 runs) | "Unrobot the copy in the site folder, fix what you find." | 2 of 2 | 4 dirty pages fixed, 8 clean pages untouched, `<script>` untouched. |
+| check, natural (2 runs) | "check our copy before launch" | 2 of 2 | Check-only: home.md unchanged, 9 scanner hits plus by-reading signs, contact.md clean. |
+
+Findings:
+- The natural phrases "sound less like AI" and "remove the AI tells" did not start the skill in 4 of 4 runs, although the description names "de-AI'd", "humanised" and "sounds like AI". Needs a description change or a decision to accept it; not changed yet.
+- Whether the 4 natural runs invented facts and whether the skill runs avoided it was not compared systematically; not checked.
+- Not tested: runs without the skill as a baseline, Codex, Cursor, a non-English text, a case with many files (30).
+
 ## Invocation: model-invoked
 The description names the triggers: de-AI, humanise, "less robotic", checking for AI tells before publishing, and "sounds like AI".
 
