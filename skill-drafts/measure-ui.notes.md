@@ -26,7 +26,7 @@
 - Test numbers measured once per state (one run); the before and after pair is a before/after, not a repeat run.
 
 ## Name
-Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web check 2026-11-24: see `measure-ui.netz.md`. No skill exactly `measure-ui` found; `ui-verify` (suggested by two reviewers) is taken by at least four skills with other jobs; `ux-measure` and `design-measure` are near in wording. Jakob decides whether the name stays.
+Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web check 2026-11-24: see `measure-ui.netz.md`. No skill exactly `measure-ui` found; `ui-verify` (suggested by two reviewers) is taken by at least four skills with other jobs; `ux-measure` and `design-measure` are near in wording. Jakob decided on 2026-11-24 in this session's chat: `measure-ui` stays.
 
 ## Open questions
 - Should the skill ship a small JS snippet that prints the rects of a list of selectors as a table? Left out: it would be tool-specific and untested.
