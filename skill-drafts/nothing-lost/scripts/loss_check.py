@@ -64,7 +64,7 @@ def decode(data, name):
     if b"\0" in data[:4096]:
         SKIPPED.append(name)
         return None
-    return data.decode("utf-8", "replace")
+    return data.decode("utf-8-sig", "replace")  # a UTF-8 byte order mark is dropped
 
 
 def read_text(path):
@@ -80,6 +80,8 @@ def git(args):
 
 def git_texts(ref, path):
     """Yield (name, text) for a file or folder as it was at ref."""
+    if ref.startswith("-"):
+        raise RuntimeError(f"invalid git ref: {ref}")
     raw = git(["ls-tree", "-r", "-z", "--full-name", "--name-only", ref, "--", path])
     names = [n.decode("utf-8", "replace") for n in raw.split(b"\0") if n]
     if not names:
@@ -126,13 +128,21 @@ def main(argv):
     except SystemExit as e:
         return 2 if e.code else 0
     keep = a.ignore_case
+    if not 0 <= a.similar <= 1:
+        print("error: --similar must be between 0 and 1", file=sys.stderr)
+        return 2
+    SKIPPED.clear()
     try:
         old = collect(a.old, a.git_ref)
         new = collect(a.new)
         allow = set()
         if a.allow:
-            allow = {norm(l, keep) for l in Path(a.allow).read_text(encoding="utf-8").splitlines() if l.strip()}
-    except (OSError, RuntimeError) as e:
+            allow_text = read_text(a.allow)
+            if allow_text is None:
+                raise RuntimeError(f"--allow file looks binary: {a.allow}")
+            SKIPPED.clear()
+            allow = {norm(l, keep) for l in allow_text.splitlines() if l.strip()}
+    except (OSError, RuntimeError, ValueError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
     if not old or not new:
