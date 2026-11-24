@@ -6,7 +6,7 @@ Context
 - Origin: the sign catalogue and the ideas build on Wikipedia "Signs of AI writing" (WikiProject AI Cleanup), blader/humanizer v4.0.0 (MIT) and BooleSystems/BooleOS de-ai-writing (MIT). The wording is new: I rewrote it on 2026-11-24, and a 6-word-run overlap check afterwards found at most about 4 % per file and source, the rest only watch-word lists, sign titles and headings. The scanner script was written by Claude in my own sessions; only its sign word lists come from the catalogue. Part 1 is there to catch anything that slipped in from other people's skills anyway.
 - Decided by me. Do not argue these, but flag one if it makes the skill unsafe or broken: no dash as punctuation by default (an em dash, a spaced en dash or a spaced " -- " used as a break is a sign; the author's own writing sample, meaning a different text by the same author, overrides this); the skill is model-invoked (no disable-model-invocation); the scanner stays a bundled script, English only, and a non-English text is handled by reading plus a note in the report; no mandatory `git status` check and no `.unrobot.<ext>` side copies; no fixed list of note-file names to read (CLAUDE.md or AGENTS.md and the files they name are enough) and no `git log -S` rule; no page priority list for long inputs and no definition of "strongest sign"; the skill never loops until the scanner shows zero (one rewrite pass, one re-scan); the name unrobot stays.
 - Already answered in an earlier review round, do not raise again unless the new text brings the problem back: a fresh Sonnet agent read the public SKILL.md blind on 2026-11-24 and found 15 points. All were applied in my own words, points 4 and 10 in a shortened form. The verdict per point is in `skill-drafts/unrobot.notes.md`, section "Blind read 2026-11-24". In short: (1) check-only mode added; (2) "done" no longer means zero scanner hits, it means every remaining hit is judged clean or kept on purpose and named in the report; (3) emails and letters to a real recipient keep ordinary courtesy and real requests; (4) output rule for pasted text, in-place edits only on request, generated-only input leads to the source or a stop; (5, 13) wording fixed on purpose is checked only in a repo, doubts collected into one question; (6) dash rule made precise; (7) site headings that are anchors, nav labels, page titles or buttons keep their wording; (8) scanner stops with exit 2 on a folder or missing file, JSX/TSX/JSON false alarms, stdin, python fallback; (9) non-English text; (10) long inputs use `--summary`, file by file; (11) thresholds pointed to; (12) no claim is deleted, a vague one is flagged; (14) eye-check list; (15) report counts scanner hits and names judgement signs "by reading". Rejected in that round: a mandatory `git status` check, `.unrobot.<ext>` side copies, a fixed list of note-file names, a `git log -S` rule, a page priority list, a definition of "strongest".
-- Second round already applied (Gemini and Copilot, 2026-11-24, 12 points; verdicts in `skill-drafts/unrobot.notes.md`, section "External reviews 2026-11-24"): a rhythm pass replaces "read aloud"; the description excludes proofreading, translation and tone changes; the agent finds copy files itself; JSX, TSX and JSON are not parsed; python order python, python3, py -3; "10 files up", 0-hit files listed; separate rewrite and check-only reports; the scanner keeps line numbers across stripped blocks; 3.7 hits only mixed straight and curly quotes; "might possibly" is matched; 1.7 only on the first sentence; " -- " counts as a dash sign; the temp file is deleted. Do not raise these again unless the new text brings them back.
+- Second round already applied (Gemini and Copilot, 2026-11-24, 12 points; verdicts in `skill-drafts/unrobot.notes.md`, section "External reviews 2026-11-24"): a rhythm pass replaces "read aloud"; the description excludes proofreading, translation and tone changes; the agent finds copy files itself; JSX, TSX and JSON are not parsed; python order python, python3, py -3; "10 files up", 0-hit files listed; separate rewrite and check-only reports; the scanner keeps line numbers across stripped blocks; 3.7 hits only mixed straight and curly quotes; "might possibly" is matched; 1.7 only on the first sentence; " -- " counts as a dash sign; the temp file is deleted. Also applied in a third round (Copilot and Gemini on the rebuilt prompt): word patterns starting with a group now get a word boundary ("visits only" no longer matches); "rather than" is no longer scanned per sentence; 1.7 skips Markdown headings; stdin text is stripped of code blocks like .md files; the paragraph check and step 4 are spelled out; 0-hit files and check-only mode on 10+ files are handled; a bare "check" request without AI wording gets a one-line scope note. Do not raise these again unless the new text brings them back.
 - Known from my own checks: the scanner was run on a German text (0 hits, so it is English only) and on a JSX file (a `className="vibrant"` prop is a hit, a known false alarm). Not yet tested: the full rewrite flow on real sites, the check-only mode, Codex and Cursor.
 
 Sources
@@ -46,17 +46,17 @@ Treat the signs as symptoms. A model drifts toward the commonest phrasing, and i
 
 ## Mode
 
-A request to rewrite, fix or humanise runs all five steps. A request to check or review ("look over our copy before launch") runs steps 1, 2 and 5 only: it changes no file, and the report lists each hit with file, line, sign number and a proposed replacement. If it is unclear which one the user wants, give the check report first and offer the rewrite.
+A request to rewrite, fix or humanise runs all five steps. A request to check or review ("look over our copy before launch") runs steps 1, 2 and 5 only: it changes no file, and the report lists each hit with file, line, sign number and a proposed replacement. If it is unclear which one the user wants, give the check report first and offer the rewrite. If the request does not mention AI tells, robotic wording or humanising, say in one line that you check for AI tells only and offer a broader copy review.
 
 ## Workflow
 
-1. **Get the text.** The input may be pasted text, a file, a folder or a built site. In a codebase, edit where the copy is written (data files, templates), never generated output. Find the copy-bearing files yourself before asking the user for paths. If only generated output (dist, build, .next, out) is given, find the source by searching for a distinctive sentence; if none turns up, report and stop. Pasted text gets the complete rewritten text in the reply, then the report, and no file is written. Files are edited in place only when the user asked for fixes.
-2. **Mark each sign** by its number from `references/signs.md`, and look at the shape of the paragraphs too. Weak signs and informal text count only under the thresholds at the end of its section 6. Run the scanner first for a baseline. It matches word and phrase patterns only, so the rest needs your own reading:
+1. **Get the text.** The input may be pasted text, a file, a folder or a built site. In a codebase, edit where the copy is written (data files, templates), never generated output. Find the copy-bearing files yourself before asking the user for paths: search the likely copy locations once, and if no prose source turns up, report and stop. If only generated output (dist, build, .next, out) is given, find the source by searching for a distinctive sentence; if none turns up, report and stop. Pasted text gets the complete rewritten text in the reply, then the report, and no file is written. Files are edited in place only when the user asked for fixes.
+2. **Mark each sign** by its number from `references/signs.md`, and check the paragraphs for repeated sentence starts, uniform lengths and one-line closers. Weak signs and informal text count only under the thresholds at the end of its section 6. Run the scanner first for a baseline. It matches word and phrase patterns only, so the rest needs your own reading:
    ```bash
    python -I "<full path to scripts/check_ai_signs.py>" <files>   # .txt .md .html, "-" = stdin
    python -I "<full path to scripts/check_ai_signs.py>" <files> --summary
    ```
-   The scanner is `scripts/check_ai_signs.py` next to this SKILL.md; call it by its full path. It needs Python 3 and nothing else. List the files first and pass them as arguments; a folder or a missing file stops with exit 2. Exit 1 only means hits. Pasted text goes through `-` (stdin) or a temp file outside the repo that you delete afterwards. Try `python`, then `python3`, then `py -3`; if none runs, scan by eye and say so in the report. The scanner does not parse JSX, TSX or JSON, so hits inside tags, props, identifiers and JSON keys are false alarms and `--summary` counts can be inflated; in JSON only the string values meant for readers are prose. The scanner and its word lists are English only: in another language apply the structural signs by reading, say in the report that the scanner could not check it, and read a zero as "nothing checked". From 10 files up, run `--summary` over all of them, work file by file starting with the highest hit count, and list the 0-hit and skipped files in the report. Inside a code file, touch prose only. Code, commands, paths, YAML keys, data and link targets stay as they are.
+   The scanner is `scripts/check_ai_signs.py` next to this SKILL.md; call it by its full path. It needs Python 3 and nothing else. List the files first and pass them as arguments; a folder or a missing file stops with exit 2. Exit 1 only means hits. Pasted text goes through `-` (stdin) or a temp file outside the repo that you delete afterwards. Try `python`, then `python3`, then `py -3`; if none runs, scan by eye and say so in the report. The scanner does not parse JSX, TSX or JSON, so hits inside tags, props, identifiers and JSON keys are false alarms and `--summary` counts can be inflated; in JSON only the string values meant for readers are prose. The scanner and its word lists are English only: in another language apply the structural signs by reading, say in the report that the scanner could not check it, and read a zero as "nothing checked". From 10 files up, run `--summary` over all of them, work file by file starting with the highest hit count, and list the 0-hit and skipped files in the report, saying whether you read them for judgement signs (a 0-hit file can still hold them). In check-only mode on 10 files or more, report the summary table first, give the detailed hits for the five files with the most hits, and offer the rest. Inside a code file, touch prose only. Code, commands, paths, YAML keys, data and link targets stay as they are.
 3. **Rewrite** every marked spot under these constraints:
    - Each name, number, date, link, fact and claim survives. Padding goes; facts stay. Never make up a fact to fill the hole a puffed-up phrase leaves, and never delete a vague claim (see 1.5). If a concrete detail is missing, write the plain version without it, or ask.
    - Keep the author's voice, person, spelling (UK or US), format (Markdown, HTML, JSX) and length limits (SEO title about 60 characters, meta description about 155, button labels).
@@ -66,7 +66,7 @@ A request to rewrite, fix or humanise runs all five steps. A request to check or
    - Gaps in knowledge get one concrete statement that tells the reader what to do ("Opening times aren't posted, so call first").
    - Format and structure: in a site or app, a heading that is an anchor target, nav label, page title or button keeps its wording. Change structure (headings, bold labels, tables, rules) only in prose documents the user handed over; elsewhere report it.
    - Clean sentences stay untouched (see "Not signs" in the reference).
-4. **Compare and re-read.** Set the result beside the original: each fact, name, number, date, quote and ranking is present, nothing new has appeared. Scan again, then check by eye what the scanner cannot see: 2.5, 2.6, 3.2, 3.3, 6.1, 6.2, 6.3, 6.6 (it sees 2.4, 3.4, 6.5 and 6.7). Read it once more for rhythm and abrupt transitions; fix a line that still shows a catalogue sign in this pass, then stop.
+4. **Compare and re-read.** Set the result beside the original: each fact, name, number, date, quote and ranking is present, nothing new has appeared. Scan again, then check by eye what the scanner cannot see: 2.5, 2.6, 3.2, 3.3, 6.1, 6.2, 6.3, 6.6 (it sees 2.4, 3.4, 6.5 and 6.7). Read it once more for rhythm, abrupt transitions and any remaining catalogue sign; fix those lines in this pass, then stop.
 5. **Report briefly.** In rewrite mode give scanner hits before and after, list the judgement signs you fixed by number (labelled "by reading"), add two or three before/after pairs (or say the text was already clean), and name whatever stayed on purpose (a quotation, a literal use of "landscape", a proper noun, wording the author settled). In check-only mode give the scanner hit count and list every hit, scanner and by reading, with file, line, sign number and a proposed replacement.
 
 Done means: every scanner hit still left is judged clean (a quotation, a literal use) or kept on purpose and named in the report; no fact lost, no fact invented. One rewrite pass and one re-scan; do not loop until the scanner shows zero.
@@ -235,7 +235,7 @@ SIGNS = {
     "2.3 vague association": [r"(?:is|was|were|are) associated with", r"in connection with"],
     "2.4 negative parallelism": [
         r"not only\b.{0,80}\bbut", r"(?:it'?s|it is|this is|this isn'?t|isn'?t|is not|it'?s not|it is not|this is not) (?:just|merely|simply|only) ",
-        r"\bnot\b[^.!?]{1,40}, but\b", r"\bno \w+, no \w+, just\b", r"rather than",
+        r"\bnot\b[^.!?]{1,40}, but\b", r"\bno \w+, no \w+, just\b",
     ],
     "3.4 em/en dash": [r"\u2014", r"\s\u2013\s", r"\s--\s"],
     "3.5 emoji": [r"[\U0001F300-\U0001FAFF\u2600-\u27bf\u2b50\u2705]"],
@@ -264,7 +264,7 @@ SIGNS = {
 }
 
 COMPILED = {
-    name: [re.compile(p if p.startswith(("^", "(?<=")) else W + p if p[0].isalpha() else p, re.I | re.M) for p in pats]
+    name: [re.compile(p if p.startswith(("^", "(?<=")) else W + p if (p[0].isalpha() or p.startswith("(?:")) else p, re.I | re.M) for p in pats]
     for name, pats in SIGNS.items()
 }
 
@@ -316,21 +316,25 @@ def mixed_quotes(text):
 
 def scan(text):
     hits = []
-    for idx, (line_no, s) in enumerate(sentences(text)):
+    body = 0  # index among sentences that are not Markdown headings
+    for line_no, s in sentences(text):
+        is_heading = s.startswith("#")
         for name, pats in COMPILED.items():
-            if idx > 0 and name.startswith("1.7"):
-                continue  # a title-defining lead can only be the first sentence of the text
+            if body > 0 and name.startswith("1.7"):
+                continue  # a title-defining lead can only be the first body sentence of the text
             for p in pats:
                 m = p.search(s)
                 if m:
                     hits.append((name, line_no, m.group(0), s))
                     break
+        if not is_heading:
+            body += 1
     return hits + mixed_quotes(text)
 
 
 def load(path):
     if path == "-":
-        return sys.stdin.read()
+        return strip_markdown(sys.stdin.read())
     with open(path, encoding="utf-8", errors="replace") as f:
         raw = f.read()
     low = path.lower()
