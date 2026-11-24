@@ -49,6 +49,9 @@
 - One reviewer pasted by Jakob (18 points). Applied: identity by address plus page-specific element; first stable state shows real content; restart stability check on later rendering; name the iframe used; longest `textContent`; hover or focus for reveal controls; read-only navigation and no dialog confirmation in signed-in sessions.
 - Rejected: `compatibility` must mention fallback (kept); leave dev server running (owner's habit); unclear-control rule restated (exists); resize/focus criteria, references folder (again). Overlap audit stays incomplete. Not tested.
 
+## Fifth round (2026-11-24)
+- One reviewer pasted by Jakob. Applied: viewport set before load, read-backs after settle (ordering bug); third-person description; one retry for 0 x 0 rect; `scrollIntoView({ block: 'center' })` (fixed header); `type` property and form buttons; "for example" for the 0 x 0 cause. Rejected: stop the server I started (owner's habit), resize/focus criteria (again), renderer claim as verified (source not opened by me). Open for Jakob: `license` field (reviewer suggests MIT; owner's choice, not added). Not tested.
+
 ## Name
 Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web check 2026-11-24: see `measure-ui.netz.md`. No skill exactly `measure-ui` found; `ui-verify` (suggested by two reviewers) is taken by at least four skills with other jobs; `ux-measure` and `design-measure` are near in wording. Jakob decided on 2026-11-24 in this session's chat: `measure-ui` stays.
 
