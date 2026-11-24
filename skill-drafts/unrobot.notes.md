@@ -55,6 +55,20 @@ Triaged by Jakob's choice "Batch 12 Punkte". Applied in my words, checked with f
 
 Answered, nothing changed: C4 (SKILL.md is workflow only), C9 (`--summary` already prints per-file counts), C11, C12, C13 and Copilot P11-P13 (paste artifacts), C14, C15, C16 (legal text is never altered, stated already), C20, G13 and G14 (not checked), C2, C3, G1 (origin: measured overlap about 4 % per file and source, see "Origin check"). C1 and C19 left to Jakob, not chosen.
 
+## External reviews round 3, 2026-11-24 (Copilot C, Gemini G on the rebuilt prompt)
+
+Applied (Jakob chose "Batch 7 Punkte"), each reproduced with a fixture first:
+- G5: patterns starting with a group had no word boundary ("visits only", "monkey role", "unfeatured in" matched); fixed, fixture gives 0 hits.
+- G6: "rather than" is no longer scanned per sentence (signs.md 2.4 means overuse); left to the reading pass.
+- G7: 1.7 skipped Markdown files with a title; now checked on the first sentence that is not a heading.
+- G8: stdin text now goes through the Markdown stripper (fenced code gave false hits).
+- G2, C-P8: step 2 names what "shape of the paragraphs" means (repeated starts, uniform lengths, one-line closers).
+- G3: step 4 rhythm pass also fixes any remaining catalogue sign.
+- G10, C-P10, C-P11: 0-hit files stated as read or not read; check-only on 10+ files gives the summary table plus the five worst files; one search pass for copy files, then report and stop.
+- C-P9: a bare "check" request without AI wording gets a one-line scope note.
+
+Not applied: G4 (a "syntax error" in the script), C-P13, C-P14, C-P15 (paste artifacts: the script compiles and runs); G9 CRLF frontmatter (not reproduced, a CRLF fixture with front matter gives 0 hits); G11 (git history as evidence: contradicts the decided no-`git log` rule); C-P5 (description 667 characters, already excludes proofreading), C-P6, C-P7, C-P12, C-P16, C-P17 (no problem shown or already stated); C-P18 and G12 (Python availability: not checked, fallback already in step 3); C-P19 (compatibility field: not checked against the spec); C-P1 to C-P4, C-P20, G1 (the reviewer could not open the sources; origin answered by the measured overlap).
+
 ## Invocation: model-invoked
 The description names the triggers: de-AI, humanise, "less robotic", checking for AI tells before publishing, and "sounds like AI".
 

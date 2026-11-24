@@ -60,7 +60,7 @@ SIGNS = {
     "2.3 vague association": [r"(?:is|was|were|are) associated with", r"in connection with"],
     "2.4 negative parallelism": [
         r"not only\b.{0,80}\bbut", r"(?:it'?s|it is|this is|this isn'?t|isn'?t|is not|it'?s not|it is not|this is not) (?:just|merely|simply|only) ",
-        r"\bnot\b[^.!?]{1,40}, but\b", r"\bno \w+, no \w+, just\b", r"rather than",
+        r"\bnot\b[^.!?]{1,40}, but\b", r"\bno \w+, no \w+, just\b",
     ],
     "3.4 em/en dash": [r"\u2014", r"\s\u2013\s", r"\s--\s"],
     "3.5 emoji": [r"[\U0001F300-\U0001FAFF\u2600-\u27bf\u2b50\u2705]"],
@@ -89,7 +89,7 @@ SIGNS = {
 }
 
 COMPILED = {
-    name: [re.compile(p if p.startswith(("^", "(?<=")) else W + p if p[0].isalpha() else p, re.I | re.M) for p in pats]
+    name: [re.compile(p if p.startswith(("^", "(?<=")) else W + p if (p[0].isalpha() or p.startswith("(?:")) else p, re.I | re.M) for p in pats]
     for name, pats in SIGNS.items()
 }
 
@@ -141,21 +141,25 @@ def mixed_quotes(text):
 
 def scan(text):
     hits = []
-    for idx, (line_no, s) in enumerate(sentences(text)):
+    body = 0  # index among sentences that are not Markdown headings
+    for line_no, s in sentences(text):
+        is_heading = s.startswith("#")
         for name, pats in COMPILED.items():
-            if idx > 0 and name.startswith("1.7"):
-                continue  # a title-defining lead can only be the first sentence of the text
+            if body > 0 and name.startswith("1.7"):
+                continue  # a title-defining lead can only be the first body sentence of the text
             for p in pats:
                 m = p.search(s)
                 if m:
                     hits.append((name, line_no, m.group(0), s))
                     break
+        if not is_heading:
+            body += 1
     return hits + mixed_quotes(text)
 
 
 def load(path):
     if path == "-":
-        return sys.stdin.read()
+        return strip_markdown(sys.stdin.read())
     with open(path, encoding="utf-8", errors="replace") as f:
         raw = f.read()
     low = path.lower()
