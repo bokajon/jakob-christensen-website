@@ -145,6 +145,17 @@
             <li>
               <details>
               <summary class="skill-head">
+                <h3>/cheap-agents</h3>
+                <a class="download" href="agent-skills/cheap-agents/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+              </summary>
+              <p class="skill-desc">Helper agents cost extra tokens, and a helper's report can be wrong. <strong>This skill makes the agent decide whether a helper is worth it at all, and pick the cheapest model that does the job.</strong></p>
+                <p class="skill-desc">Before it starts several helpers, it tells you how many, which model each runs on and roughly what it costs, and waits for your yes. Each helper gets a written brief, and the agent checks the real files before it relies on a report.</p>
+                <p class="skill-desc">Start it with <code>/cheap-agents</code>, or ask your agent to use helpers. Small tasks it simply does itself.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
                 <h3>/fresh</h3>
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
               </summary>
@@ -153,17 +164,6 @@
                 <p class="skill-desc"><code>/fresh</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. After its first run in Claude Code, <code>/fresh</code> asks once whether to set the hook up; it changes nothing without your yes and keeps a backup of your settings.</p>
                 <p class="skill-desc">It also works the other way round: when a session starts from a handoff file, or you say to continue after a crash or stop, it first checks the real state (git, branch, background jobs), lists what differs from the handoff, then carries on and never kills a process to get around a block.</p>
                 <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h3>/blindfold</h3>
-                <a class="download" href="agent-skills/blindfold.zip" download="blindfold.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-              </summary>
-              <p class="skill-desc">It is easy to believe a rewrite helped and hard to know. <strong>This skill runs a blind, counted test of whether a changed prompt, skill or agent does better than the old version and than none at all, or a calibrated audit of many texts by blind readers.</strong> The audit first checks the readers on known bad and good examples before a clean result is trusted.</p>
-                <p class="skill-desc">It fixes the right answers before any answer is read, hides which version wrote what, lets two judges score each answer in a different order and counts hits, misses, extras and false alarms. It tells you the setup, its weaknesses and the cost first and starts nothing before your OK.</p>
-                <p class="skill-desc">Start it with <code>/blindfold</code>.</p>
               </details>
             </li>
             <li>
@@ -180,12 +180,12 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/lanes</h3>
-                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <h3>/freeup</h3>
+                <a class="download" href="agent-skills/freeup.zip" download="freeup.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
               </summary>
-              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every AI agent session in a git repository its own worktree and branch, keeps the main checkout clean as the place where finished work lands, and stages only named files.</strong></p>
-                <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
-                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>. In a project without the integration script it asks once, after its first manual integration, whether to set it up, and changes nothing without your yes.</p>
+              <p class="skill-desc">Windows slowly fills the system drive with caches and temp files nobody needs. <strong>This skill measures the junk on C: (temp folders, npm cache, graphics shader caches, crash dumps) and can also find cache-like folders on your other drives, shows you a size table and deletes the rows you approve with one yes.</strong></p>
+                <p class="skill-desc">It deletes only files that programs rebuild on their own and that are older than the age limit shown in the table. Files in use stay, and nothing is retried or forced. Downloads, worktrees and logs are only shown, never touched. It can also list cache-like folders on your other drives and cleans only the ones you accept.</p>
+                <p class="skill-desc">Windows only, it runs a PowerShell script and needs nothing else to install. Start it with <code>/freeup</code>, or ask for space on C. Unzip it into your skills folder so <code>freeup/SKILL.md</code> ends up there.</p>
               </details>
             </li>
             <li>
@@ -213,34 +213,34 @@
             <li>
               <details>
               <summary class="skill-head">
+                <h3>/lanes</h3>
+                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+              </summary>
+              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every AI agent session in a git repository its own worktree and branch, keeps the main checkout clean as the place where finished work lands, and stages only named files.</strong></p>
+                <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
+                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>. In a project without the integration script it asks once, after its first manual integration, whether to set it up, and changes nothing without your yes.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h3>/blindfold</h3>
+                <a class="download" href="agent-skills/blindfold.zip" download="blindfold.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+              </summary>
+              <p class="skill-desc">It is easy to believe a rewrite helped and hard to know. <strong>This skill runs a blind, counted test of whether a changed prompt, skill or agent does better than the old version and than none at all, or a calibrated audit of many texts by blind readers.</strong> The audit first checks the readers on known bad and good examples before a clean result is trusted.</p>
+                <p class="skill-desc">It fixes the right answers before any answer is read, hides which version wrote what, lets two judges score each answer in a different order and counts hits, misses, extras and false alarms. It tells you the setup, its weaknesses and the cost first and starts nothing before your OK.</p>
+                <p class="skill-desc">Start it with <code>/blindfold</code>.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
                 <h3>/fingerprints</h3>
                 <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
               </summary>
               <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a folder (a skill, a repository, a project or a site) before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong> For a skill folder it also checks the header and terms that belong to one tool.</p>
                 <p class="skill-desc">It runs a small Python script (Python 3, nothing else to install), reads the working files but not the git history, shows a found key only masked, and changes nothing unless you ask for fixes. It is not a full secret scanner and does not judge whether the content is good.</p>
                 <p class="skill-desc">Start it with <code>/fingerprints</code>, or ask whether a folder is safe to share. Unzip it into your skills folder so <code>fingerprints/SKILL.md</code> ends up there.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h3>/freeup</h3>
-                <a class="download" href="agent-skills/freeup.zip" download="freeup.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-              </summary>
-              <p class="skill-desc">Windows slowly fills the system drive with caches and temp files nobody needs. <strong>This skill measures the junk on C: (temp folders, npm cache, graphics shader caches, crash dumps) and can also find cache-like folders on your other drives, shows you a size table and deletes the rows you approve with one yes.</strong></p>
-                <p class="skill-desc">It deletes only files that programs rebuild on their own and that are older than the age limit shown in the table. Files in use stay, and nothing is retried or forced. Downloads, worktrees and logs are only shown, never touched. It can also list cache-like folders on your other drives and cleans only the ones you accept.</p>
-                <p class="skill-desc">Windows only, it runs a PowerShell script and needs nothing else to install. Start it with <code>/freeup</code>, or ask for space on C. Unzip it into your skills folder so <code>freeup/SKILL.md</code> ends up there.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h3>/cheap-agents</h3>
-                <a class="download" href="agent-skills/cheap-agents/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
-              </summary>
-              <p class="skill-desc">Helper agents cost extra tokens, and a helper's report can be wrong. <strong>This skill makes the agent decide whether a helper is worth it at all, and pick the cheapest model that does the job.</strong></p>
-                <p class="skill-desc">Before it starts several helpers, it tells you how many, which model each runs on and roughly what it costs, and waits for your yes. Each helper gets a written brief, and the agent checks the real files before it relies on a report.</p>
-                <p class="skill-desc">Start it with <code>/cheap-agents</code>, or ask your agent to use helpers. Small tasks it simply does itself.</p>
               </details>
             </li>
             <li>
