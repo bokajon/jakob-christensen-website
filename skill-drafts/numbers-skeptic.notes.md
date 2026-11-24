@@ -25,7 +25,15 @@ Part of the rule text overlaps with a possible claim-check rule (state only what
 - Netz-Abgleich 2026-11-24: `numbers-skeptic.netz.md` (check of the old name `retest`). The old name was already used by other skills with other jobs.
 
 ## Review prompt
-`numbers-skeptic.review-prompt.md` (full prompt with context, six parts and the SKILL.md inside), 2026-11-24. To paste into Gemini, ChatGPT and Copilot.
+`numbers-skeptic.review-prompt.md` (full prompt with context, six parts and the SKILL.md inside), 2026-11-24. Used with Gemini and Copilot (ChatGPT dropped by Jakob, 2026-11-24).
+
+Results 2026-11-24 (Gemini and Copilot, neither could open every page; findings are proposals, not yet applied):
+- Overlap: only obra/superpowers verification-before-completion (evidence before claims) and benchmark skills (godmode bench); no copied sentence found. Worth: both say it is not redundant, a guardrail against single-run anecdotes, fixture-as-runtime, estimated sizes, shallow dead-code claims.
+- Name: both found no exact `numbers-skeptic`; both say it reads broader than the job (may suggest an audit of business numbers). Alternatives offered: verify-metrics, measure-claims, measurement-skeptic. Open for Jakob.
+- Description: Gemini says use third person throughout (Anthropic best practices); Copilot says move the single-fact exception to the front.
+- Both: "More if the spread is wide" has no number (proposal: (max-min)/median above 10 percent). Gemini: Get-Counter name fails on German Windows (use Get-CimInstance Win32_Processor LoadPercentage), the 50 percent threshold is unverified, uptime is load average not percent.
+- Gemini: no rule for claims that cannot be measured locally (say "not checked", no proxy benchmark); no time budget for slow runs (5 reps plus second series); stop only PIDs started by you, no pkill by name; do not repeat-run commands that call paid APIs; script helper must not stay in the repo; record commit and cache state.
+- Copilot: add `compatibility` (needs a shell); difference smaller than the larger spread is no difference; compute automatically, not by hand.
 
 ## Name
 Name chosen by Jakob (2026-11-24): `numbers-skeptic`. Earlier names: `measure-twice` (taken, see NETZ-ABGLEICH.md Teil 1) and `retest` (used by other skills with other jobs: security-finding recheck by mindfortai/security-skills, a Jira bug retest skill, the CI command `/retest`; see `numbers-skeptic.netz.md`). Rejected on 2026-11-24: `skeptic` alone (4 to 5 critic skills use it), `test-twice`, `double-check` (too general). Two web searches on 2026-11-24 found no skill named exactly `numbers-skeptic`; pages not read. Near names from search results only: skills.sh argahv/novelty-skills/skeptic, openskillindex skeptic-pass, skills.sh backnotprop/pstack principle-explain-the-number. Not checked: GitHub, the skills.sh listing itself.
