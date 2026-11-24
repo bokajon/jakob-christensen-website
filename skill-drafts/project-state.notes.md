@@ -42,3 +42,4 @@ Name chosen by Jakob (2026-11-23). Web check 2026-11-24: `project-state.netz.md`
 ## Other open questions
 - Should the files sit at the project root or in a folder? The draft says root or "the folder the project's instruction file names".
 - "DECISIONS.md stays short" is a guess: the limit of "a few hundred lines" is not measured.
+  - Change after round 3 (Jakob chose "Regel umdrehen"): the contradiction rule now says ask first (name the entry, ask whether to change it), then append the replacing line and carry out the instruction on a yes. Matches what all 5 runs did. Not re-tested with the new wording.

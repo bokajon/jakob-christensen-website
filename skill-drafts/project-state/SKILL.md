@@ -35,7 +35,7 @@ Rules for entries:
 
 ## If an entry and the user's current instruction disagree
 
-The user's current instruction decides. Do what they ask now, say in one sentence which entry it contradicts, and ask whether the entry should be changed (by appending a replacing line). Do not follow the old entry against the instruction, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
+Before acting on an instruction that contradicts an entry, say in one sentence which entry it contradicts and ask: "Do you want to change this decision? Then I append a replacing line and do what you asked." On a yes, append the replacing line and carry out the instruction; on a no, keep the entry and do not carry it out. Do not follow the old entry against a confirmed change, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
 
 ## End of a session that changed the state
 
