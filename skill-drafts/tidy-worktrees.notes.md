@@ -1,9 +1,9 @@
-# tidy-worktree - Entwurf, Notizen
+# tidy-worktrees - Entwurf, Notizen
 
 ## Quellen
 - Kern: die Git-Prüfung aus Schritt 3 von `skill-drafts/tidy-sessions/SKILL.md` (früher `tidy`): Standardbranch ermitteln, `git merge-base --is-ancestor`, `git rev-list --merges`, `git cherry`, `git status --porcelain --untracked-files=all`. Ohne Session-Werkzeuge. Neu geschrieben für Worktrees und Branches statt Sessions.
-- Entscheidung Jakob 2026-11-23: tidy wird geteilt, tidy-worktree ist der generische Teil (nur git).
-- Name nicht gegen das Netz geprüft (bekannt: `tidy` ist bei finolabs mit anderem Job belegt, `lanes` bei tavinathanson; `tidy-worktree` nicht gesucht).
+- Entscheidung Jakob 2026-11-23: tidy wird geteilt, tidy-worktrees ist der generische Teil (nur git).
+- Name nicht gegen das Netz geprüft (bekannt: `tidy` ist bei finolabs mit anderem Job belegt, `lanes` bei tavinathanson; `tidy-worktrees` nicht gesucht).
 
 ## Neu gegenüber tidy-sessions
 - "Keine eigenen Commits": Spitze gleich Standardbranch-Spitze, ODER das Reflog des Branches hat nur die Zeile `branch: Created from ...`. Zweites war nötig: ein Branch, der vor einem späteren Vorrücken von main angelegt wurde, hat eine Spitze, die nur Vorfahre von main ist, und sähe sonst "gelandet" aus (im Test `nocommits`). Wird nie entfernt, nur gemeldet. Leeres oder abgelaufenes Reflog beweist nichts, dann entscheiden die normalen Prüfungen (Schwäche, siehe Fragen).
@@ -13,12 +13,12 @@
 
 ## Abgleich mit strays (`skill-drafts/push`) und lanes (`skill-drafts/lanes`)
 Gelesen: `skill-drafts/push/SKILL.md`, `skill-drafts/lanes/SKILL.md`.
-- **strays**: findet lokale Arbeit, die nicht auf dem Remote ist, und pusht sie nach Freigabe. Es macht `git fetch origin` (einziger Schreibzugriff) und kategorisiert Branches (MERGED nur gezählt). Guardrail: "no commit, merge, rebase, reset, cherry-pick, stash, deletion or file change". Es löscht also nie etwas. Keine Überschneidung: tidy-worktree pusht nichts und holt nichts. Verbindung: strays zuerst, dann tidy-worktree, damit ungepushte Arbeit nicht übersehen wird (tidy-worktree prüft nur "im Standardbranch gelandet", nicht "auf dem Remote").
-- **lanes**: Integrations-Ablauf, Regel "Remove the branch's worktree only after a real OK:", dann `git worktree remove <worktree path>` und `git branch -d <branch>` für das **eigene** Worktree. Überschneidung nur bei den zwei Befehlen, nicht bei der Auswahl: lanes entfernt genau ein Worktree direkt nach `OK:`, tidy-worktree räumt liegengebliebene gelandete Reste anderer Sessions auf. Das stehende `<repo>-quick`-Worktree aus lanes (detached nach der Integration) fasst tidy-worktree nicht an (Detached HEAD wird nur gemeldet).
+- **strays**: findet lokale Arbeit, die nicht auf dem Remote ist, und pusht sie nach Freigabe. Es macht `git fetch origin` (einziger Schreibzugriff) und kategorisiert Branches (MERGED nur gezählt). Guardrail: "no commit, merge, rebase, reset, cherry-pick, stash, deletion or file change". Es löscht also nie etwas. Keine Überschneidung: tidy-worktrees pusht nichts und holt nichts. Verbindung: strays zuerst, dann tidy-worktrees, damit ungepushte Arbeit nicht übersehen wird (tidy-worktrees prüft nur "im Standardbranch gelandet", nicht "auf dem Remote").
+- **lanes**: Integrations-Ablauf, Regel "Remove the branch's worktree only after a real OK:", dann `git worktree remove <worktree path>` und `git branch -d <branch>` für das **eigene** Worktree. Überschneidung nur bei den zwei Befehlen, nicht bei der Auswahl: lanes entfernt genau ein Worktree direkt nach `OK:`, tidy-worktrees räumt liegengebliebene gelandete Reste anderer Sessions auf. Das stehende `<repo>-quick`-Worktree aus lanes (detached nach der Integration) fasst tidy-worktrees nicht an (Detached HEAD wird nur gemeldet).
 - Ergebnis: Überschneidung nein bei Zweck und Auswahl, ja nur bei den Entfernungsbefehlen von lanes. Im SKILL.md steht die Abgrenzung in der Beschreibung.
 
 ## Offene Fragen an Jakob
-- Entschieden (Jakob 2026-11-23): keine zusätzliche Prüfung "auf dem Remote vorhanden". Gelandet heißt: im Standardbranch (`origin/<default>`, sonst lokal). Strays pusht, tidy-worktree räumt; ohne Remote ist der Standardbranch die einzige Kopie, das bleibt so.
+- Entschieden (Jakob 2026-11-23): keine zusätzliche Prüfung "auf dem Remote vorhanden". Gelandet heißt: im Standardbranch (`origin/<default>`, sonst lokal). Strays pusht, tidy-worktrees räumt; ohne Remote ist der Standardbranch die einzige Kopie, das bleibt so.
 - Branch ohne Reflog (z. B. frischer Klon): ein ganz neuer, leerer Branch auf älterer Basis würde als gelandet erkannt und entfernt. Schaden gering (keine Arbeit darin), aber eine Session, die gerade dort startet, verliert ihren Branch.
 - Entschieden (Jakob 2026-11-23): Prunable nur melden, `git worktree prune` erst nach einem Ja. Steht so im Skill.
 
