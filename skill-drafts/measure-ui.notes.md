@@ -41,6 +41,10 @@
 - Final blind read (8 points): all applied by splitting steps 1, 2, 4, 6 into sub-bullets, clearer 3-pair rule, removing "Build to it" so the skill does not suggest editing code, removing the tab rule duplicated in Guardrails. Text now 7,541 characters, description 558, `check_skill.py` OK.
 - Not tested: the new bits (0 x 0 handling, 3-pair retry, derived checks, iframe, shadow root); no round 3 run.
 
+## Third round (2026-11-24)
+- Pasted by Jakob: one unlabeled review (probably ChatGPT, not confirmed) and Copilot again; both read the older text, so the `compatibility` point was already fixed. Applied: description keywords and "DOM numbers, not screenshots alone"; "4 or more items"; `clientHeight`; dev server only the project's, 30 s poll; 0 x 0 retried once, then failed check; scroll rule above/below the fold; `textContent` and `aria-label` read before clicking, more no-click verbs; state inference and existing sessions; "before state not available"; derived checks listed first.
+- Rejected: renderer claim as verified (Chromium site-isolation page not opened by me, stays "not verified"); resize/focus criteria; references folder. Text now 8,367 characters, description 700. Not tested.
+
 ## Name
 Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web check 2026-11-24: see `measure-ui.netz.md`. No skill exactly `measure-ui` found; `ui-verify` (suggested by two reviewers) is taken by at least four skills with other jobs; `ux-measure` and `design-measure` are near in wording. Jakob decided on 2026-11-24 in this session's chat: `measure-ui` stays.
 
