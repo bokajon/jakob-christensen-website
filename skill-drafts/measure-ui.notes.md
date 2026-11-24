@@ -35,6 +35,12 @@
   - New finding: `innerWidth` read 500 (not 375) with `innerHeight` 1083 and `devicePixelRatio` 2 on this overflowing page under phone emulation, while `clientWidth` was 375. Step 1 now reads `clientWidth` and says to note any difference. Cause not checked (probably the mobile layout viewport widening to content width).
   - Tab list before start (`tabs_context`): pane closed, no tabs, so nothing of the user's. Not tested: tab list with the user's tabs, a login wall, iframes, shadow DOM, `getAnimations`, the no-JS fallback, a `/measure-ui` or natural start.
 
+## Gemini, Copilot and final blind read (2026-11-24)
+- Gemini (12 points) and Copilot (18 points) pasted by Jakob; ChatGPT still missing. Applied: no-JS fallback moved from `compatibility` into step 0; broader description non-trigger; px units; retry cap of 3 read pairs; dev server started in the background with the port named (judgement call, Copilot wanted "only start if asked"); `elementFromPoint` after scrolling and in shadow roots; infinite lists; dark mode and reduced motion; broader no-click list; softened renderer claim; derived checks; reference assumptions; scroll coordinates; closed shadow root "not checked"; long-content item found by inspection.
+- Rejected: pass criteria for opening, closing, resize, focus (untested); moving the rationale into a reference file (one file kept); limits on the overlap audit. The overlap check stays incomplete: neither reviewer could open the full repositories ("not checked").
+- Final blind read (8 points): all applied by splitting steps 1, 2, 4, 6 into sub-bullets, clearer 3-pair rule, removing "Build to it" so the skill does not suggest editing code, removing the tab rule duplicated in Guardrails. Text now 7,541 characters, description 558, `check_skill.py` OK.
+- Not tested: the new bits (0 x 0 handling, 3-pair retry, derived checks, iframe, shadow root); no round 3 run.
+
 ## Name
 Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web check 2026-11-24: see `measure-ui.netz.md`. No skill exactly `measure-ui` found; `ui-verify` (suggested by two reviewers) is taken by at least four skills with other jobs; `ux-measure` and `design-measure` are near in wording. Jakob decided on 2026-11-24 in this session's chat: `measure-ui` stays.
 
@@ -43,4 +49,4 @@ Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web
 - "Visual tweak with a reference is the spec" is a taste rule of the owner; kept in step 3 as one sentence. Drop it if it feels too personal.
 
 ## Review prompt
-`measure-ui.review-prompt.md` (full prompt with context, the five parts and the SKILL.md inside), 2026-11-24. To paste into Gemini, ChatGPT and Copilot. Not yet sent; blind agent review not run.
+`measure-ui.review-prompt.md` (full prompt with context, the five parts and the SKILL.md inside), 2026-11-24. To paste into Gemini, ChatGPT and Copilot. Regenerated after the Gemini/Copilot triage (current SKILL.md embedded, answered points listed). Second round on the revised text is for Jakob to start.
