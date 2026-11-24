@@ -183,7 +183,7 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 - Not tested, no fixture: differing push URL, repository without a remote, failing `ls-remote`, no local default branch. The button answers "Push only this one" and "Stop" are not testable headless.
 - Raw data: `D:\Temp\agent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
 
-## 8g. Test numbers of the cheap-agents skill (2026-11-24)
+## 8h. Test numbers of the cheap-agents skill (2026-11-24)
 
 Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), SKILL.md 6,094 characters before review round 1 and 7,899 after it, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
 

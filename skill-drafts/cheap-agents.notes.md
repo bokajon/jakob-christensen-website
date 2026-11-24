@@ -18,7 +18,7 @@ Old working name: `delegate` (taken, see Name). Renamed 2026-11-24.
 - Briefly renamed `tiers` (2026-11-24), dropped the same day: it names the mechanism, not Jakob's goal (save usage and cost). Another session checked `tiers`: no skill of that name found; similar ones model-hierarchy, model-tiering, model-tiers, pick-model; npm package `tiers` exists.
 - Final name `cheap-agents`, chosen by Jakob 2026-11-24. skills.sh API search `cheap-agents`: 5 results, none with that id; `cheap-helpers`: 0. Only skills.sh was searched, so "not found" is not proof. Discarded: cheap-helpers, worker-bees (no cost meaning), agent-budget (close to agentbudget, agent-budget-governance, agent-budget-controller).
 
-## Tested (details in SKILL-CHECKLIST.md section 8g)
+## Tested (details in SKILL-CHECKLIST.md section 8h)
 Claude Code headless, Sonnet, 2 runs per case, skill still installed as `delegate` in the test folders (the text did not mention its own name). Fixture: four independent one-line bugs, plus a one-file task.
 - Without skill, user asks for four helpers: 2 of 2 started 4 helpers on the default model, no role, cost or model named.
 - With skill, same prompt: 4 of 4 (two rounds) named role, model, effort and cost class, started 4 Haiku helpers, briefs limited each helper to one file (only the first brief of two read said "no sub-agents of your own": D2a yes, D2b no; the other runs' briefs were not read); all 4 re-read the files and re-ran the tests themselves.
@@ -42,7 +42,7 @@ Accepted and applied (13): strong-role line first in the step 3 list, and it als
 First paste went to the AIs with the old text; rebuilt and rerun. Accepted (11): non-interactive run does the work itself unless the prompt allows helpers; ask before cherry-pick; Step 5 command wording (a helper's own side-effect command is not run); description names lower token or model cost; hashes instead of a temp copy outside git; check which commit isolation starts from; follow the tool's own effort advice; ownership check moved to the start of step 3; empty report counts as unknown; unobservable helper reported; script check only where the tool allows, default branch only where one exists.
 Rejected: delete the context sentence; fixed numbers for "few" and "scale the effort" (gamed); table (paste artifact); further softening of Claude Code statements (already scoped); compatibility field (no environment requirement, from memory of the spec, not rechecked); "put the rules in CLAUDE.md" (taste, Jakob).
 Not verified: Gemini's Codex effort and model claims, isolation base-branch detail in Claude Code. Neither is written into the text as fact.
-Test: D3 (four named helpers) 2 of 5 started helpers, see checklist 8g.
+Test: D3 (four named helpers) 2 of 5 started helpers, see checklist 8h.
 
 ## Open questions
 - Does "ask the user first" for the strong role fit tools without an approval step? The text says "if the tool has one".
