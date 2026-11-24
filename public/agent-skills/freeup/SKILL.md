@@ -11,15 +11,15 @@ Frees disk space from safe junk on Windows. `scripts/freeup.ps1` (Windows PowerS
 
 1. Run the dry run (changes nothing) in the background and keep its full output:
    `powershell -NoProfile -ExecutionPolicy Bypass -File "<skill folder>\scripts\freeup.ps1"`
-   The table part takes seconds. On the first start, and with `-Discover`, the script also searches all fixed drives for cache-like folders (about 2 minutes, then it stops and says INCOMPLETE). Add `-Full` only when the user asks about worktrees, logs or AppData\Local.
+   The table part takes seconds. Until `places.json` exists (it is written by the first `-Accept` or `-Ignore`), and with `-Discover`, the script also searches all fixed drives for cache-like folders (up to about 3 minutes, then it stops and says INCOMPLETE). Add `-Full` only when the user asks about worktrees, logs or AppData\Local.
 2. Show the user the table (item, size, deletable size, action), the SHOW ONLY lines and the free space on C:, in the user's language, each with the number the script printed. Name every `SHOW ONLY (not on C:)` row as untouched and say why. Add this safety block:
    - Deleted: only caches and temp files that programs rebuild on their own. No documents, projects, downloads or settings.
    - Worst case: the next start of a game or app is slower once; a crash dump is gone.
    - Brakes: nothing younger than 1 hour (Temp\claude and accepted places 1 day), files in use stay, built-in rows only on C:.
    - Not covered: the script is not checked against every program's cache layout. Write "caches, rebuilt on demand", never "100% safe".
 3. Candidates (the CANDIDATES list, only when the script printed one): the list matches folder names only, the content is unchecked. Say that, and mark each candidate that may hold work data (a Perforce workspace `temp`, a backup copy, a game mod `cache`, any path with `bak` or `old`). Ask which to accept and which to ignore, then record the answers:
-   `... freeup.ps1 -Accept "<path>" ... -Ignore "<path>" ...`
-   This only writes `places.json`. Accepted places join the table at the next run. Done when the user answered for every listed path or said to skip the list.
+   `... freeup.ps1 -Accept "<path>"` or `... freeup.ps1 -Ignore "<path>"`
+   One path per flag and one run per path: with `powershell -File` several paths after one flag fail or arrive as one broken string, so run the command once for each answer. Check that the output says `ACCEPTED:` or `IGNORED:` and not `REFUSED`. This only writes `places.json`. Accepted places join the table at the next run. Done when the user answered for every listed path or said to skip the list.
 4. Ask one yes/no question: delete all rows marked DELETE. Wait for the answer.
 5. After a yes, run the command again with `-Delete`. Report the freed size per row and C: free before and after, from the script output.
 6. Report what stayed: locked or denied files (counted per row), and SHOW ONLY items as numbers, never as advice to delete.

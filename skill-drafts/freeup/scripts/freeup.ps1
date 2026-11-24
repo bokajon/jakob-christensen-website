@@ -2,8 +2,9 @@
 # Without -Delete nothing is changed.
 #   -Full            also show worktrees, root logs and the biggest AppData\Local folders (slower)
 #   -Discover        search all fixed drives for cache/temp/log folders (also runs on first start)
-#   -Accept <paths>  remember candidates the user approved (written to ..\places.json, nothing deleted)
-#   -Ignore <paths>  remember candidates the user rejected (never listed again)
+#   -Accept <path>   remember a candidate the user approved (written to ..\places.json, nothing deleted)
+#   -Ignore <path>   remember a candidate the user rejected (never listed again)
+#                    One path per flag and per run: with powershell -File a list of paths arrives as one string.
 #   -Delete          clean the rows marked DELETE
 # Rules: built-in rows only on C:; accepted places on any drive. Only files older than the row's
 # minimum age (accepted places: 24 h), locked files stay, nothing is retried or forced.
@@ -97,20 +98,25 @@ if ($cfgExisted) {
 }
 
 if ($Accept.Count -or $Ignore.Count) {
+    $changed = $false
     foreach ($p in $Accept) {
-        $abs = [IO.Path]::GetFullPath($p).TrimEnd('\')
+        $abs = try { [IO.Path]::GetFullPath($p).TrimEnd('\') } catch { $null }
+        if (-not $abs) { "REFUSED (not a valid path, give one path per run): $p"; continue }
         if (-not (Test-Path -LiteralPath $abs -PathType Container)) { "REFUSED (not a folder): $abs"; continue }
         if ($abs.Length -le 3 -or (Test-Path -LiteralPath (Join-Path $abs '.git'))) { "REFUSED (drive root or project folder): $abs"; continue }
         if ($cfg.accepted -notcontains $abs) { $cfg.accepted += $abs }
-        "ACCEPTED: $abs"
+        "ACCEPTED: $abs"; $changed = $true
     }
     foreach ($p in $Ignore) {
-        $abs = [IO.Path]::GetFullPath($p).TrimEnd('\')
+        $abs = try { [IO.Path]::GetFullPath($p).TrimEnd('\') } catch { $null }
+        if (-not $abs) { "REFUSED (not a valid path, give one path per run): $p"; continue }
         if ($cfg.ignored -notcontains $abs) { $cfg.ignored += $abs }
-        "IGNORED: $abs"
+        "IGNORED: $abs"; $changed = $true
     }
-    $cfg | ConvertTo-Json | Set-Content -LiteralPath $cfgPath -Encoding UTF8
-    "Saved to $cfgPath. Nothing was deleted."
+    if ($changed) {
+        $cfg | ConvertTo-Json | Set-Content -LiteralPath $cfgPath -Encoding UTF8
+        "Saved to $cfgPath. Nothing was deleted."
+    } else { 'Nothing saved. Nothing was deleted.' }
     return
 }
 
