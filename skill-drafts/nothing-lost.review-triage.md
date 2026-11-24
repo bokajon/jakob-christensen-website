@@ -36,3 +36,25 @@ Selbst nachgemessen (Skript, Wegwerf-Repo, 2026-11-24):
 
 ## Wert (Teil 5)
 Beide: nicht redundant für große Mehrdatei-Umbauten, weil `git diff` verstreute Einzelzeilen nicht zeigt; der Workflow darum ist für manche zu schwer. Gemini: bricht bei umgebrochener Prosa und umformatiertem JSON (steht im Skill).
+
+# Review-Runde 2, Triage (2026-11-24)
+
+Quellen: Copilot (P1-P16), Gemini (P1-P14). Beide konnten die Repos wieder nicht öffnen (Netz-Abgleich bleibt "nicht vollständig geprüft"); beide sehen den Wert im Mengen-Abgleich, nicht im Git-Teil.
+
+## Eingearbeitet
+- G11 (echter Fehler, reproduziert): `--old` und `--new` auf dieselben Dateien ohne `--git-ref` las beide Seiten von der Platte, Ergebnis OK. Jetzt Exit 2 mit Hinweis (loss_check.py), SKILL.md Schritt 4 nennt es.
+- G12 (UTF-32): BOM `FF FE 00 00` wurde als UTF-16 gelesen; jetzt übersprungen und als "skipped (UTF-32)" gelistet (getestet).
+- G5 (Widerspruch Schritt 1, `git add` neuer Dateien vs. untracked kopieren): "new files need git add first" gestrichen.
+- C6: nur die betroffenen Dateien kopieren, keine Caches/Datensätze.
+- C7, G6: `--git-ref <Snapshot-Hash>` statt `HEAD`; Hash nach Schritt 1 notieren.
+- G7: `--new` nur mit existierenden Pfaden (keine gelöschten, kein `->`).
+- G8: Allow-Datei erst nach dem letzten OK-Lauf löschen oder bei Abbruch.
+- G9: Negations- und Regelwörter in den Filter für über 50 CHANGED.
+- G4: übersprungene Dateien im Bericht benennen statt vager "check another way".
+- G10: PowerShell 5.1 kennt `&&` nicht, Hinweis mit `$LASTEXITCODE`.
+- G3 / C3 (Reihenfolge): `python3`, dann `py -3`, dann `python` (Store-Stub).
+- G2 / C2: Beschreibung "a rewrite touching 100 or more lines".
+- C12: Satzzeichen-Zeilen können nicht per Ähnlichkeit passen, als Grenze genannt. C15/C16 (Markdown-Tippfehler `**`): in der Datei nicht vorhanden, ist ein Artefakt des Einfügens.
+
+## Abgelehnt / nur notiert
+- C1, G1, G13: Prüfungslücke der Reviewer. C4 (Erklärsatz "Retyping is where..." ): bleibt, ist der Grund für Schritt 3. C5, C9: Absicht. C8: schon in Schritt 5. C10, C11, C13, C14: Bestätigungen von dokumentierten Grenzen.

@@ -1,5 +1,6 @@
 ---
 name: fresh
+license: MIT
 description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, and offers a fresh one. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows. Not for sessions with nothing to carry over, and never before the current request is done. Second mode, resume: only after a crash, an abort, a hit limit, or in a new session that starts with "continue" and no other context, check the real state of the work first, then pick up the interrupted step.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: cheap-agents
+license: MIT
 description: Decides whether to hand part of a task to another agent or session, picks the cheapest model and effort that does that part well, writes a brief the helper can build from, and checks what comes back before relying on it. Use when a task has independent parts, a long search or read, work that should run in parallel or in the background, or when the user asks for agents, sub-sessions or lower token or model cost. Not for small tasks that can be finished in a few tool calls.
 ---
 

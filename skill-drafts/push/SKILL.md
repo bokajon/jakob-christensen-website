@@ -1,5 +1,6 @@
 ---
 name: push
+license: MIT
 description: Find local git work that is not on the remote yet and push it safely, including a fast-forward of the default branch. Use when the user asks to push their work, to find unpushed commits or branches, or to check what is only local. Shows an overview first and pushes only after the user agrees. Not for committing, merging or resolving diverged branches.
 ---
 
