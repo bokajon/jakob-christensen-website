@@ -1,6 +1,7 @@
 ---
 name: now-and-then
-description: Maintains a project's decision log (DECISIONS.md, append only, each line dated with its source) and a short STATE.md for the current state and open points. Use when the user states something that should outlive the task (a name, an assignment, a project rule, a choice between options, or a correction they repeat), when a project has these files, when a session that changed the state ends, and when the user asks to set the files up.
+license: MIT
+description: Maintains a project's decision log (DECISIONS.md, append only, each line dated with its source) and a short STATE.md for the current state and open points. Use when the user states something that should outlive the task (a name, an assignment, a project rule, a choice between options, or a correction of something the agent did or assumed), when a project has these files, when a session that changed the state ends, and when the user asks to set the files up.
 ---
 
 # Decision log
@@ -17,11 +18,10 @@ Keep both at the project root, or in the folder the project's instruction file n
 1. Read both files, if they exist, before you do anything else. This skill loads only after a task matched it, so when the user calls it in the middle of a session, read both files at once and report any entry that touches the current work. Read `STATE.md` in full. Read `DECISIONS.md` in full if it is under 300 lines; otherwise read its last 100 lines and search the rest for the topic you work on and for `replaces`. An entry named in a later `replaces <date> <topic>` line is void; follow the newest line for a topic.
 2. Check the claims in `STATE.md` that your task depends on against the real state (branch, files, running jobs) before you build on them. The file says what was true when it was written.
 3. In a git worktree or branch, a decision recorded on another branch is not visible here: run `git log --all -n 5 --format="%h %s" -- DECISIONS.md`, and if other branches changed it, tell the user.
-4. If neither file exists and the project is a git repository with more than a few commits (or the user calls it a real project), offer once to set them up (below). Do not create them without a yes.
 
 ## When the user states a decision
 
-A decision is a name, an assignment ("X is Y"), a choice between options, a rule for this project, or a correction the user had to repeat. If `DECISIONS.md` exists, write it there immediately, in the same turn, not at the end of the session and never only in the chat. If it does not exist, ask in the same reply: "Create DECISIONS.md and STATE.md with this decision as the first entry?" On a yes, set the files up (below) and write it. On a no or no answer, tell the user once that the decision is not saved and ask again only when the next decision comes. Do not create the files without a yes.
+A decision is a name, an assignment ("X is Y"), a choice between options, a rule for this project, or a correction of something you did or assumed, if the user states what is right. If `DECISIONS.md` exists, write it there immediately, in the same turn, not at the end of the session and never only in the chat. If it does not exist, ask in the same reply: "Create DECISIONS.md and STATE.md with this decision as the first entry?" On a yes, set the files up (below) and write it. On a no or no answer, tell the user once that the decision is not saved and ask again only when the next decision comes. Do not create the files without a yes.
 
 One line per entry, appended at the end:
 
@@ -29,7 +29,7 @@ One line per entry, appended at the end:
 
 Rules for entries:
 
-- Only final decisions: log it when the user stated it as settled or repeated it. A yes to your concrete proposal ("use X?" - "yes") counts as stated. A preference the user is still weighing, or your own suggestion, is not an entry. When unsure, ask one short question: "Record this as decided?"
+- Only final decisions: log it when the user stated it as settled. A yes to your concrete proposal ("use X?" - "yes") counts as stated. A preference the user is still weighing, or your own suggestion, is not an entry. When unsure, ask one short question: "Record this as decided?"
 - Use the user's words where a name or wording matters.
 - Never edit or delete an old line, except to remove a secret or personal data written by mistake (say so in your reply and, if the file was committed, tell the user the value is still in git history and must be rotated or purged by them). When a decision changes, append a new line that says `replaces <date> <old topic text, verbatim>`. The history stays readable. If the user says to stop recording something or to drop an entry, do that as a replacing line, not a deletion.
 - Never put secrets, tokens or personal data in either file. If a decision involves one, record where it lives (for example "key in .env"), never the value.
@@ -37,7 +37,9 @@ Rules for entries:
 
 ## If an entry and the user's current instruction disagree
 
-Before acting on an instruction that contradicts an entry, change nothing for that instruction yet (not even a small edit, and also when the user says "just do it"). Say in one sentence which entry it contradicts and ask: "Do you want to change this decision? Then I append a replacing line and do what you asked." On a yes, append the replacing line and carry out the instruction; on a no, keep the entry and do not carry it out. Do not follow the old entry against a confirmed change, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
+If the user's message itself says that the earlier decision is replaced, naming it or both the old and the new value ("from now on X instead of Y", "X replaces Y"), that is the confirmation: append the replacing line, carry out the instruction and say which entry you replaced. If it is unclear which entry is meant, ask.
+
+Any other instruction that contradicts an entry is not a confirmation. Before acting on it, change nothing for that instruction yet (not even a small edit, and also when the user says "just do it"). Say in one sentence which entry it contradicts and ask: "Do you want to change this decision? Then I append a replacing line and do what you asked." On a yes, append the replacing line and carry out the instruction; on a no, keep the entry and do not carry it out. Do not follow the old entry against a confirmed change, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
 
 ## End of a session that changed the state
 
@@ -58,7 +60,7 @@ Then check each line of Now and Open against `DECISIONS.md`, and list the files 
 
 1. Create `STATE.md` with the four headings and `DECISIONS.md` with one line of explanation at the top (what it is, the entry format, that it is append only).
 2. Fill `STATE.md` from what you can verify now. Fill `DECISIONS.md` only with decisions the user confirms or that a commit or file records. Do not invent history.
-3. Offer one line for the project's instruction file (`CLAUDE.md`, or `AGENTS.md` if that is what the project uses), because a skill alone does not start in time: "Read STATE.md and DECISIONS.md first. Record decisions the user states in DECISIONS.md (skill now-and-then)." Show the line and ask whether to add it; a request to set the files up is not a yes to this line, so do not touch the instruction file in the same step, write it only after the user's yes; if the file already has a line about these two files, change that line instead of adding a second.
+3. Offer one line for the project's instruction file (`CLAUDE.md`, or `AGENTS.md` if that is what the project uses; if neither exists, do not create one, only show the line), because a skill alone does not start in time: "Read STATE.md and DECISIONS.md first. Record decisions the user states in DECISIONS.md (skill now-and-then)." Show the line and ask whether to add it; a request to set the files up is not a yes to this line, so do not touch the instruction file in the same step, write it only after the user's yes; if the file already has a line about these two files, change that line instead of adding a second.
 4. Tell the user in two lines what each file is for and when you will touch it.
 
 ## Guardrails
