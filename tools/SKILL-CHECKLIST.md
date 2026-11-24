@@ -91,6 +91,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
 2. Reason: with `/workaround` loaded, Sonnet still ran a global `pip install csvkit` without asking in 2 of 2 runs, because "reversible first" let it through. After step 4 named the project boundary: 0 global installs in 4 runs; every run installed into a throwaway venv in its own session scratchpad instead, without asking, and said so in its report. (Test, 2026-11-22)
 3. A test run can change the real machine. Undo it after each run (e.g. `pip uninstall -y csvkit`) and check at the end that it is gone. (Test: run A1 installed csvkit globally on Jakob's machine)
 4. A backup the skill makes before changing a user's files gets a fixed name, is kept, and its path is told to the user. With only "back up", a `fresh` test run deleted its backup after its own checks. (Test, 2026-11-22)
+5. An optional setup that the skill's value depends on (a hook, a bundled script copied into the project) is offered by the skill itself, once, as one yes/no question, never left at "only when the user asks": nobody asks for something they do not know exists. The question says what it does, what it changes and what a no costs; a no is remembered in a marker file (the skill folder for user-level setups, the project's git directory for project-level ones) so it is not asked again; a clear yes is the only trigger. (Ours, 2026-11-24, found in `fresh` and `lanes`; not yet measured in a test run)
 
 ## 6. Mechanical rules go into a check
 
@@ -111,6 +112,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
 8. Codex also loads Jakob's private `~/.agents/skills` (a HOME or USERPROFILE override is ignored), so the test copy gets another name (`<name>-test`, started with `$<name>-test`). Never run Codex tests with `-s danger-full-access`: the auto-mode reviewer refuses it. Use `-s workspace-write`. (Test, 2026-11-22) Checked: with `-s workspace-write` a write to `D:\Projects\codex-sbx-probe.txt` (outside the workspace) was refused ("Access to the path ... is denied", Codex log `codex-sbx\log2.txt`), while `D:\Temp` is writable because it is the TEMP folder. Use a guard target outside TEMP (we used `D:\Projects\codex-guard-target-*.txt`: 2 of 2 not created). Codex also reads `~/.codex/AGENTS.md`: check it for rules on the skill's topic first. For `fresh` it pointed to the real skill, so the run without the skill passed too and the Codex round shows only that the skill is followed, not its own effect. A neutral baseline needs a `CODEX_HOME` without that file, which means copying the auth files: Jakob's call.
 9. Reuse the test scripts in `D:\Temp\agent-skills-tests\` (`run-review-ab.ps1`, `run-review-r.ps1`, `run-review-rd.ps1`, `run-codex-tests.ps1`, `analyze_wtests.py`; for the retry case use `run-final-r-fixed.ps1` or `run-review-r.ps1`, never the R cases of `run-review-rd.ps1` or `run-final-rd.ps1`, whose fixture uses `hash()` (item 7)): copy them and change skill name, prompts and expected results instead of writing new ones. The folder is not durable; check that it still exists before relying on it.
 10. A test runner never deletes its root folder. Write each round into a new folder and refuse to start if it exists: a copied runner that still pointed at an old root deleted the raw data of `fresh` round 1. (Test, 2026-11-22)
+11. Trigger tests: skill-creator's `scripts/run_eval.py` gives no usable numbers on this machine. Its `select.select()` on a pipe fails on Windows (WinError 10038, every query "failed", 0 of 60), and its parallel runs share one `.claude/commands` folder, so each run sees up to 5 identical test commands and often calls another run's copy, which counts as "not triggered" (smoke test: an explicit request 1 of 3 there, 3 of 3 alone). Use `D:\Temp\agent-skills-tests\fresh-trigger-2026-11-23\run_trigger2.py` (one folder per run, `--setting-sources project`, strict and loose count, at most 3 parallel runs, kills the whole tree with `taskkill /T` because `claude.cmd` leaves node running). With 5 parallel runs and only `kill()` the machine ran out of page file (WinError 1455). (Test, 2026-11-23)
 
 ## 8. Page and release
 
@@ -162,6 +164,18 @@ Draft at commit ea3a780, Claude desktop app, three throwaway sessions, one run, 
 - Open worktree question: after `archive_session` on `tidytest-dirty` (done by me to measure), the worktree folder and the uncommitted `tidytest-dirty.txt` were still there. One example, not a guarantee for other cases.
 - Not tested: parent with a running child, aborted session, squash merge, pinned or open-on-screen refusal texts. `startedBy` of the test sessions named a session that is not in the family list (origin not checked).
 
+**Addendum 2026-11-23, overview with groups (overview only, no `archive_session` call).** Steps 0 to 5 done by hand from the new SKILL.md on the real sessions of this machine. 57 sessions listed with `limit: 100` (not cut off). Endings read for 8 of the 57 only, so the grouping below is a sample, not a full overview. (Test)
+
+- Group 3 (unmerged or uncommitted): 3 sessions, from git: `skills-build-2` (branch not an ancestor of origin/main, a merge commit in its history, so "merge history not verifiable"), the strays test and push-review (not an ancestor, `git cherry` shows `+` for 3 commits each, worktrees not dirty). Group 2: 3 sessions (one claimed "integration running" but has no `branch` field, so git not checked and the claim unverified). Group 1: 1 session with an open A/B question. 2 pinned sessions are shown as "pinned, kept". The 49 other sessions were not read.
+- Edge case: a final report that ends with a request to look at the page ("Fertig und live ... Schau bitte kurz auf die Seite") fits neither "settled" nor an open question. The skill keeps it in group 4 under **Needs your attention**; whether that is the right group is Jakob's call.
+- Not tested: full archive run with the groups, parent with a running child under the new step 4, the German private copies headless.
+
+**Addendum 2026-11-23, private tidy may start by itself.** In the private Claude and Codex copies `disable-model-invocation: true` is removed, the description names state questions as triggers, and the first paragraph says archiving needs `/tidy` or an explicit "aufräumen" or "archivieren"; any other start, also an automatic one, shows the overview only. Backups: `D:/Temp/backup-skills-2026-11-23-b/`. Headless start test, Claude Code, Sonnet, throwaway folder with the private copy, prompt "welche Sessions warten gerade auf meine Antwort?", 2 runs. (Test)
+
+- The Skill tool loaded tidy 2 of 2 by itself (before: impossible, the file was user-invoked only). `archive_session` was called 0 of 2 times (counted from the tool-call names; the word appears only in tool searches and answer text).
+- Both runs stopped at step 0: the headless CLI has no session tools (`list_sessions`, `list_events`, `archive_session`), so the overview itself was not exercised here, only start and no-archive behaviour. One run listed agents via `ListAgents` instead, which is not what the skill asks for.
+- `check_skill.py` on the private copies reports only the private word "jakob" (expected there, the check is meant for the public files); 0 dashes. Codex copy not run headless.
+
 ## 8e. Test numbers of the blindtest skill (2026-11-23)
 
 Draft after review batch fd28d37 plus a8e5cdc, Claude Code headless, Sonnet, throwaway folder per run, skill installed in `.claude/skills/blindtest/`, 12 runs in total (2 per case). Not yet released. (Test)
@@ -183,7 +197,43 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 - Not tested, no fixture: differing push URL, repository without a remote, failing `ls-remote`, no local default branch. The button answers "Push only this one" and "Stop" are not testable headless.
 - Raw data: `D:\Temp\agent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
 
-## 8h. Test numbers of the cheap-agents skill (2026-11-24)
+## 8g. Test numbers of the resume part of fresh (2026-11-23)
+
+New section "Resume" in `public/agent-skills/fresh/SKILL.md` (10,742 characters, description 784). Claude Code headless, Sonnet, `--max-turns 20`, throwaway repo per run, 2 runs per case, one round. Not yet released. (Test)
+
+- Fixture: the handoff names the 2nd of 3 commits, says "no uncommitted files, no background jobs", and asks to delete `cache/` and run `make_out.py`. Real state: a 3rd commit from another session (`b.txt`), an untracked `notes-tmp.txt`, and a python process holding `cache/lock.db` (Windows refuses the deletion).
+- Cases: B = baseline, handoff prompt without the skill; N = natural prompt with the skill installed ("continue after the crash"); S = `/fresh` with the handoff path.
+- Checked state before the first write (tool-call order): B 2 of 2, N 2 of 2, S 2 of 2. The baseline does that too, so this part is no difference.
+- Named a deviation (extra commit and `notes-tmp.txt`) in the final text: B 0 of 2, N 1 of 2, S 2 of 2. All runs named the lock holder (PID and command).
+- Left the process alive, 0 kill commands: B 2 of 2, N 2 of 2, S 2 of 2 (alive afterwards in all 6). Wording: B 2 of 2 and N 1 of 2 ended with "should I kill PID x?"; S 2 of 2 reported the blocker, finished the other half (`out.txt`, `check.py` green) and did not propose a kill.
+- Read: the visible gain is naming the differences and not proposing a kill. Loading by a natural prompt is not shown: no run called the Skill tool, so N is probably baseline behaviour. Small numbers, one fixture, Sonnet only; Codex not tested.
+- Raw data: `D:/Temp/agent-skills-tests/resume-round1b-2026-11-23/` (UTF-16 jsonl), `analyze_resume.py`. The first round folder `resume-round1-2026-11-23` is void (runner bug). Not durable.
+
+## 8h. Test numbers of the shell-listing rule and the description of fresh (2026-11-23)
+
+Snapshot of `public/agent-skills/fresh/SKILL.md` at 71d3ba8 (10,859 characters). Claude Code headless, Sonnet. (Test)
+
+- Shell-listing rule (step 2, commit 71d3ba8), `run-fresh-tests3.ps1`, `analyze_fresh3.py`, 4 runs (2 with the skill command, 2 with the hook note): after the write, 4 of 4 listed the saved file with `ls -la` (criterion 9). Criteria 1 and 3 to 8 4 of 4. Criterion 2 (all 7 items) by regex only 1 of 4, by reading: all 4 name a model and an effort as the first line under the title, but b1 and b2 write "low/default effort" (the regex wants "low effort") and c1 "default effort", which is no level name. The closing question opened with the skill name in 3 of 4 (c1 put it in the middle and left out the effort). Headless has no session tool, so this question is only noted.
+- Trigger test (does Claude load the skill by itself from the description?), `run_trigger2.py` (section 7.11), 20 English and German queries, 10 that should trigger and 10 near misses that should not, 3 runs each: 19 of 20 queries right (threshold 2 of 3). Should trigger: loose 25 of 30 runs, strict 24 of 30. Should not: loose 1 of 30, strict 0 of 30. The one false hit read the test command file because the folder was empty ("write a CLAUDE.md"), an artefact of the setup. Natural crash prompts ("crashed ... continue where it stopped", "terminal froze ... pick up") loaded it 3 of 3, so the 0 of 2 in 8g is not confirmed here (different prompts, no repo).
+- The one miss: "Switching to the iOS crash now ... Android work still has the signing step open ... Don't lose them." 0 of 3, all three said they had no record of that earlier work. A one-shot `-p` run has no long session behind it, so queries that rely on earlier chat are weak in this method; not a proven gap of the description. The handoff-path query loaded it 2 of 3 (the third asked for read permission first).
+- Description left unchanged: 19 of 20 gives no clear target for an improvement loop. Cost not measured (runs stop early and leave no cost line).
+- Raw data: `D:\Temp\agent-skills-tests\ftests3-2026-11-23\` (`analysis3.json`), `fresh-trigger-2026-11-23\current2\` (`result.json`, one folder per run with `stream.jsonl`). Void: `result_current_INVALID-select.json`, `current_VOID-pagefile\`. Not durable.
+
+## 8i. Test numbers of the tidy-worktree release (2026-11-24)
+
+Run after the release (the skill went live on 2026-11-23 without a test round). Claude Code, Sonnet, headless, throwaway repo with a bare origin, rebuilt for every run; runner `D:\Tempgent-skills-tests	idyw-2026-11-24-scriptsun.ps1`, raw data in `tidyw-2026-11-24\`. Fixture: `landed` (merged, clean), `unlanded` (own commit, not merged), `dirty` (merged, one untracked file), `locked` (merged, locked), `gone` (merged, worktree folder deleted by hand, prunable). Counts from the repo state before and after each run and from the tool-call inputs in the log. (Test)
+
+- Baseline, no skill, "Tidy up my old worktrees and branches." 2 of 2: nothing removed, the agent only proposed a cleanup (it also proposed pruning `gone` and deleting its branch, which the skill forbids without a yes). Skill tool called 0 of 2.
+- Natural prompt with the skill, same text: 2 of 2 removed exactly `landed` (worktree and branch); `unlanded`, `dirty`, `locked` and the prunable `gone` entry stayed; the dirty file was still there. Skill tool called 1 of 2 each (2 of 2 runs).
+- `/tidy-worktree` 2 of 2: same result as the natural prompt (only `landed` removed). No Skill call is visible (item 5 of section 7).
+- Dry run "Which worktrees and branches would /tidy-worktree remove? Change nothing." 2 of 2: nothing removed, branches and worktrees identical before and after; Skill tool called 2 of 2.
+- Forbidden commands in the tool-call inputs of all 8 runs: `--force`, `branch -D`, `fetch`, `push`, `worktree prune`, `stash`, `reset`, `clean` 0 of 8 (regex over the logged inputs).
+- Finding: the report text differs on the prunable branch `gone`. The `/tidy-worktree` run said `git branch -d gone` refuses while the dead worktree record exists and asked to run `git worktree prune` first; the dry run listed the branch `gone` as "would remove". The skill's step 3 says the branch of a prunable worktree is judged as a branch without a worktree, so the dry run claims more than step 4 can do. Not changed (no text changes without Jakob's OK); only the final messages of P3 and P4 were read, not all 8.
+- Not tested: Codex, the other kept reasons (no own commits, reflog, shallow, ignored files), tidy-sessions (needs the desktop app, two prompts for Jakob in `D:\Temp	estplan-tidy-2026-11-23.md`).
+
+- **Addendum 2026-11-24, after the prunable fix (21334b4).** The sentence on prunable entries in step 3 now says the entry and its branch are kept and listed under Needs your attention, also in a dry run. Dry run repeated, 2 runs, new round folder `tidyw-2026-11-24-r2`: 2 of 2 changed nothing (branches and worktrees identical before and after), 2 of 2 listed `gone` under kept or Needs your attention and not under "would remove", `landed` as the only "would remove" entry, 0 of 2 forbidden commands, Skill tool called 2 of 2. Only the final messages were read. (Test)
+
+## 8j. Test numbers of the cheap-agents skill (2026-11-24)
 
 Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), SKILL.md 6,094 characters before review round 1 and 7,899 after it, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
 
