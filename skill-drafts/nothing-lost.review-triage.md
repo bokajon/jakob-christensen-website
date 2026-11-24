@@ -58,3 +58,6 @@ Quellen: Copilot (P1-P16), Gemini (P1-P14). Beide konnten die Repos wieder nicht
 
 ## Abgelehnt / nur notiert
 - C1, G1, G13: Prüfungslücke der Reviewer. C4 (Erklärsatz "Retyping is where..." ): bleibt, ist der Grund für Schritt 3. C5, C9: Absicht. C8: schon in Schritt 5. C10, C11, C13, C14: Bestätigungen von dokumentierten Grenzen.
+
+## Blind-Read nach Runde 2 (Sonnet-Agent, nur SKILL.md und Skript, 2026-11-24)
+Eingearbeitet: Schritt 1 neu (Toplevel-Prüfung gegen Commit im falschen Repo, saubere Dateien brauchen keinen Commit, Snapshot-Hash immer als `--git-ref`, untracked/ignored vor der ersten Änderung kopieren und in einem zweiten Lauf prüfen, weil ein Lauf nur ein `--git-ref` kennt); Allow-Datei: Zeilen exakt kopiert, außerhalb von `--new`, Löschen erst nach dem Commit, Klasse nur nach Zurücklesen jeder Zeile; `--similar` nie senken; Filter bei über 50 CHANGED über die `differing words:`-Zeilen; Commit mit Pfadliste. Nicht übernommen: `git diff --cached` als Redundanz (bleibt gestrichen, `--only` genügt, Satz ist im neuen Schritt 1 ersetzt), Pfade mit Leerzeichen und `-uall` (Taste), absolute `--old`-Pfade (nicht geprüft).

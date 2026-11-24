@@ -48,3 +48,10 @@ Not tested: disk-side symlink (Windows refused to create one: WinError 1314, mis
 
 ## Round 2 (2026-11-24)
 Copilot and Gemini answers triaged in `nothing-lost.review-triage.md`. Script: self-compare guard (exit 2) and UTF-32 skip, both tested in a throwaway repo. SKILL.md: 12 edits. check_skill OK. Not yet done: word diff, blind read, full test round (agent runs, needs Jakob's OK for count/model).
+
+### Test round (2026-11-24, Sonnet, fixture: 6 docs of 24 step lines, task "merge to 3 files, cut by a third")
+Runner `D:\Temp\agent-skills-tests\nl-scripts\run-nl-round*.ps1`, data in `nl-round1-2026-11-24` (old text, 20 turns) and `nl-round2-2026-11-24` (final text, 40 turns).
+- Baseline, no skill, 2 of 2: reformatted the lines (150 lines no longer found verbatim), no line check; both claimed all values kept (own check).
+- Round 1 with skill (old text, 20 turns): 4 of 4 ran `loss_check.py` (natural 2 of 2 loaded the skill itself), but all 4 hit the turn limit without a report; not counted as a result.
+- Round 2 with final text, 40 turns: natural N1, N2 and `/nothing-lost` S1: 3 of 3 checked against the snapshot hash, LOST 0 / CHANGED 150, read the pairs, committed with a path list. S2: stopped before editing and reported that the cut cannot be done without dropping data or tripping the similarity threshold (asked, did not edit).
+- Caveat: the fixture is weak, a table rewrite is the reflow case the line check excludes; agents kept lines similar to stay checkable. The skill never lowered `--similar` in these runs. Not tested: Codex, Cursor, symlink on disk.
