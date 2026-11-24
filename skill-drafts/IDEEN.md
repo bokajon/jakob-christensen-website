@@ -12,7 +12,7 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 | tidy | Archiviert erledigte Sessions in der Claude-Desktop-App, prüft dabei Behauptungen wie "gemergt" in git. | Nur Desktop-App. Startet ohne Slash-Befehl, weil die App solche Skills sonst versteckt. Nicht live getestet. |
 | blindtest | Blinder, zählbarer Vergleich: neue Version gegen alte und gegen ohne. Zweiter Modus "audit" kalibriert blinde Leser an bekannten Fehlern. | Bestehgrenze 80 Prozent gesetzt, nicht gemessen. Kein echter Blindtest gelaufen. |
 | lanes | Mehrere Sessions in einem Repo: eigener Worktree, sauberer Haupt-Checkout, `integrate.ps1` (Ziel-Branch und Prüfbefehl einstellbar), optionaler Guard-Hook. | Nur Windows PowerShell, Mac/Linux später? Smoke-Test grün (2 Branches OK, Konflikt FAILED mit Dateiname). |
-| reroll | Gibt deine letzte Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt (Optionen `different`, 2 oder 3 Sessions, Modellwahl). | Entwurf seit 2026-11-24 (`reroll/`, `reroll.notes.md`), `check_skill.py` grün. Nur Desktop-App für den Session-Weg, sonst Zwischenablage. `different` und Zähler nicht getestet, Name nicht gegen das Netz geprüft. |
+| reroll | Gibt deine letzte Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt (Optionen `different`, 2 oder 3 Sessions, Modellwahl). | Entwurf seit 2026-11-24 (`reroll/`, `reroll.notes.md`), `check_skill.py` grün. Nur Desktop-App für den Session-Weg, sonst Zwischenablage. Netz-Abgleich und Review-Prompt fertig (`reroll.review-prompt.md`). Testlauf 2026-11-24: Übergabe korrekt, kein Leck; `different` brachte im Einzellauf nicht klar andere Namen. Zähler 2/3, Modellwahl, Zwischenablage nicht getestet. |
 
 ## B. Ideen ohne Entwurf
 

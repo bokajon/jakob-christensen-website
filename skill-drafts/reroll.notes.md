@@ -16,11 +16,20 @@ Same reasoning as tidy (checklist 2.3): the desktop app drops user-invoked skill
 ## Tested
 - Private run 2026-11-23: handover correct, no leak of the earlier answer (from IDEEN.md F, run details not kept).
 - `check_skill.py`: OK.
-- Not tested: `different`, a count of 2 or 3, a named model, the clipboard route outside the desktop app, description triggering. Not checked: whether `different` really gives other ideas.
+- Netz-Abgleich 2026-11-24: see `NETZ-ABGLEICH.md` Teil 3. No skill named reroll found; the name exists for two other skills (`buddy-reroll`, `webup-buddy-reroll`, they reroll the /buddy companion).
+- Test run 2026-11-24, Claude Code desktop app, 2 real sessions started with `start_session` (`initiation: user_asked`, `context: fresh`, `use_worktree: false`, current model). Request (German, 1 message): "5 name ideas for a small bakery in the mountains, names only, each with a half sentence". The "rejected answer" was written by the testing session before the runs (Gipfelbrot, Almkruste, Huettenlaib, Sonnenseite, Die Bergbaeckerei); it was not a real earlier answer to a real user.
+  - A (plain): prompt = request + footer. Handed-over text exact, 0 tool calls, 0 transcript reads, 1 turn. Names: Almrausch, Zum Steinofen, Gipfelbrot, Die Bergbaeckerin, Sennerlaib. Repeats of the earlier answer: 1 exact (Gipfelbrot), 2 close in idea (Die Bergbaeckerin, Sennerlaib).
+  - B (`different`): same prompt plus the sentence that an earlier answer was rejected, content withheld. 0 tool calls, 0 transcript reads, 1 turn. Names: Gipfelbrot, Zur Steilen Kruste, Almsemmel, Bergbaeck Anni, Teig & Tal. Repeats: 1 exact (Gipfelbrot), 3 close in idea (Kruste, Alm-, Bergbaeck).
+  - Both runs repeated the same name (Gipfelbrot) as the earlier answer and as each other. So `different` did not keep the rejected names out and did not give clearly more varied ideas in this run. n = 1 per case, one request, no repeat run: not a result about `different`, only a first observation.
+  - The app adds a line "Shared notes folder for this group of sessions" to every started session. The footer forbids reading it, neither session did.
+- Not tested: count 2 or 3, a named model, the clipboard route (Codex, Cursor, a chat app), the do-not-open file list, step 1 on a real message sequence (a "yes" or a click as the last message, a request spread over several messages, a message lost to compaction), images, description triggering.
+
+## Review prompt
+`reroll.review-prompt.md` (full prompt with context, the five parts and the SKILL.md inside), 2026-11-24. To paste into Gemini, ChatGPT and Copilot.
 
 ## Open before release (checklist sections 1 to 8)
-- Name not checked against the web (`/reroll`).
-- Blind agent review and the other reviews, one full test round per tool the card will name.
+- Name: checked 2026-11-24 (Teil 3), Jakob decides whether `reroll` stays next to the two `buddy-reroll` skills.
+- Blind agent review and the other reviews (prompt is ready), then a second test round on the revised text, `different` with more than one run, and the other tools.
 - Card text: say that the separate-session route works only in the Claude Code desktop app.
 - Jakob's OK.
 
