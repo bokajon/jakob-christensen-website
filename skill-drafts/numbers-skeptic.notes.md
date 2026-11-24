@@ -24,6 +24,13 @@ Part of the rule text overlaps with a possible claim-check rule (state only what
   - Not tested: `/numbers-skeptic` start (the runs used the name `retest`; natural prompt), other models, Codex, the guardrail "never leave a load generator running", step 2 (runtime value vs fixture) and the share and size part of step 8, a measurement that takes minutes per run.
 - Netz-Abgleich 2026-11-24: `numbers-skeptic.netz.md` (check of the old name `retest`). The old name was already used by other skills with other jobs.
 
+### Second test round (2026-11-24, revised text, new fixture)
+Fixture: same as round 1 but the first run of `job.py` sleeps 250 ms and later runs about 30 ms (python start-up about 85 to 120 ms), question "under 150 ms?", so only a cold single run gives the wrong verdict. Material: `D:/Temp/retest-tests/make_fixture2.py`, `run2.ps1`, `runs2/`. 4 runs (2 without, 2 with the skill), n = 2 per case, one fixture.
+- Without the skill: both runs read `job.py`, ran it 2 to 3 times, found the cold-start effect and gave the right answer ("depends on state"). No median, no spread.
+- With the skill installed: the skill did not start itself in either run (no Skill tool call, no mention in the answers; round 1 had 2 of 2). Both runs behaved like the baseline: 3 to 7 runs, right verdict, no median or spread in the report. Probably the rewritten description triggers less on the phrase "finish in under 150 ms" (not checked, no test of the old text on this prompt).
+- Result: this fixture shows no benefit, because agents read `job.py` and spot the state dependence anyway. Unsolved: a fixture where noise or cold start is hidden in a binary or in the machine, not in readable code.
+- Open: test whether the skill triggers on this wording (a trigger test with 3 to 4 phrasings), possibly name the typical phrases ("does it finish in under X ms", "is it faster") in the description.
+
 ## Review prompt
 `numbers-skeptic.review-prompt.md` (full prompt with context, six parts and the SKILL.md inside), 2026-11-24. Used with Gemini and Copilot (ChatGPT dropped by Jakob, 2026-11-24).
 
@@ -43,5 +50,5 @@ Name chosen by Jakob (2026-11-24): `numbers-skeptic`. Earlier names: `measure-tw
 
 ## Open before release (checklist sections 1 to 8)
 - Name is decided (see Name); a final name check on GitHub and skills.sh is still open.
-- Blind agent review and the other reviews (prompt is ready), then a second test round on the revised text with a fixture where one run gives the wrong verdict, a `/numbers-skeptic` start and a second tool.
+- Blind agent review and the other reviews (prompt is ready), then a trigger test of the revised description (round 2 showed no self-start), a fixture where the cold-start effect is not readable in the code, a `/numbers-skeptic` start and a second tool.
 - Card text, Jakob's OK.
