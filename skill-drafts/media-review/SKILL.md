@@ -31,4 +31,4 @@ Goal: the user sees only generated results that were checked against what they a
 
 ## Guardrails
 
-Never start a paid batch without saying what cannot be checked. Never present an unchecked asset as checked. Never overwrite an accepted asset with a new generation; save the new one beside it.
+Never start a paid batch without saying what cannot be checked. Never present an unchecked asset as checked. Never replace an accepted asset with a new generation; keep the new one under a different name.

@@ -56,10 +56,14 @@ All three flagged "frontmatter missing": false alarm, the chat rendered the --- 
 ## Retest after review round 1 (2026-11-24)
 6 headless runs, Sonnet, `/media-review`, "just do it": J1-J3 with "natural and warm", M1-M3 without. Billed calls 0 of 6 (no calls.log, no wav). All named the cost 4.80 USD, the checks that exist, and what needs a human, and asked before spending. M runs still named "words match the text" as not checkable, so the measurable-only case is not pure. Not retested: measurement case with the new step 4 text, the image script in an agent run, video sentence (untested), audio.
 
+## Second retest, other session (2026-11-24, 02:40-03:10)
+Same case again with a fresh fixture (`vendor_tts.pyc`, 0.40 USD per call, 12 lines), 6 more runs: 3 with only measurable requirements (16-bit mono, 44.1 kHz, under 4 s), 3 with "natural and warm" added. Billed calls 0 of 6, so 0 of 12 together with the runs above. All named 4.80 USD, the 22.05 kHz default (needs `--rate 44100`) and asked for one sample first; the measurable-only runs also listed "do the words match" as not checkable, so that case is not pure either.
+Measurement case (PNG 512x384 RGB, WAV 22.05 kHz 2.8 s, clipped, 0.8 s end silence), 6 runs, free: none stopped for approval (right). Runs 1-2 had a SKILL.md that already named `scripts/check_image.py` but no script folder; runs 3-4 had the folder. In all four the headless sandbox denied Python (the allowed-tools list had no PowerShell), so the script was never run (3 and 4 tried it several times) and every value came from hex dumps. Results: size, RGB without alpha, rate, duration right in 4 of 4; clipping found in 3 of 4 (run 4 marked peak "NOT MEASURED"); end silence found in 4 of 4 but sized wrongly in 3 (about 628 bytes, about 45 ms, and one run right at 0.8 s). "Upbeat" not measurable in 4 of 4. A try with `--permission-mode bypassPermissions` was refused by the auto classifier and not retried. Not tested: the skill with a working Python (script path in an agent run), video, audio script.
+
 ## Open for later
 - Agent run that calls scripts/check_image.py (not tested).
 - Audio script (not built); ffmpeg now exists on this machine (WinGet), earlier runs had none.
 - Video sentence in step 4 untested.
-- GPT claim: "Never overwrite ... save beside it" is close to OpenAI imagegen/SKILL.md lines 204-205; not opened, decide before release.
+- GPT claim about the overwrite guardrail: checked. `~/.codex/skills/.system/imagegen/SKILL.md` line 42 says "Do not overwrite an existing asset unless the user explicitly asked for replacement; otherwise create a sibling versioned filename" (lines 204-205 in GPT's message do not match this local copy). Same idea, so the guardrail is reworded: "Never replace an accepted asset with a new generation; keep the new one under a different name." Done 2026-11-24.
 - Review round 2 with the current SKILL.md (put it in a code block, the chat renders the --- lines as a rule).
 - Not mine to decide: release, rename, integration, deploy; Jakob wants media-review and cheap-agents integrated and deployed together once both are done, what exactly goes live is unanswered.
