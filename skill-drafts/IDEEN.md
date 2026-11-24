@@ -4,7 +4,7 @@ Arbeitsliste, nicht veröffentlicht. Jede Idee stammt aus deinen eigenen Regeln 
 
 ## A. Entwurf fertig, wartet auf deine Tests
 
-Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offenen Fragen in `skill-drafts/<name>.notes.md`. Alle vier: `check_skill.py` grün, keine Gedankenstriche.
+Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offenen Fragen in `skill-drafts/<name>.notes.md`. Alle: `check_skill.py` grün, keine Gedankenstriche.
 
 | Skill | Was er tut | Offen |
 |---|---|---|
@@ -12,6 +12,7 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 | tidy | Archiviert erledigte Sessions in der Claude-Desktop-App, prüft dabei Behauptungen wie "gemergt" in git. | Nur Desktop-App. Startet ohne Slash-Befehl, weil die App solche Skills sonst versteckt. Nicht live getestet. |
 | blindtest | Blinder, zählbarer Vergleich: neue Version gegen alte und gegen ohne. Zweiter Modus "audit" kalibriert blinde Leser an bekannten Fehlern. | Bestehgrenze 80 Prozent gesetzt, nicht gemessen. Kein echter Blindtest gelaufen. |
 | lanes | Mehrere Sessions in einem Repo: eigener Worktree, sauberer Haupt-Checkout, `integrate.ps1` (Ziel-Branch und Prüfbefehl einstellbar), optionaler Guard-Hook. | Nur Windows PowerShell, Mac/Linux später? Smoke-Test grün (2 Branches OK, Konflikt FAILED mit Dateiname). |
+| reroll | Gibt deine letzte Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt (Optionen `different`, 2 oder 3 Sessions, Modellwahl). | Entwurf seit 2026-11-24 (`reroll/`, `reroll.notes.md`), `check_skill.py` grün. Nur Desktop-App für den Session-Weg, sonst Zwischenablage. `different` und Zähler nicht getestet, Name nicht gegen das Netz geprüft. |
 
 ## B. Ideen ohne Entwurf
 
@@ -108,6 +109,6 @@ Jakob hat je Punkt genau eine Antwort gegeben. Gebaut ist noch nichts.
 
 ## F. /reroll (2026-11-23), Ideen für später
 
-`/reroll` ist gebaut und privat (`~/.claude/skills/reroll/SKILL.md`), Kandidat für die Website. Er gibt Jakobs Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt. Test am 2026-11-23: Übergabe korrekt, kein Leck. Dasselbe Modell bringt aber fast dieselben Ideen, darum zeigt der Skill eine Tipp-Zeile für `different` oder ein anderes Modell. Ob `different` wirklich andere Ideen bringt, ist nicht geprüft.
+`/reroll` ist gebaut und privat (`~/.claude/skills/reroll/SKILL.md`), Website-Entwurf seit 2026-11-24 unter `skill-drafts/reroll/`. Er gibt Jakobs Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt. Test am 2026-11-23: Übergabe korrekt, kein Leck. Dasselbe Modell bringt aber fast dieselben Ideen, darum zeigt der Skill eine Tipp-Zeile für `different` oder ein anderes Modell. Ob `different` wirklich andere Ideen bringt, ist nicht geprüft.
 - **Antworten vergleichen oder zusammenführen**: Nachdem beide Antworten da sind, eine Übersicht, was nur in der einen oder der anderen steht, oder eine zusammengeführte Fassung. Nur nach den Antworten, sonst ist die Blindheit weg.
 - **Reroll mit Codex (GPT)**: Die Anfrage an ein Modell eines anderen Anbieters geben, für die größte Vielfalt. Dafür müsste der Skill ein externes Programm starten (z. B. die Codex-CLI), deutlich mehr Aufwand als der Weg über die Zwischenablage.
