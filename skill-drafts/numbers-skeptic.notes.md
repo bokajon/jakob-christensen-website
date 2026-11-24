@@ -27,7 +27,7 @@ Part of the rule text overlaps with a possible claim-check rule (state only what
 ## Review prompt
 `numbers-skeptic.review-prompt.md` (full prompt with context, six parts and the SKILL.md inside), 2026-11-24. Used with Gemini and Copilot (ChatGPT dropped by Jakob, 2026-11-24).
 
-Results 2026-11-24 (Gemini and Copilot, neither could open every page; findings are proposals, not yet applied):
+Results 2026-11-24 (Gemini and Copilot, neither could open every page; findings applied to SKILL.md the same day except the name, which Jakob keeps; the review prompt now holds the revised text, so a second round is possible):
 - Overlap: only obra/superpowers verification-before-completion (evidence before claims) and benchmark skills (godmode bench); no copied sentence found. Worth: both say it is not redundant, a guardrail against single-run anecdotes, fixture-as-runtime, estimated sizes, shallow dead-code claims.
 - Name: both found no exact `numbers-skeptic`; both say it reads broader than the job (may suggest an audit of business numbers). Alternatives offered: verify-metrics, measure-claims, measurement-skeptic. Open for Jakob.
 - Description: Gemini says use third person throughout (Anthropic best practices); Copilot says move the single-fact exception to the front.
