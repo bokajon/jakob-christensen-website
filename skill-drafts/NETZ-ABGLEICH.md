@@ -284,3 +284,22 @@ Gleiche Idee:
 - Matt: pr (gelesen): Beweis-Rangfolge (Screenshots, Testlauf) fuer PR-Beschreibungen.
 Urteil: aehnlich, nah. Neu bei uns: eine Durchsicht ueber den fertigen Bericht, jede Aussage einzeln gelistet und getaggt, mit Zusatzregeln fuer Zeitmessung (Wiederholung), Laufzeitwerte (aus der laufenden App) und generierte Bilder oder Audio (Ergebnis messen). In den gelesenen Seiten nicht gefunden; Teile in anderen Skills (Medienpruefung bei 5) einzeln vorhanden.
 Anfragen: ""proof" agent skill SKILL.md skills.sh review report claims evidence"; skills.sh-API `proof`.
+
+## Teil 3: Netz-Abgleich reroll (Stand 2026-11-24)
+
+Methode: 6 Websuchen (standard) mit "reroll" plus agent skill, SKILL.md, skills.sh, Claude Code, `/reroll`, fresh session; zwei Seiten von einem Haiku-Agenten gelesen (beide Aufrufe HTTP 200, Seite 1 in der Mitte abgeschnitten, Seite 2 am Ende abgeschnitten). Eine Suche ist kein Beweis, dass es nichts gibt.
+
+Namenskollision: kein Skill `reroll` gefunden. Der Name ist aber belegt mit einem anderen Job:
+- https://www.skills.sh/webup/skills-cc/webup-buddy-reroll (nur Suchergebnis): `webup-buddy-reroll`, würfelt den /buddy-Begleiter von Claude Code neu (sucht per Brute Force eine userID). Ein Aggregator nennt rund 382 Installs (nicht geprüft).
+- https://www.skills.sh/nangongwentian-fe/jay-skills/buddy-reroll (nur Suchergebnis): `buddy-reroll`, gleicher Zweck (SALT-Konstante).
+- Kein Skill heißt exakt `reroll`; `/reroll` als Befehl von Claude Code oder anderen Tools fand die Suche nicht (Claude Code hat `/rewind`, das einen Stand zurückrollt und keine neue Antwort erzeugt, nur Suchergebnis).
+
+Ähnliche Idee (neue Session ohne die alte Antwort):
+- https://www.skills.sh/anortham/razorback/claude-cli (gelesen, am Ende abgeschnitten): Skill `claude-cli`, startet `claude -p` für eine zweite Meinung oder einen Review aus einer frischen Instanz ("the value is a new session and an independent prompt, not a different underlying model"). Optionen wie different, Anzahl, Modell im sichtbaren Teil nicht gesehen. Anderer Ablauf: Shell-Aufruf, kein wörtliches Weitergeben deiner Anfrage.
+- https://yunjeongiya.github.io/posts/071-en/ (gelesen, Mitte abgeschnitten): Blogpost zu `/reinspect` gegen Anker-Effekt beim Review, Rat: Kontext trennen (Subagent, eigene Session oder anderes Modell). Skill-Text selbst nicht gesehen.
+- https://trailofbits.com/skills/second-opinion/ (nur Suchergebnis): `second-opinion` schickt einen Code-Review an Codex oder Gemini, also ein anderes Modell.
+- https://skills.sh/vinta/hal-9000/second-opinions (nur Suchergebnis), sno-ai/sno-station-skills (nur Suchergebnis, Reviewer in frischer Session ohne den Verlauf des Autors).
+
+Urteil: ähnlich, nicht gleich. Gefunden wurde nichts, das deine letzte Anfrage wörtlich an eine neue Session gibt, ohne die alte Antwort, mit `different`, Anzahl und Modellwahl. Die Fundstücke sind Review- und Zweitmeinungs-Skills (Code, anderes Modell) und beruhen auf demselben Gedanken (Kontext trennen). Namensrisiko: `buddy-reroll` ist ein anderer Skill, das Wort "reroll" ist aber vergeben und bei Suchen vermischt. Entscheidung über den Namen: Jakob.
+
+Anfragen: "reroll agent skill SKILL.md Claude Code"; "github reroll claude code skill fresh session second opinion without seeing previous answer"; "skills.sh reroll skill"; "claude code slash command /reroll regenerate answer new session"; "github reroll skill repository agent skills fresh session without anchoring blind rerun prompt"; "/reroll claude OR codex OR cursor skill npm OR github reroll prompt new chat".
