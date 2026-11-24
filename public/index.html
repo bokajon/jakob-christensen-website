@@ -337,7 +337,10 @@
       var m = document.getElementById("clip").src.match(/embed\/([^?]+)/);
       var vid = m && m[1];
       cover.src = "https://i.ytimg.com/vi/" + vid + "/maxresdefault.jpg";
-      cover.onerror = function () { cover.onerror = null; cover.src = "https://i.ytimg.com/vi/" + vid + "/hqdefault.jpg"; };
+      function fallback() { cover.onerror = cover.onload = null; cover.src = "https://i.ytimg.com/vi/" + vid + "/hqdefault.jpg"; }
+      cover.onerror = fallback;
+      // Without a maxres thumbnail YouTube answers 404 but still sends a grey 120x90 placeholder image, so onerror never fires.
+      cover.onload = function () { if (cover.naturalWidth <= 120) fallback(); };
       cover.addEventListener("click", function () {
         cover.hidden = true;
         document.getElementById("clip").contentWindow.postMessage(JSON.stringify({ event: "command", func: "playVideo", args: [] }), "*");
