@@ -27,6 +27,23 @@ def run(body=HEAD, extra=None, words=None, raw=None):
         shutil.rmtree(d, ignore_errors=True)
 
 
+def run_plain(files, words=None):
+    d = Path(tempfile.mkdtemp())
+    try:
+        folder = d / "site"
+        folder.mkdir()
+        for name, data in files.items():
+            (folder / name).write_bytes(data)
+        args = [sys.executable, "-I", str(SCRIPT), str(folder)]
+        if words is not None:
+            w = d / "w.txt"
+            w.write_text(words, encoding="utf-8")
+            args += ["--words", str(w)]
+        r = subprocess.run(args, capture_output=True, text=True, encoding="utf-8")
+        return r.returncode, r.stdout
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
+
 def case(name, ok):
     print(("ok   " if ok else "FAIL ") + name)
     return ok
@@ -53,6 +70,10 @@ results = [
     case("15-character xoxb token shows only length", (lambda r: "[REDACTED] (15 characters)" in r[1] and "xoxb-1234567890" not in r[1])(run(HEAD + "xoxb-1234567890\n"))),
     case("two private word hits give two lines", (lambda r: "SKILL.md:5: private word 'ann'" in r[1] and "SKILL.md:7: private word 'ann'" in r[1])(run(HEAD + "ann\nfoo\nann\n", words="ann\n"))),
     case("'----' start gives no frontmatter", "no frontmatter" in run(body="----\nname: demo\ndescription: Demo skill.\n---\n")[1]),
+    case("plain folder without SKILL.md is scanned, not a problem", (lambda r: r[0] == 0 and "scanned as a plain folder" in r[1] and "no regular SKILL.md" not in r[1])(run_plain({"index.html": b"hello"}))),
+    case("plain folder: private word and key found", (lambda r: r[0] == 1 and "private word 'ann'" in r[1] and KEY not in r[1])(run_plain({"a.txt": b"ann " + KEY.encode()}, words="ann\n"))),
+    case("plain folder: no header problems", "frontmatter" not in run_plain({"a.txt": b"x"})[1]),
+    case("plain folder: tool-specific term is not flagged", run_plain({"a.md": ("Send" + "Message").encode()})[0] == 0),
     case("CRLF SKILL.md parses", (lambda r: r[0] == 0 and "no frontmatter" not in r[1] and "frontmatter:" not in r[1])(run(HEAD.replace("\n", "\r\n")))),
 ]
 sys.exit(0 if all(results) else 1)

@@ -16,9 +16,9 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 ## B. Ideen ohne Entwurf
 
 ### Agenten steuern
-1. **delegate**: Wählt pro Teilaufgabe das billigste Modell, das sie gut kann (als Rolle billig, mittel, stark, weil Modellnamen veralten), nennt Modell und Aufwand, fragt vor mehr als 2 Agenten. Parallele Agenten bekommen einen gemeinsamen Brief plus eigene Dateiliste, das Gesamtergebnis prüft ein Skript. Ein "fehlgeschlagen" wird gegen die echten Dateien geprüft. Woher: "Subagents and sessions", 4 Korrekturen. Meinung: größter Geldnutzen für andere. **Meine Wahl.**
+1. **delegate**: Wählt pro Teilaufgabe das billigste Modell, das sie gut kann (als Rolle billig, mittel, stark, weil Modellnamen veralten), nennt Modell und Aufwand, fragt vor mehr als 2 Agenten. Parallele Agenten bekommen einen gemeinsamen Brief plus eigene Dateiliste, das Gesamtergebnis prüft ein Skript. Ein "fehlgeschlagen" wird gegen die echten Dateien geprüft. Woher: "Subagents and sessions", 4 Korrekturen. Meinung: größter Geldnutzen für andere. Geht im Vorschlag budget auf (siehe "Zusammenführen").
 2. **decision-box**: Stellt eine Entscheidung so, dass sie ohne Kontext verständlich ist: Empfehlung und Befund zuerst, jede Option mit dem vollen Text und was sie ändert, eine Frage pro Entscheidung. Woher: "Talking to Jakob", 6 Korrekturen, die meisten von allen. Meinung: echter Nutzen, aber schwer zu testen, und die Tools geben schon einiges vor.
-3. **resume-check**: Nach Absturz oder Stopp erst den echten Stand prüfen (git status, Branch, letztes Log, laufende Hintergrundjobs), dann den unterbrochenen Schritt fortsetzen. Nie Prozesse beenden oder gesperrte Ordner löschen, sondern melden. Woher: Regel "weiter after a crash". Meinung: klein, oft gebraucht, leicht zu testen.
+3. **resume-check**: Nach Absturz oder Stopp erst den echten Stand prüfen (git status, Branch, letztes Log, laufende Hintergrundjobs), dann den unterbrochenen Schritt fortsetzen. Nie Prozesse beenden oder gesperrte Ordner löschen, sondern melden. Woher: Regel "weiter after a crash". Meinung: klein, oft gebraucht, leicht zu testen. **Umgesetzt 2026-11-23 als zweiter Teil von fresh** (siehe "Zusammenführen"), keine eigene Idee mehr.
 
 ### Ergebnisse prüfen
 4. **claim-check**: Vor jedem Bericht nur Geprüftes behaupten, sonst "nicht geprüft". Eine Ursache gilt erst, wenn sie gezeigt ist. Größen, Anteile und "unbenutzt" erst messen, auch den Nutzen einer Empfehlung. Woher: "Honesty". Meinung: stark und allgemein, meine zweite Wahl. Heute selbst verletzt (die ungezählte Behauptung zu delegate).
@@ -36,11 +36,28 @@ Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offene
 12. **skill-check**: Prüft einen Skill vor dem Teilen (private Wörter und Pfade, E-Mails, Schlüssel, Spec-Felder, Namen, die nur in einem Tool gehen). Bündelt dein `check_skill.py` (12 von 12 eingebauten Fehlern gefunden). Meinung: passt genau zu den Leuten, die deine Karte anschauen. Nur dein Skript und deine eigenen Regeln, Teile aus Matts Skills bleiben draußen.
 13. **rule-edit**: Vor einer neuen Zeile in einer Regel oder Doku das Bestehende zum Thema lesen und schärfen statt anhängen, Doppeltes zusammenführen. Meinung: eher nicht, weil es sich mit Matts writing-for-agents überschneidet (Plagiatsrisiko).
 
+### Aus deinen Verläufen gezählt (2026-11-23)
+Quelle: 6.540 deiner Prompts aus allen Claude- und Codex-Verläufen (`~/.claude/projects`, `~/.codex/sessions`), per Skript ausgelesen und nach Stichwörtern gezählt, Treffer von Hand gesichtet. Gleiche Prompts zählen einmal, die Zahlen sind also Untergrenzen. Netz-Abgleich: nicht gemacht.
+
+15. **space**: Platz auf C schaffen. Ein Skript misst Temp, npm-Cache, NVIDIA-Shader-Cache, Downloads und Reste, zeigt eine Tabelle, löscht nur Sicheres (nichts jünger als 1 Stunde, `Temp\claude` erst ab 1 Tag, gesperrte Dateien bleiben, eine Blockade wird nicht umgangen) und meldet den Rest. Woher: 9 Mal "bitte Platz auf C schaffen" (27.10. bis 22.11.), einmal "wie verhindere ich das?". In den 4 nachgelesenen Sessions wurde jedes Mal neu gesucht. In `D:\` liegen dazu 65 Worktree-Ordner und 318 .log/.txt-Dateien (gezählt, Größe nicht gemessen). Meinung: schnellster Gewinn, leicht zu testen, auch als geplante Aufgabe möglich. **Meine Wahl für zuerst.**
+16. **relay**: Prompt für ein anderes Tool schreiben und dessen Antwort zurück prüfen. Hin: passend zum Ziel (Copilot nimmt nur eine Datei, also alles in den Text; Codex bekommt Repo, Worktree und Prüfbefehl; ein Bildtool Stilreferenz und Anzahl Ansichten), mit festem Antwortformat. Zurück: jede Aussage gegen die echte Datei prüfen, Doppeltes zusammenfassen, Konsens zählen, markieren, was der Reviewer nicht sehen konnte. Woher: mindestens 8 Mal "gib mir einen Prompt für Codex, Gemini, Pixel Lab, ChatGPT oder Copilot", "welcher der 4 Prompts ist der beste, kombiniere" (9.11.), eingefügte Reviews am 22. und 23.11. (workaround, tidy, lanes, `REVIEW-AUSWERTUNG.md`). Meinung: machst du am häufigsten von Hand. generated-asset-check (5) wäre der Rückweg für Bilder und Musik.
+17. **names**: Namensrunden. Kandidaten in Familien, jeder vorher gegen GitHub, Skill-Verzeichnisse, npm und Domain geprüft, verworfene Namen in einer Liste, damit sie nicht wiederkommen, Wahl in einer Box. Woher: 13 Runden seit 5.11. ("30 Namen mit lodge am Ende", "50 Namen cute", "15 Vorschläge für den Skill", "keiner der 5 gefällt"), 9 davon am 22. und 23.11. Bei lanes kam die Namensgleichheit mit tavinathanson/lanes erst beim Netz-Abgleich heraus. Meinung: spart Runden, gut testbar.
+18. **playtest**: Übergabe zum Testen und Feedback-Runde. Vor der Übergabe selbst im Browser prüfen, dann Link und 3-5 Dinge zum Anschauen. Nummeriertes Feedback behält deine Nummern, Bericht je Nummer mit Beleg, Nachtest nur für Geändertes. Woher: mindestens 4 Mal "wo testen?", "worauf soll ich beim Playtesten achten" (11.11.), nummerierte Rückmeldungen wie "bild1: ..., b2: ..." (rund 50 Prompts mit Punkten 1-3 oder mehr, nicht alle Feedback). Meinung: stark für NiagaraUI und Choir. live-layout-check (6) wird darin die Selbstprüfung.
+
+### Zusammenführen (Vorschlag 2026-11-23)
+- **budget** = delegate (1) + Usage-Rückblick + Sparmodus. Vorher Modell je Aufgabe wählen, bei wenig Usage umschalten, nachher mit `usage-report.py` messen und Regeln vorschlagen. Woher: über 20 Fragen seit 23.10. wie "welche Sessions haben am meisten gekostet, wo hätte ich ein kleineres Modell nehmen sollen", "mach alles, was Usage spart", "nur noch wenig Usage, alles auf Sonnet/Haiku". Meinung: größter Geldnutzen, ersetzt delegate. **Meine Wahl als größter Skill.**
+- **tidy + Session-Übersicht**: tidy zeigt zuerst, welche Sessions auf dich warten, arbeiten, ungemergte Arbeit haben oder fertig sind, dann archiviert es. Woher: 6 Mal "welche Sessions warten auf Antworten / haben noch nicht committet / sind noch offen / sollten weitermachen". Nachteil: ändert den fertigen Entwurf. **Umgesetzt 2026-11-23** in `skill-drafts/tidy/SKILL.md` (Gruppen und Übersicht, Nur-Übersicht-Modus), Jakob: "der fertige entwurf ändert sich ist kein nachteil". Zahlen in `tools/SKILL-CHECKLIST.md` 8d.
+- **no-loss** = history-first (8) + backup-before-rewrite (9) + Verlustprüfung. Vorher Commits lesen und sichern, nachher Zeile für Zeile prüfen, bei "fehlt" `git log -G`. Woher: 4 Mal "wurde etwas Wichtiges gelöscht?" am 9.11. Meinung: drei kleine Ideen werden ein brauchbarer Skill.
+- **ledger** = pinned-facts (11) + project-docs (10). Woher: "wie halte ich den Befund fest, damit alle Chats ihn kennen?" (18.11.), "gibt es für Ideen ein eigenes Dokument?" (1.11.). Nachteil: überschneidet sich mit dem eingebauten Gedächtnis.
+- **resume-check (3) als zweiter Teil von fresh**: fresh schreibt die Übergabe, resume-check liest sie danach. Nachteil: ändert die veröffentlichte fresh. **Umgesetzt 2026-11-23** als Abschnitt "Resume" in `public/agent-skills/fresh/SKILL.md`, Zahlen in `tools/SKILL-CHECKLIST.md` 8g. Online erst nach Jakobs Ok und Deploy.
+- **ship-skill** = `tools/SKILL-CHECKLIST.md` + skill-check (12) + Herkunftsprüfung + Netz-Abgleich + Kartentext-Regeln. Am 22. und 23.11. 6 Mal von Hand durchlaufen (Abschnitte 8a-8f). Meinung: für dich sehr nützlich, öffentlich eher nicht (überschneidet sich mit NVIDIA SkillEvaluator und skill-creator).
+
 ## C. Geprüft und verworfen
 - **game-check**: eine Bearbeitung von Xyloforge game-detail-bar (siehe FAKTEN.md).
 - **art-pipeline, audio-takes, content-editing**: Niagarama-Abläufe, zu projektgebunden. Ihr allgemeiner Kern steckt in generated-asset-check.
 - **Civ-VII-Mod-Regeln**: nicht von dir.
 - **Prompt-Dateien**: Projektinhalt, keine Skills.
+- **Credits- und Inspirationslisten, Art-Galerie, Choir-Kritik** (gesichtet 2026-11-23): Projektinhalt oder dein eigenes Produkt.
 - **session-close**: überschneidet sich mit fresh.
 - **Dev-Server unter Windows stoppen**: zu schmal für einen eigenen Skill.
 - **no-dashes-Hook, usage-report.py, statusline.py, die Agenten builder, checker und searcher**: keine Skills.
@@ -76,3 +93,21 @@ Grenzen: "gelesen" heißt bei den Agenten, dass ein kleines Modell die Seite zus
 | 12 skill-check | nein (mehrfach) | gleich: NVIDIA SkillEvaluator (PII, Geheimnisse, lokale Kennungen, Frontmatter, Tool-Kompatibilität) | nur leichter, eigene Wortliste, Gedankenstriche, deutscher Text | ja, NVIDIA-Doku gelesen |
 | 13 rule-edit | ja | ähnlich, nah, deutlich bei Matt (writing-for-agents, retro) | kaum | nein |
 | 14 proof (claim-check + measure-twice + generated-asset-check) | ja (nah: proof-of-work, proof-agent) | ähnlich, nah: obra verification-before-completion, proof-of-work | Durchsicht des fertigen Berichts mit Etikett je Aussage, dazu die Regeln für Zeitmessung, Laufzeitwerte und generierte Medien | ja, obra gelesen |
+
+## E. Grill space/freeup (2026-11-23), entschieden
+
+Jakob hat je Punkt genau eine Antwort gegeben. Gebaut ist noch nichts.
+- **Skill**: Idee 15 (Platz auf C schaffen). **Name: `freeup`** (`/freeup`), in einer Namensrunde gewählt (Kandidaten sweep, headroom, spring-clean verworfen). Netz-Abgleich nicht gemacht.
+- **Privat zuerst**, Website-Entwurf und Release später, dann nach `tools/SKILL-CHECKLIST.md`.
+- **Start**: per `/freeup` und automatisch bei freien Worten wie "schaff Platz auf C".
+- **Löschen**: Tabelle mit Größen, ein Ja, dann alles Gezeigte löschen. Sicherheitsregeln aus Idee 15 bleiben (nichts jünger als 1 Stunde, `Temp\claude` erst ab 1 Tag, gesperrte Dateien bleiben, Blockade wird nicht umgangen).
+- **D:** nur zeigen (Worktrees, Logs mit Größe), nie anfassen.
+- **Downloads**: nur zeigen, nie löschen.
+- **Geplante Aufgabe**: vorerst nein, nur manuell.
+- **Offen**: Netz-Abgleich für den Namen (vor Veröffentlichung); Plattform (Windows und C: nur) für die öffentliche Fassung; Größe von Worktrees und Logs auf D: nicht gemessen.
+
+## F. /reroll (2026-11-23), Ideen für später
+
+`/reroll` ist gebaut und privat (`~/.claude/skills/reroll/SKILL.md`), Kandidat für die Website. Er gibt Jakobs Anfrage wörtlich an eine frische Session, die die alte Antwort nicht kennt. Test am 2026-11-23: Übergabe korrekt, kein Leck. Dasselbe Modell bringt aber fast dieselben Ideen, darum zeigt der Skill eine Tipp-Zeile für `different` oder ein anderes Modell. Ob `different` wirklich andere Ideen bringt, ist nicht geprüft.
+- **Antworten vergleichen oder zusammenführen**: Nachdem beide Antworten da sind, eine Übersicht, was nur in der einen oder der anderen steht, oder eine zusammengeführte Fassung. Nur nach den Antworten, sonst ist die Blindheit weg.
+- **Reroll mit Codex (GPT)**: Die Anfrage an ein Modell eines anderen Anbieters geben, für die größte Vielfalt. Dafür müsste der Skill ein externes Programm starten (z. B. die Codex-CLI), deutlich mehr Aufwand als der Weg über die Zwischenablage.

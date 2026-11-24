@@ -1,4 +1,4 @@
-# tidy-sessions - draft notes (formerly tidy)
+# tidy - draft notes
 
 ## Sources read
 - `C:\Users\fhs30332\.claude\skills\tidy\SKILL.md` (current), packaged plugin repo `D:\claude-skills` (`skills/productivity/tidy/SKILL.md`, one commit 6c700c3 "Add tidy skill as MIT plugin repo (0.1.0)", README/CHANGELOG/LICENSE not copied), backup `D:\Niagarama-Backup\...\tidy\SKILL.md` (identical to current).
@@ -26,9 +26,8 @@ Checklist 2.3: the desktop app drops user-invoked skills, and tidy works only th
 ## Tested
 - check_skill.py: exit 0. Not tested live (it would archive Jakob's real sessions).
 
-## Rename 2026-11-23
-- `tidy` was split in two by Jakob's decision: `tidy-sessions` (this one, desktop add-on, content unchanged) and `tidy-worktree` (generic, git only). Renamed: folder, `name:`, heading, notes file. The description and the intro now point to `tidy-worktree` for git-only cleanup.
-- Added a caveat: whether the app also deletes ignored files when it removes a worktree is not checked, so the text does not claim it.
-- Hook rewrite of `archive_session` stays out (FAKTEN 2026-11-23).
-- Name not checked against the net (known: `tidy` is taken at finolabs with a different job; `tidy-sessions` and `tidy-worktree` not searched).
-- Rename tested: check_skill exit 0 only. Skill not run live.
+## Overview (2026-11-23, merged from the idea "Session-Übersicht")
+- Before archiving, tidy now shows every session in five groups (waiting for you, working or waiting for a result, unmerged or uncommitted work, stopped and should continue, settled), first match wins. The old "only asks what would be archived" path (step 4/5) is the same mode: overview only, group 5 headed "Would archive". A question about one group shows that group in full.
+- Steps 4 to 7 are new (sort, show, archive, report); steps 0 to 3 unchanged. The goal text, the dry-run wording in step 1 and the description changed.
+- Private copies (Claude and Codex): same new part in German, still user-invoked. `/tidy Übersicht` only shows the overview. Open for Jakob: because they are user-invoked, a plain question like "welche Sessions warten auf Antwort" does not start them.
+- Tested: see `tools/SKILL-CHECKLIST.md` 8d (addendum).
