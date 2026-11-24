@@ -36,3 +36,8 @@ Same reasoning as tidy (checklist 2.3): the desktop app drops user-invoked skill
 ## Ideas for later (from IDEEN.md F)
 - Compare or merge the answers afterwards (only after both exist, otherwise the blindness is gone).
 - Reroll with another vendor's model (needs to start an external program, much more effort).
+
+## Review round 1 (2026-11-24, Gemini + Copilot; ChatGPT out of usage)
+Applied (Jakob approved 1-8): non-/reroll last message and same-message request; "probably" removed; count only on typed number (default 1 when model-invoked); clipboard via powershell.exe plus print fallback; start_session fallback to copy route; do-not-open list from own tool calls anywhere, omitted if unclear; transcript recovery limited to this session; description/compatibility in third person; background text fixed also for `different`.
+Not applied: reference file for recovery, removing the why-sentence, same-chat retry, vague Copilot P9/P10. Open for Jakob: license field (no draft has one), redundancy vs /rewind.
+Both reviewers could not open the GitHub folders: overlap check (part 1) still open for the blind read.
