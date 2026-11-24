@@ -126,3 +126,29 @@ Wunsch: Fachwörter in Claude-Code-Antworten (fork, main, pushed, Frontmatter, "
 - **Spickzettel aus echten Sessions**: Ein Skript zählt die häufigsten Fachwörter, jedes bekommt ein Alltagsbild. Später ein Wochenrückblick mit Quiz.
 - **Hover-Mod**: Begriffs-Chips unter jeder Antwort, Karte beim Drüberfahren, Klick öffnet ein Glossar-Panel. Kür, erst wenn die einfachen Wege Lücken zeigen.
 - **Offen**: Zeigt der Desktop-Code-Tab den `title` eines Markdown-Links als Tooltip? Nicht getestet.
+
+## H. Was Jakob ausser Skills teilen könnte (2026-11-24), Ideen für später
+
+Frage: Was lässt sich auf der Website ausser Skills teilen, etwa als Mod? Elf Ideen mit Zahlen aus 2.389 Claude-Verläufen (7.908 Prompts in Hauptsessions, ohne Codex) und den Mod-Typen aus Build 2.1.325. Jakob, 2026-11-24: erst notieren, nichts bauen (Wochenlimit knapp). Übergabe: `D:\Temp\website-ideen-2026-11-24-2007.md`. Reihenfolge damals: 1, dann 4, dann 6; Idee 1 ist nach der Korrektur herabgestuft. Mods waren bei Jakob bisher selten (6 Prompts, `claude plugin` in 3 Sessions).
+
+**A. Mods (nur Claude Code, nicht Codex)**
+1. **Kontext-Band "Zeit für /fresh?"**: eine Zeile über dem Eingabefeld (`ui.render` auf `AbovePrompt`) mit Kontext in %, 5h- und 7d-Limit und Minuten seit der letzten Antwort gegen die Cache-Lebensdauer. Ab 50 % oder 60 Minuten Pause orange, mit /fresh-Knopf. Daten: `$.session.usage()`, Timer über `$.clock`. Beleg: Der Checkpoint-Hook schrieb 264-mal "Kontext groß" und 147-mal "Pause". Pro: sichtbar, als GIF zeigbar. Contra: Cache-Zeit nur geschätzt (1 h, bei Credits 5 min); geteilt wird über ein GitHub-Repo mit `.claude-plugin/marketplace.json` und `/plugin install`, nicht als ZIP. **Korrektur:** Dass die Context-Karte einen Teil schon zeigt, kam ungeprüft aus Jakobs Regeltext. Belegt ist es über die Beschreibung des App-Tools get_usage plus einen Live-Aufruf (Eingabefeld: Tokens, %, Auto-Compact-Schwelle 84 %, grösste Kategorien; Usage-Karte: 5h- und Wochenlimit), die App-Oberfläche selbst wurde nicht gesehen. `/usage` zeigt laut code.claude.com/docs/en/costs eine Zeile "Prompt cache (main)", im Desktop nicht geprüft. **Neu wäre nur die Cache-Uhr plus der /fresh-Knopf.** Urteil: herabgestuft.
+2. **Usage-Panel "Wohin gingen meine Tokens?"**: Logik von `~/.claude/tools/usage-report.py` (teuerste Sessions der letzten 48 h, Opus gegen Sonnet, "Sonnet hätte gereicht"). Skript lief 13-mal in 11 Sessions, in dieser Datei stehen über 20 Usage-Fragen seit 23.10. Pro: spart Geld, passt zu /cheap-agents. Contra: `/usage` und explain-usage decken einen Teil ab; `$.fs.read` liest höchstens 4 MiB pro Datei, grosse Verläufe brauchen `$.process`; Zahlen sind Schätzungen. Urteil: zweiter Mod, später.
+3. **Wächter gegen KI-Merkmale**: `~/.claude/hooks/no-dashes.py` als Mod oder Hook, erweitert um die /unrobot-Muster. Hat 20-mal blockiert. Pro: winzig, sofort klar. Contra: allein zu klein; mit den unrobot-Mustern braucht er den humanizer-Credit. Urteil: als Beigabe zum /unrobot-Release.
+- Nicht machbar: Session-Übersicht als Panel (die Mod-API hat keinen Aufruf, der andere Sessions auflistet, 0 Treffer). Hover-Glossar-Mod: am 24.11. geparkt, siehe Abschnitt G.
+
+**B. Downloads**
+4. **Agenten-Trio** `~/.claude/agents/`: builder.md (Sonnet/medium), checker.md (Sonnet/medium, nur lesend), searcher.md (Haiku), jeweils mit festem Modell und Effort. builder lief 114-mal in 24 Sessions, searcher 11/8, checker 5/3. In der öffentlichen /cheap-agents stecken sie nicht (0 Treffer). Pro: fast fertig, macht /cheap-agents greifbar. Contra: checker kaum erprobt; ändert einen veröffentlichten Skill, braucht also Jakobs Wort; Urheberschaft nicht geprüft, vermutlich seine. Urteil: schnellster Gewinn.
+5. **Projekt-Starter aus `D:\Projekt-Vorlage`**: CLAUDE.md-Gerüst, STATUS/OFFEN/IDEEN/KARTE/SESSION-LOG, scripts/integrate.ps1, scripts/guard-main-checkout.mjs. `npm run integrate` lief 1.604-mal in 515 Sessions, `git worktree add` 946-mal. Pro: ein Download richtet die Arbeitsweise ein. Contra: doppelt mit /lanes und dem Entwurf project-state, nur Windows, `master` fest eingetragen. Urteil: erst nach project-state, dann als Bündel.
+
+**C. Inhalte zum Lesen**
+6. **"Meine CLAUDE.md und warum jede Regel existiert"**: die globalen Regeln, zu jeder das Erlebnis dahinter (30 Regelpunkte, 27 Datumsangaben, FAKTEN.md 32 Einträge). Pro: Veröffentlichte CLAUDE.md-Dateien zeigen fast nie das Warum, stark für Studierende, kein Code zu pflegen. Contra: muss von Privatem gesäubert und übersetzt werden, veraltet wöchentlich. Urteil: bestes Inhaltsstück, Platz 3.
+7. **ELI18-Lektionen aus /teach** ("Prompt-Cache", "Messen statt fühlen", Spickzettel Cache und Kosten), schon HTML mit Quiz in `D:\Lernen*`. Pro: passt zu Jakobs Lehre an der FH. Contra: nur 2-3 Stück, Cache-Zeiten und Preise vorher neu prüfen. Urteil: gut, wenn er sie im Kurs ohnehin braucht.
+8. **Messprotokolle**, etwa der Chisle-Test: Replay über 882 Verläufe schätzte 15 % weniger Tool-Ausgabe; live seit 23.11. 381 Kürzungen, 1,33 Mio. Zeichen (`~/.claude/tools/chisle/.chisle-compress-stats.json`). Pro: ehrliche Zahlen sind selten. Contra: Chisle ist nicht von Jakob (MIT, JayPokale), braucht Credit; der Test läuft erst einen Tag. Urteil: später.
+
+**D. Spiel-Werkzeuge aus NiagaraUI (`D:\NiagaraUI`)**
+9. **Musik-Wiederholungsprüfung** (`soundFingerprint.ts`, `musicRepetition.ts`): findet Schleifen in generierter Musik, könnte /media-review erweitern. Wie allgemein sie ist, nicht geprüft.
+10. **Normal-Maps für 2D-Sprites** (`localNormalMap.mjs`, `spriteFusionNormal.mjs`): niedrige Priorität, ähnliche Tools gibt es vermutlich (nicht geprüft).
+11. **TinkerLodge** wird laut FAKTEN.md ohnehin veröffentlicht.
+
+Für eine Mod-Karte bräuchte die Website wohl einen Abschnitt "Mods" neben "Jakob's Agent Skills"; wie er aussieht, entscheidet Jakob.
