@@ -1,6 +1,6 @@
 # Card text for /reroll (released 2026-11-24, approved by Jakob)
 
-Summary line: Gives your request to a fresh session that never saw the rejected answer
+Summary line: Asks again in a new chat that never saw the first answer
 
 Paragraph 1: When an answer misses, asking again in the same chat starts from the model's own first attempt, so the new answer is shaped by it (it avoids it or circles around it). **This skill hands your own request, word for word, to a brand-new session that has never seen the rejected answer**, so you get an independent second attempt.
 

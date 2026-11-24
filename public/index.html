@@ -274,7 +274,7 @@
               <summary class="skill-head">
                 <h3>/reroll</h3>
                 <a class="download" href="agent-skills/reroll/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
-                <span class="skill-sum">Gives your request to a fresh session that never saw the rejected answer</span>
+                <span class="skill-sum">Asks again in a new chat that never saw the first answer</span>
               </summary>
               <p class="skill-desc">When an answer misses, asking again in the same chat starts from the model's own first attempt, so the new answer is shaped by it (it avoids it or circles around it). <strong>This skill hands your own request, word for word, to a brand-new session that has never seen the rejected answer</strong>, so you get an independent second attempt.</p>
                 <p class="skill-desc">It never summarizes or comments on the earlier answer. <code>/reroll 2</code> or <code>/reroll 3</code> starts that many parallel attempts, <code>/reroll different</code> tells the new session that an earlier answer was rejected (never what it said) and asks it to avoid the most obvious choices, and a model name such as <code>/reroll sonnet</code> picks the model. Any other text is added as a note.</p>
