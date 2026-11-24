@@ -5,32 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jakob Christensen - Tools, Toys &amp; Tinkering</title>
   <meta name="description" content="Tools, toys and tinkering by Jakob Christensen: agent skills, teaching tools for visual effects and a game in the making.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121110">
   <style>
+    /* Dark by default, whatever the system says (Jakob, 2026-11-24). Light only with data-theme="light". */
     :root {
-      --bg: #fafaf9;
-      --surface: #ffffff;
-      --fg: #1c1917;
-      --muted: #6b6560;
-      --border: #e7e5e4;
-      --accent: #c2410c;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #121110;
-        --surface: #1c1a19;
-        --fg: #f0eeec;
-        --muted: #a29d98;
-        --border: #2e2b29;
-        --accent: #fb923c;
-      }
-    }
-    :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg: #121110;
       --surface: #1c1a19;
       --fg: #f0eeec;
       --muted: #a29d98;
       --border: #2e2b29;
       --accent: #fb923c;
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #fafaf9;
+      --surface: #ffffff;
+      --fg: #1c1917;
+      --muted: #6b6560;
+      --border: #e7e5e4;
+      --accent: #c2410c;
     }
     * { box-sizing: border-box; }
     body {
