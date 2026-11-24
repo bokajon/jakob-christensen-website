@@ -56,3 +56,20 @@ Name chosen by Jakob (2026-11-24): `numbers-skeptic`. Earlier names: `measure-tw
 - Name is decided (see Name); a final name check on GitHub and skills.sh is still open.
 - Blind agent review and the other reviews (prompt is ready), then a retest of the dead-code phrasing, a fixture where the cold-start effect is not readable in the code, a `/numbers-skeptic` start and a second tool.
 - Card text, Jakob's OK.
+
+## Blind-Review durch Sonnet-Agent (2026-11-24)
+Bericht: `D:/Temp/review-numbers-skeptic.md` (Aussagen des Agenten, nur Seitenzusammenfassungen gelesen, Satzvergleich "not checked"). Triage, N = neu gegenueber Gemini/Copilot-Runde:
+- P1 (N) Step-1-Beispiel p95 passt nicht zu Median und 5 Laeufen: uebernommen (Beispiel auf Median, Step 5 nennt die Statistik des Claims, Perzentil ab 100 Samples, sonst "not checked").
+- P2 (N) "same order" laedt zu A-A-B-B ein: uebernommen (Step 8: A B A B abwechseln, sonst "order not balanced").
+- P3 (N teils) Spannweite waechst mit n, "bis 20" gegen 10-Minuten-Budget, "ask first" ohne Fallback, 3 Laeufe unter Minimum: uebernommen als einmal 5 nachlegen, dann "noisy"; Budget gewinnt; Fragen nur wenn der Nutzer da ist. Nicht uebernommen: MAD/IQR (zu viel Statistik, ungeprueft).
+- P4 (teils bekannt) Windows-Befehl ist ein 1-Sekunden-Wert, `uptime` ein Durchschnitt: uebernommen (vor und nach der Serie lesen, mehrere Werte, 50 Prozent bleibt "Faustregel"). Der Reviewer hat nur Existenz und Typ der Eigenschaft belegt (MS Learn), nicht die Schwelle.
+- P5 (N) Wiederholbarkeit und Zustand: uebernommen (Step 4, Step 3: keine Systemeinstellungen aendern).
+- P6 Name: Jakob hat `numbers-skeptic` gewaehlt, keine Aenderung. Offen fuer Jakob: Alternativen `measuring-claims`, `verifying-measurements`, `measure-before-claiming` (einzeln nicht geprueft); argahv `skeptic` ist inhaltlich naeher als gedacht; Ordnername = `name` stimmt.
+- P7 (N teils) Beschreibung: uebernommen (auf Software eingegrenzt, "Use when ..." mit Ausloesern wie faster, smaller, dead code). Trigger-Retest mit "is X dead code", "is it faster", "does it finish under N ms" bleibt offen.
+- P8 (N) Guardrails wiederholten Schritte: Abschnitt entfernt, die zwei neuen Regeln stehen in Step 3/4/5; zweiter Goal-Satz gestrichen.
+- P9 (N) Dead-Code-Spur: uebernommen (Namensteile, oeffentliche Exports, Coverage/Log als staerkere Evidenz).
+- P10 (N) "one known ratio": ersetzt durch unabhaengig lesbaren Wert, zwei Zahlen nebeneinander.
+- P11 (N) UI/Netz/Flaky: eine Zeile in Step 1, keine references-Datei.
+- P12 Aufteilung: Step 6 in 6 und 7 geteilt; Nutzenversprechen-Bullet in den Report-Schritt verschoben.
+- P13 `compatibility` bleibt, Ordnername geprueft. P14 (N) Laufzahl nach Dauer, schnelle Befehle in einer Schleife: uebernommen. P15 Overlap: kein kopierter Satz gefunden; Hinweis "Arbeitsbaum sauber" nicht uebernommen (Step 8 verlangt schon Commit/Version).
+- Wertung des Reviewers: kleine Leitplanke, kein Benchmark-Tool; "reproduced" erst nach Trigger-Test und Fixture mit versteckter Cold-Start-Streuung versprechen. Beides bleibt offen.
