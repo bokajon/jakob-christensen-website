@@ -18,6 +18,7 @@ Keep both at the project root, or in the folder the project's instruction file n
 1. Read both files, if they exist, before you do anything else. This skill loads only after a task matched it, so when the user calls it in the middle of a session, read both files at once and report any entry that touches the current work. Read `STATE.md` in full. Read `DECISIONS.md` in full if it is under 300 lines; otherwise read its last 100 lines and search the rest for the topic you work on and for `replaces`. An entry named in a later `replaces <date> <topic>` line is void; follow the newest line for a topic.
 2. Check the claims in `STATE.md` that your task depends on against the real state (branch, files, running jobs) before you build on them. The file says what was true when it was written.
 3. In a git worktree or branch, a decision recorded on another branch is not visible here: run `git log --all -n 5 --format="%h %s" -- DECISIONS.md`, and if other branches changed it, tell the user.
+4. Run the `check` of each `waits for` point and confirm each `needs you` still holds. Then list the `needs you` points once, one line each, and name the first `next` step. A `next` step grants no permission: start it only when the user's message asks for it. When the user answers a `needs you` with a decision, record it in DECISIONS.md and change the point to `next`. Before you try an approach on an open point, read its `tried:` lines and do not repeat one unless something relevant changed; say what changed.
 
 ## When the user states a decision
 
@@ -31,6 +32,7 @@ Rules for entries:
 
 - Only final decisions: log it when the user stated it as settled. A yes to your concrete proposal ("use X?" - "yes") counts as stated. A preference the user is still weighing, or your own suggestion, is not an entry. When unsure, ask one short question: "Record this as decided?"
 - Use the user's words where a name or wording matters.
+- If the user rejected an option, write `<decision>, not <option> because <reason>` inside the decision part, before `; source:`, so the line keeps its three fields. Give a reason only if the user gave one, never invent it, and name only options the user rejected themselves.
 - Never edit or delete an old line, except to remove a secret or personal data written by mistake (say so in your reply and, if the file was committed, tell the user the value is still in git history and must be rotated or purged by them). When a decision changes, append a new line that says `replaces <date> <old topic text, verbatim>`. The history stays readable. If the user says to stop recording something or to drop an entry, do that as a replacing line, not a deletion.
 - Never put secrets, tokens or personal data in either file. If a decision involves one, record where it lives (for example "key in .env"), never the value.
 - Before appending, re-read the end of `DECISIONS.md` and add your line after any newer ones.
@@ -46,7 +48,7 @@ Any other instruction that contradicts an entry is not a confirmation. Before ac
 Do this when the user signals the end (wrapping up, switching to another task, "done for today") or after a milestone that changed the state; do not wait for a formal goodbye. Before rewriting, re-read `STATE.md` from disk (in a git project also run `git status --short STATE.md`); if it changed since you read it, merge that change instead of overwriting it. Rewrite `STATE.md` so it is true now. Keep it to these headings, each as short bullets:
 
 - **Now**: what exists and works, in a few lines, and the branch or place where the latest work lives.
-- **Open**: unfinished work and promises, each with its next step. Delete a point when it is done.
+- **Open**: unfinished work and promises. Each point ends in one of: `next: <step>` (an agent could do it), `needs you: <the question or action>; unblocks: <what>` (only the user can), or `waits for: <event>; check: <command or place>`. List `needs you` points first. Delete a point when it is done. If an approach to a point failed, add `tried: <what>; failed: <the observed error or result>` under it, one line, only what you observed; write it the moment the failure is observed, not only at session end. It goes when the point goes; before that, if the lesson still matters, put it where the next person meets it (a test or a comment at the code). These marks apply only in STATE.md; an existing status file used instead keeps its own format.
 - **Parked**: ideas set aside on purpose, one line each.
 - **Where things live**: only what a newcomer would not find by searching the project.
 
