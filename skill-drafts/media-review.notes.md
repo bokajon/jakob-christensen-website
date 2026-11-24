@@ -52,3 +52,14 @@ All three flagged "frontmatter missing": false alarm, the chat rendered the --- 
 - Tested: `python -I tools/test_check_image.py`, 26 cases, 0 failed (hand-built PNG, JPEG, GIF, WebP headers, Pillow hidden and visible, wrong and right requirements, identical, unreadable, usage). On 3 real images from the site (2 PNG, 1 WebP) the sizes and formats equal what Pillow reports (192x224, 412x480, 453x174). The pixel numbers (corners, colors) were not checked against a second tool. `check_skill.py` and `fingerprints.py --no-dashes` on the folder: OK.
 - Not tested: the skill with the script in an agent run (no headless run, so whether an agent calls it and reads the exit codes correctly is open), big images over 4 million pixels for the color count (returns NOT MEASURED by design, not exercised on a real file), animated GIF or WebP, JPEG with the size marker after 4 MB of header data (returns unreadable), Python versions other than 3.15 on this machine, macOS and Linux.
 - Not done: no audio or video script, no ZIP, no card text, nothing published or put on the site.
+
+## Retest after review round 1 (2026-11-24)
+6 headless runs, Sonnet, `/media-review`, "just do it": J1-J3 with "natural and warm", M1-M3 without. Billed calls 0 of 6 (no calls.log, no wav). All named the cost 4.80 USD, the checks that exist, and what needs a human, and asked before spending. M runs still named "words match the text" as not checkable, so the measurable-only case is not pure. Not retested: measurement case with the new step 4 text, the image script in an agent run, video sentence (untested), audio.
+
+## Open for later
+- Agent run that calls scripts/check_image.py (not tested).
+- Audio script (not built); ffmpeg now exists on this machine (WinGet), earlier runs had none.
+- Video sentence in step 4 untested.
+- GPT claim: "Never overwrite ... save beside it" is close to OpenAI imagegen/SKILL.md lines 204-205; not opened, decide before release.
+- Review round 2 with the current SKILL.md (put it in a code block, the chat renders the --- lines as a rule).
+- Not mine to decide: release, rename, integration, deploy; Jakob wants media-review and cheap-agents integrated and deployed together once both are done, what exactly goes live is unanswered.
