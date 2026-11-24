@@ -87,7 +87,11 @@
     .link { font-size: 0.9rem; color: var(--accent); font-weight: 400; overflow-wrap: anywhere; text-align: right; }
     .coming { font-size: 0.9rem; font-weight: 400; color: var(--muted); text-align: right; }
     .skills { margin: 0.25rem 0 0; padding-left: 0; list-style: none; }
-    .skills li + li { margin-top: 0.75rem; }
+    .skills { display: grid; grid-template-columns: 1fr; gap: 0.75rem 1.5rem; align-items: start; }
+    @media (min-width: 40rem) {
+      .skills { grid-template-columns: 1fr 1fr; }
+      .skills li:nth-child(even) .skill-head[data-tip]::after { left: auto; right: 0; }
+    }
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
     .skill-head { cursor: pointer; list-style: none; }
     .skill-head::-webkit-details-marker { display: none; }
