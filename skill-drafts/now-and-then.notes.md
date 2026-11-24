@@ -81,11 +81,10 @@ Bericht: `D:/Temp/review-now-and-then.md` (Aussagen des Agenten, nur Seitenzusam
 
 ## Proposed page card (2026-11-24, not approved, not on the page)
 
-Group Sessions, last entry. Download MD (single file). The Lore comparison was read in Lore's README on 2026-11-24 ("Five files under docs/lore/", "record at the end of each task").
+Group Sessions, last entry. Download MD (single file). No Lore paragraph on the card (Jakob, 2026-11-24, replaces P19): the skill was not inspired by Lore, first draft 638427d of 2026-11-23, first mention of Lore in the repo 02458b1 of 2026-11-24.
 
 Summary line: Remembers what you decided, so you say it only once
 
 1. Agents forget what you settled last week, so you explain the same name or rule again in every session. **This skill records what you decide about a project in a dated log (DECISIONS.md) and keeps the current state and open points in a short second file (STATE.md), so every session starts from both.**
 2. It writes a decision down the moment you state it. When you ask for something that contradicts an earlier decision, it stops and asks whether the decision changes. If your message already names the replacement, it records the change and goes ahead. Old entries stay readable, and both files are created or committed only with your yes. It never stores keys or personal data, and an entry never counts as permission to commit, deploy or delete.
-3. A similar skill, [**Lore**](https://github.com/sh008/claude-lore), keeps five files and records at the end of each task. This one keeps two and records right away.
-4. Start it with `/now-and-then` and say yes to the line it offers for your CLAUDE.md or AGENTS.md. Without that line it rarely starts on its own.
+3. Start it with `/now-and-then` and say yes to the line it offers for your CLAUDE.md or AGENTS.md. Without that line it rarely starts on its own.
