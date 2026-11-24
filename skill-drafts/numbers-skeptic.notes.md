@@ -31,6 +31,10 @@ Fixture: same as round 1 but the first run of `job.py` sleeps 250 ms and later r
 - Result: this fixture shows no benefit, because agents read `job.py` and spot the state dependence anyway. Unsolved: a fixture where noise or cold start is hidden in a binary or in the machine, not in readable code.
 - Open: test whether the skill triggers on this wording (a trigger test with 3 to 4 phrasings), possibly name the typical phrases ("does it finish in under X ms", "is it faster") in the description.
 
+### Trigger test and root cause (2026-11-24)
+Round 2 showed no self-start because the skill was not in the model's skill list at all: the rewritten description held `itself: warm-up` and an unquoted `: ` makes the YAML frontmatter invalid in Claude Code (the skill showed only as a slash command; reproduced with 3 variants, the old description and the old description on the new body were listed). `check_skill.py` does not flag it (follow-up for the shared tool, not changed here). Fixed by rewording without `: `. Rule for this draft: no colon followed by a space inside the description.
+Trigger test with the fixed text, 4 phrasings, 1 run each (headless, Sonnet, `--max-turns 8`, material `D:/Temp/retest-tests/trig.ps1`, `runs3/`): "Does python job.py finish in under 150 ms" started the skill (report with median and load), "I made job.py faster, can you confirm" started it (ran out of turns, no report), "which folder is the largest and what share" started it, "is lib/legacy_export.py dead code" did not. Then the description got the word "unused" (not retested). n = 1 per phrasing.
+
 ## Review prompt
 `numbers-skeptic.review-prompt.md` (full prompt with context, six parts and the SKILL.md inside), 2026-11-24. Used with Gemini and Copilot (ChatGPT dropped by Jakob, 2026-11-24).
 
@@ -50,5 +54,5 @@ Name chosen by Jakob (2026-11-24): `numbers-skeptic`. Earlier names: `measure-tw
 
 ## Open before release (checklist sections 1 to 8)
 - Name is decided (see Name); a final name check on GitHub and skills.sh is still open.
-- Blind agent review and the other reviews (prompt is ready), then a trigger test of the revised description (round 2 showed no self-start), a fixture where the cold-start effect is not readable in the code, a `/numbers-skeptic` start and a second tool.
+- Blind agent review and the other reviews (prompt is ready), then a retest of the dead-code phrasing, a fixture where the cold-start effect is not readable in the code, a `/numbers-skeptic` start and a second tool.
 - Card text, Jakob's OK.
