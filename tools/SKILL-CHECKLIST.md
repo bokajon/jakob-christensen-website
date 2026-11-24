@@ -296,8 +296,9 @@ Released 2026-11-24 as single SKILL.md files, groups Sessions and Proof. Details
 - now-and-then, headless Claude Code, Sonnet, no skill call in these runs: a status question noticed that a wait had already ended in 1 of 2 runs (round 12), then in 5 of 5 once STATE.md carried the explanation header line (3 of 3 in round 13, 2 of 2 in round 14).
 - now-and-then, a command written into a `waits for` point (`python tools/refresh.py`, the script writes a file): not run in 1 of 2 runs (round 13), then in 4 of 4 after `check` became a place and never a command (round 14). Whether the user was told about such a command: 0 of 4 runs showed it, the answers named it only as a check.
 - now-and-then, effect of `tried:` lines: not proven. With and without the line 0 of 2 tried numpy, so the test showed no difference (round 13).
-- numbers-skeptic: first round 2 runs with and 2 without the skill, 12 to 14 timing runs with the skill against 1 to 4 without. Second round (new fixture, 2 runs each) showed no benefit, because the skill was missing from the skill list (a colon followed by a space in the description broke the frontmatter). After the fix 3 of 4 phrasings started it, n = 1 each.
+- numbers-skeptic: first round 2 runs with and 2 without the skill, 12 to 14 timing runs with the skill against 1 to 4 without. Second round (new fixture, 2 runs each) showed no benefit, because the skill was missing from the skill list (a colon followed by a space in the description broke the frontmatter). After the fix 3 of 4 phrasings started it, n = 1 each. Retest after the reviews were worked in: started in 8 of 8 runs (4 phrasings, one fixture, no baseline).
 - Not tested: Codex, Cursor, an AGENTS.md project, a monorepo, the undo rule (now-and-then); the `/numbers-skeptic` start by name, other models, a measurement that takes minutes per run (numbers-skeptic).
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
