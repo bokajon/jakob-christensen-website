@@ -8,9 +8,11 @@ Usage:
     python -I check_ai_signs.py <file> [<file> ...] [--summary]
     python -I check_ai_signs.py -            # read stdin
 Files: .txt, .md, .html (tags, scripts and styles are stripped).
-Exit code: 0 if no hits, 1 if hits, 2 on usage error.
+Exit code: 0 if no hits, 1 if hits, 2 on usage error, a folder or a missing file
+(one line on stderr, nothing is scanned).
 """
 import html
+import os
 import re
 import sys
 
@@ -148,6 +150,11 @@ def main(argv):
     if not paths:
         print(__doc__)
         return 2
+    for path in paths:
+        if path != "-" and not os.path.isfile(path):
+            kind = "is a folder, pass its files as arguments" if os.path.isdir(path) else "not found"
+            print(f"check_ai_signs: {path} {kind}", file=sys.stderr)
+            return 2
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except AttributeError:

@@ -14,7 +14,7 @@ Before: "The bakery opens at five, showcasing its commitment to early risers." A
 
 **1.4 Promotional tone.** Brochure vocabulary. Watch: stunning, breathtaking, world-class, renowned, groundbreaking, seamless, vibrant, profound, boasts, rich (heritage), diverse array, state-of-the-art, in the heart of, nestled. Fix: give the fact that would justify the adjective, or leave the adjective out.
 
-**1.5 Vague attribution.** Authority without a name: experts say, observers note, industry reports, studies show, widely regarded, several sources (when it is one or two). Fix: name the source, take ownership of the claim, or delete it.
+**1.5 Vague attribution.** Authority without a name: experts say, observers note, industry reports, studies show, widely regarded, several sources (when it is one or two). Fix: name the source, or keep the bare claim and flag it in the report.
 
 **1.6 Challenges formula.** A template of "Despite its X, it faces challenges... Despite these challenges, it continues to thrive." Fix: describe the real problem once, where it belongs, without the upbeat ending.
 
@@ -42,7 +42,7 @@ Before: "The recipe isn't about speed, it's about patience." After: "The recipe 
 **3.1 Title Case headings.** Sentence case is the default, unless house style says else.
 **3.2 Boldface everywhere.** No bold in body prose, at most a term where it is defined.
 **3.3 Bold-label bullets.** "**Speed:** The tool runs..." Turn them into prose, a plain list or a proper table.
-**3.4 Em dash overuse.** Recast with a comma, colon, parentheses or full stop. An en dash is no substitute. (This skill uses no dash as punctuation at all, unless the author's own sample does.)
+**3.4 Em dash overuse.** Recast with a comma, colon, parentheses or full stop. An en dash is no substitute, and a spaced en dash used as a break is a sign too. Ranges (2020-2024), quotations, titles, URLs and code stay. (This skill uses no dash as punctuation at all, unless the author's own sample does.)
 **3.5 Emoji as formatting.** Strip them from headings and bullets.
 **3.6 Tiny tables.** A table of two or three rows that a sentence serves better.
 **3.7 Mixed curly and straight quotes.** Follow the convention of the surrounding text.
@@ -50,7 +50,7 @@ Before: "The recipe isn't about speed, it's about patience." After: "The recipe 
 
 ## 4. Chat leftovers
 
-**4.1 Collaboration talk.** "Great question", "Certainly!", "Let me know if", "I hope this helps", "Here is a...". Delete.
+**4.1 Collaboration talk.** "Great question", "Certainly!", "Let me know if", "I hope this helps", "Here is a...". Delete them in chat output and in text pasted from a chat reply. In an email or letter to a real recipient keep ordinary courtesy and real requests ("Let me know if Tuesday works"); remove only content-free boilerplate.
 **4.2 Cutoff disclaimers and gap speculation.** "As of my last update", "not widely documented", "based on available information". If a thing is unknown, admit it once, specifically, with the reader's next step. Never fill the gap with guesses.
 **4.3 Placeholders.** "[Your Name]", "INSERT_URL", "2025-XX-XX". Fill them in or remove them.
 
@@ -74,7 +74,7 @@ Before: "The recipe isn't about speed, it's about patience." After: "The recipe 
 **6.11 Writing about the document.** Narrating how the text or code came about rather than the subject itself: "This section was written to replace the earlier draft." Fix: say what it covers or does.
 **6.12 Re-explaining what the reader knows.** A reply that rebuilds the background before reaching the decision. Fix: decision first, background on request.
 
-"Weak alone" signs count only in company with other signs. Informal text (chat, rants, reviews) stays unless two unrelated signs appear together; chatbot leftovers (4.1) always go. An author's writing sample overrides this catalogue, dashes included.
+"Weak alone" signs count only in company with other signs. Informal text (chat, rants, reviews) stays unless two unrelated signs appear together; chatbot leftovers (4.1) go when the text came from a chat reply, but in emails and letters to a real recipient only content-free boilerplate goes. An author's writing sample (a different text by the same author, not the text being edited) overrides this catalogue, dashes included.
 
 ## 7. What human writing does instead
 
