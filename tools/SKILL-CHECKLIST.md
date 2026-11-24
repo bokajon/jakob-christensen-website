@@ -35,6 +35,7 @@ Follow this order. In the workaround release (2026-11-22) text changes and test 
 1. Model-invoked: written for the agent. What the skill does, then "Use when ..." with the concrete trigger cases. One explicit non-trigger is fine. (Matt: `.agents/invocation.md:6`; `skills/.../wizard/SKILL.md:3` ends with a non-trigger)
 2. User-invoked: written for a person scrolling slash commands, one line, no trigger list. (Matt: `.agents/invocation.md:5`)
 3. Spec limits: name max 64 characters, lowercase and hyphens, equal to the folder name; description max 1024 characters. `tools/check_skill.py` checks this. (agentskills.io specification)
+3a. Every skill carries `license: MIT` in its frontmatter, right after `name:` (Jakob, 2026-11-24: free downloads, so the reuse terms are stated; the field is part of the open specification). A new skill gets it from the start; the released ones got it on 2026-11-24 together with rebuilt ZIPs.
 4. A good description does not prove the skill fires. `workaround` loaded on its own in 0 of 6 headless runs, even when the prompt said "find a workaround". Claim auto-triggering on the page only after measuring it. (Test, 2026-11-22) A hook note that names the skill does start it: `fresh` started itself 5 of 5 times after its hook's note. (Test, 2026-11-22)
 
 ## 4. Body
@@ -125,6 +126,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
    - Cursor: `.agents/skills/` or `.cursor/skills/`, user level `~/.agents/skills/` or `~/.cursor/skills/`; it also reads `.claude/skills/` and `.codex/skills/`. Start by typing `/`. https://cursor.com/docs/skills
    - Antigravity: `.agents/skills/` or `~/.gemini/config/skills/`, start with `/<name>`. https://antigravity.google/docs/skills
 4a. Before the card entry, run `git merge main` on the release branch and `python -I tools/check_skill.py <folder>` on the result. A release branch that stays behind main meets the other sessions' card entries and section letters as conflicts at the end (2026-11-24: cheap-agents).
+4b. Every new skill goes into one of the groups on the card (`h3.skill-group`: Results, Sessions, Housekeeping, Proof, Safety), at the end of its group, in its own `ul.skills`. Pick the group by benefit; the current assignment is in FAKTEN.md. (Jakob, 2026-11-24)
 5. The next skill is one more `<li>` in that list, with the same markup as `workaround`.
 6. After the deploy, compare the SHA-256 of the live download with the released file, not only of the local copy. Git on this machine checks text out with CRLF (`core.autocrlf=true`) and Wrangler uploads the working files, so `.gitattributes` keeps `public/agent-skills/**` at LF: until 2026-11-23 both downloads went out with CRLF. (Ours, 2026-11-23) For a ZIP, compare three hashes: the live ZIP against the committed ZIP, then unzip the live file into a NEW empty folder and compare each inside file (`SKILL.md`, every `scripts/*`) against the source file, and check that no inside file contains a CR byte (`0x0D`). Any difference means the deploy is not released.
 

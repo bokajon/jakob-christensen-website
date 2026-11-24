@@ -1,5 +1,6 @@
 ---
 name: fingerprints
+license: MIT
 description: Checks a folder before it is shared or published, most often a skill folder. Runs a bundled script that finds private words, absolute and home paths, email addresses, keys and tokens, and for a skill folder also wrong or missing SKILL.md fields and terms that belong to one tool, then reports what to fix. Use when the user is about to share, publish, zip or push a skill, repository, project or site folder, or asks whether it is safe to release. Not a replacement for a dedicated secret scanner, and not for judging whether the content is any good.
 compatibility: Needs Python 3 and nothing else. The script uses only the standard library.
 ---

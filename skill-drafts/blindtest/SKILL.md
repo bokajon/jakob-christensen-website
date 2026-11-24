@@ -1,5 +1,6 @@
 ---
 name: blindtest
+license: MIT
 description: Blind, countable evidence of whether a prompt, skill or agent change really does better than the old version and than a baseline without it, or an audit that calibrates blind readers on known bad and good examples before a clean result over many texts is trusted. Use when the user asks for a blind or counted test of whether a change helps, or wants many texts read by calibrated blind readers. Not for wording or typo fixes, plain diffs or changes that add no new logic.
 compatibility: Needs a way to start independent agent runs in fresh contexts, and Node.js 18+ for scripts/anonymize.mjs. Judges should be a different model from the author where the tool offers one.
 ---

@@ -1,5 +1,6 @@
 ---
 name: media-review
+license: MIT
 description: Check media made by another model (images, music, voices, video) against the requirement before the user sees it or before more money is spent on it. Turns the requirement into measurable checks, runs them on the actual result and not on the prompt, and says up front which requirements cannot be measured. Use when generating or receiving generated media, running a batch of generations, or being asked whether a generated result is good enough. Not for taste-only critique.
 ---
 
