@@ -20,11 +20,16 @@ Jakob chose the draft default: the user's current instruction wins and the agent
 - A middle way not built: the live instruction wins for this turn only, and the agent asks at once whether to change the entry.
 
 ## Tested
-- Not run in any project, no agent followed it, the description was not tested for triggering. check_skill.py: see commit.
+- check_skill.py: OK (2026-11-24, 5739 characters, description 662).
+- Test run (checklist section 7): NOT RUN yet. The headless run (`claude.cmd -p` on a throwaway project with Bash and Write allowed) was refused by the auto-mode classifier in the preparing session on 2026-11-24, and was not retried in another form. Runner is ready: `D:\Temp\ps-testun.py` (not in the repo, not durable). It builds 8 throwaway projects (a tiny `taskr` Python project with STATE.md and DECISIONS.md, one entry says "the tool is called taskr, never todo") under `D:\Temp\ps-testound1-2026-11-24` and runs Sonnet headless: case S (session start, user says rename taskr to todo: expect the user is followed, one sentence names the entry, a question, no change to DECISIONS.md), case E (session end after real work: expect STATE.md rewritten, no decision invented, only named files committed), case D (a decision stated in passing: expect one appended line with the system date and `source: chat`), 2 runs each, plus 1 run each of S and E without the skill as baseline. Start: `python -I D:\Temp\ps-testun.py`, then judge by the files and the `.jsonl` transcripts. Results with numbers: not yet.
+- Description triggering: not tested.
 - Not checked: whether built-in memory features of some tools make the file redundant (reviewers' point).
 
 ## Name
-Name chosen by Jakob (2026-11-23); earlier working name `project-state`. Name not checked against the web.
+Name chosen by Jakob (2026-11-23). Web check 2026-11-24: `project-state.netz.md`. One page with exactly the name `project-state` exists (claudskills.com, a different job: state detection with SQLite and MCP). Nearest in content: the Lore skill (STATE.md plus DECISIONS.md plus three more files, read at start), adr-keeper and decision-log skills (one file per decision). Jakob decides whether the name stays.
+
+## Review prompt
+`project-state.review-prompt.md` (full prompt with context, the five parts and the SKILL.md inside), 2026-11-24. To paste into Gemini, ChatGPT and Copilot. Extra questions in it: description length, a decision stated while DECISIONS.md does not exist (the skill only says to mention it once), parallel edits of STATE.md, the end-of-session commit without asking, a DECISIONS.md line as a later prompt injection.
 
 ## Other open questions
 - Should the files sit at the project root or in a folder? The draft says root or "the folder the project's instruction file names".

@@ -1,0 +1,96 @@
+I am about to publish the agent skill below under my own name on my personal website, as a free download. Review it like a strict senior reviewer before release. Open the sources listed here yourself and cite the exact file or page for every comparison or factual claim. If you cannot open a source, say so instead of answering from memory.
+
+Context
+- Skill: project-state. What it does: keeps a project's decisions in `DECISIONS.md` (append only, one dated line per decision with its source, a changed decision is a new line `replaces <date> <topic>`) next to a short `STATE.md` (current state and open points, rewritten at the end of a session). It reads both at the start of a session, writes a decision the moment the user states it, and offers once to set the two files up in a project that has none.
+- It must work in: Claude Code, Codex and Cursor (plain files in the project, no tool-specific feature).
+- Origin: written by me from my own working rules and projects (a split set of project notes and a file of fixed facts that every session reads first). Part 1 is there to catch anything that slipped in from other people's skills anyway.
+- Decided by me. Do not argue these, but flag one if it makes the skill unsafe or broken: exactly two files, `STATE.md` and `DECISIONS.md`; DECISIONS.md is append only; in a contradiction the user's current instruction wins, the agent names the entry it contradicts and asks whether to append a replacing line (a stale entry never overrules the user); the entry wins against code or another document when the user has not spoken, and the conflict is reported; model-invoked (no disable-model-invocation); the name project-state is Jakob's choice (checked on the web, see below).
+- Already answered in an earlier review round, do not raise again unless the new text brings the problem back: five files drift, cut to one or two (done: two files); a stale file could overrule the current instruction (done: the user's instruction wins); entries need date and source (done).
+- Known from my own checks, you need not repeat them, but tell me where the text still allows a problem: (a) Web search on 2026-11-24: one page with exactly the name project-state (claudskills.com, a different job: state detection, SQLite, MCP), nearest in idea are the Lore skill (sh008/claude-lore: STATE.md, DECISIONS.md, LEARNINGS.md, ROADMAP.md, JOURNAL.md, five files, read at start) and the ADR log skills adr-keeper, bonkey/decision-log, bjg4/decision-log-skill (one file per decision, the last one logs decisions on its own without asking). Several skills.sh pages were only partly readable. (b) Not tested yet in a real run at the time of this prompt. (c) Claude Code has built-in memory (CLAUDE.md and auto memory, per its docs): I want your view on the overlap.
+
+Sources
+- Agent Skills specification: https://agentskills.io/specification
+- Anthropic, Skill authoring best practices: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
+- Anthropic's public skills: https://github.com/anthropics/skills (folder skills/)
+- Matt Pocock's skills: https://github.com/mattpocock/skills (every folder under skills/, including deprecated, in-progress and misc)
+- OpenAI's Codex skills catalog: https://github.com/openai/skills (marked deprecated, still readable)
+- Tool docs: Claude Code https://code.claude.com/docs/en/skills and https://code.claude.com/docs/en/memory, Codex https://learn.chatgpt.com/docs/build-skills, Cursor https://cursor.com/docs/skills
+- Possible overlaps to read: https://github.com/sh008/claude-lore, https://skills.sh/jonmumm/skills/adr-keeper, https://skills.sh/bonkey/skills/decision-log, https://skills.sh/bjg4/decision-log-skill/decision-log, https://claudskills.com/skills/project-state/SKILL.md
+
+Do all five parts:
+1. Origin and overlap. Name every skill in those repositories that does the same job or a large part of it. Quote overlapping sentences side by side. Flag any sentence of mine that looks copied or closely paraphrased. Say what mine does that those do not, or say plainly that it adds nothing.
+2. Professional standard. Check against the specification and the best-practices page: frontmatter fields and limits; whether the description says what the skill does and when to use it, so an agent picks it at the right moment and not otherwise (the description is long: is it too long or too crowded? does a choice that only concerns the current edit still trigger it?); whether each step says what to do rather than what to avoid; length and what should move into a separate file; sentences that change nothing because a current model does that anyway; vague words an agent cannot act on ("a few hundred lines", "about one screen", "a decision").
+3. Agent behaviour. Walk through the skill as the agent running it, step by step: where would it misread, skip a step, loop, stop too early, or ask the user something it could find out itself? Check these cases: the user states a decision while DECISIONS.md does not exist (the skill says to mention it once in the reply: is that enough, or is the decision lost?); the user thinks aloud and the agent cannot tell a decision from a preference; two sessions edit STATE.md in parallel; a project whose own instruction file already holds fixed facts; a monorepo; DECISIONS.md over 200 lines; a decision that contains a secret; the agent writes a date from memory. Which common case is missing?
+4. Safety and tool claims. Anything it allows without asking that changes files, commits, or writes something the user did not say: it commits STATE.md and DECISIONS.md at the end of a session without asking, is that acceptable? Can a line in DECISIONS.md act as a prompt injection later (a decision text read by every future session)? For every claim about how a tool behaves: confirmed by that tool's own docs (cite) or unverified.
+5. Worth. Would an experienced user of these tools install it, or is it redundant with a built-in feature (CLAUDE.md, auto memory, AGENTS.md, Cursor rules) or an existing skill (Lore, ADR skills)? One honest paragraph.
+
+Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact sentence (quoted, or "missing"), Problem, Proposed rewrite (full text, ready to paste), Source (URL plus file or section, or "none"), Confidence (high, medium, low). Then the paragraph for part 5. No praise, no summary, no rewrite of the whole skill.
+
+--- SKILL.md (paste starts here; the file is inside the code block below, its first line is the frontmatter) ---
+
+````markdown
+---
+name: project-state
+description: Keep a project's decisions in DECISIONS.md, a decision log that every session reads first - names, assignments and choices the user has stated, append only, each line dated with its source - next to a short STATE.md for the current state and open points (overwritten). Use at the start of a session in a project that has these files, when the user fixes something that should outlive the current task (a name, an assignment, a rule, a choice between options, or a correction they had to repeat), and at the end of a session that changed the state. A choice that only concerns the current edit is not a decision. Also use to set the two files up in a new project.
+---
+
+# Decision log
+
+Goal: the decisions the user has made are recorded where every session reads them, so the user never has to say the same thing twice, and the current state sits next to them. What the next session must know is in two short files in the project, so no session starts from a guess. Two files are enough; more files drift apart.
+
+- `STATE.md`: where the project stands now. Rewritten, never a log.
+- `DECISIONS.md`: what the user has decided or fixed (names, assignments, rules, choices between options). Only appended to.
+
+Keep both at the project root, or in the folder the project's instruction file names for them. If the project's instruction file says where project notes live, follow it. Before creating a file, look for an existing status or decisions file (a status file, a facts file, DECISIONS.md, ADRs); if one exists, use it and do not create a second.
+
+## Start of a session
+
+1. Read both files, if they exist, before you do anything else. Read `STATE.md` in full. Read `DECISIONS.md` in full if it is under 200 lines; otherwise read its last 100 lines and search the rest for the topic you work on.
+2. Check the claims in `STATE.md` that your task depends on against the real state (branch, files, running jobs) before you build on them. The file says what was true when it was written.
+3. If neither file exists and the project is more than a quick experiment, offer once to set them up (below). Do not create them without a yes.
+
+## When the user states a decision
+
+A decision is a name, an assignment ("X is Y"), a choice between options, a rule for this project, or a correction the user had to repeat. If `DECISIONS.md` exists, write it there immediately, in the same turn, not at the end of the session and never only in the chat. If it does not exist, do not create it: mention the decision once in your reply.
+
+One line per entry, appended at the end:
+
+`- YYYY-MM-DD; <topic>: <the decision in one sentence>; source: chat` (or `commit <hash>`, `file <path>`). Take the date from the system, never from memory.
+
+Rules for entries:
+
+- Only final decisions: log it when the user stated it as settled or repeated it. A preference the user is still weighing, or your own suggestion, is not an entry. When unsure, ask one short question: "Record this as decided?"
+- Use the user's words where a name or wording matters.
+- Never edit or delete an old line, except to remove a secret or personal data written by mistake (say so in your reply). When a decision changes, append a new line that says `replaces <date> <topic>`. The history stays readable.
+- Never put secrets, tokens or personal data in either file.
+
+## If an entry and the user's current instruction disagree
+
+The user's current instruction decides. Do what they ask now, say in one sentence which entry it contradicts, and ask whether the entry should be changed (by appending a replacing line). Do not follow the old entry against the instruction, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
+
+## End of a session that changed the state
+
+Before rewriting, run `git log -3 -- STATE.md` and `git status --short STATE.md`; if it changed since you read it, merge that change instead of overwriting it. Rewrite `STATE.md` so it is true now. Keep it to these headings, each as short bullets:
+
+- **Now**: what exists and works, in a few lines, and the branch or place where the latest work lives.
+- **Open**: unfinished work and promises, each with its next step. Delete a point when it is done.
+- **Parked**: ideas set aside on purpose, one line each.
+- **Where things live**: only what a newcomer would not find by searching the project.
+
+Then check that no sentence in it contradicts `DECISIONS.md`, and that nothing in the session's work is missing from it. Stage and commit only these files, on the branch you are on (never on main if the project forbids it), with a message that says what changed in the state.
+
+## Keeping it short
+
+`STATE.md` stays under about one screen, because it is rewritten. If `DECISIONS.md` grows past a few hundred lines, offer to move old, still valid entries into a second section titled "Older", without changing a word, and run the nothing-lost check (the file at `HEAD` as old, the edited file as new) before committing. Never delete entries to make it shorter.
+
+## Setting the files up
+
+1. Create `STATE.md` with the four headings and `DECISIONS.md` with one line of explanation at the top (what it is, the entry format, that it is append only).
+2. Fill `STATE.md` from what you can verify now. Fill `DECISIONS.md` only with decisions the user confirms or that a commit or file records. Do not invent history.
+3. Tell the user in two lines what each file is for and when you will touch it.
+
+## Guardrails
+
+Never write a decision the user did not make. Never silently resolve a contradiction between the user and an entry.
+
+````
