@@ -210,6 +210,18 @@
               <p class="skill-desc">The script needs Windows PowerShell and git, and is set up only after your yes. Start it with <code>/lanes</code>. Unzip it into your skills folder.</p>
               </details>
             </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/now-and-then</h4>
+                <a class="download" href="agent-skills/now-and-then/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+                <span class="skill-sum">Remembers what you decided, so you say it only once</span>
+              </summary>
+              <p class="skill-desc">Agents forget what you settled last week, so you explain the same name or rule again in every session. <strong>This skill records what you decide about a project in a dated log (DECISIONS.md) and keeps the current state and open points in a short second file (STATE.md), so every session starts from both.</strong></p>
+              <p class="skill-desc">It writes a decision down the moment you state it. When you ask for something that contradicts an earlier decision, it stops and asks whether the decision changes. If your message already names the replacement, it records the change and goes ahead. Old entries stay readable, and both files are created or committed only with your yes. It never stores keys or personal data, and an entry never counts as permission to commit, deploy or delete.</p>
+              <p class="skill-desc">Start it with <code>/now-and-then</code> and say yes to the line it offers for your CLAUDE.md or AGENTS.md. Without that line it rarely starts on its own.</p>
+              </details>
+            </li>
           </ul>
           <h3 class="skill-group">Housekeeping</h3>
           <ul class="skills">
@@ -298,6 +310,19 @@
               <p class="skill-desc">A layout can look fine in one screenshot and still overflow on a phone, or break when you switch tabs and back. <strong>This skill has the agent set the viewport first, read sizes and positions from the running page as numbers, switch between items in more than one order and report what it did not check.</strong></p>
               <p class="skill-desc">It needs a real browser the agent can run JavaScript in. It never signs in and never changes data.</p>
               <p class="skill-desc">Start it with <code>/measure-ui</code>, or ask whether a layout works on a phone.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/numbers-skeptic</h4>
+                <a class="download" href="agent-skills/numbers-skeptic/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+                <span class="skill-sum">Makes your agent measure a number before it reports it</span>
+              </summary>
+              <p class="skill-desc">Agents like to report that something is now faster, smaller or unused after one run, or after none. <strong>This skill has the agent measure every claim about speed, size, share, ranking or unused code in your software, and mark what it could not measure as "not checked".</strong></p>
+              <p class="skill-desc">For timings it checks the machine's load, warms up, repeats the run, and gives the median and the spread. A result counts as reproduced only after a second, separate series, and a difference smaller than the noise counts as no difference. Values come from the running app and never from a test fixture. Before it calls code unused, it searches code, tests, config, scripts and docs for it.</p>
+              <p class="skill-desc">It needs a shell. It changes no system settings, does not repeat commands that deploy, send or call a paid or shared service, and does not review other people's reports. Careful measuring takes longer than guessing.</p>
+              <p class="skill-desc">Start it with <code>/numbers-skeptic</code>, or ask whether something really got faster, smaller or is unused.</p>
               </details>
             </li>
           </ul>

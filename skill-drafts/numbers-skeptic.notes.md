@@ -75,7 +75,7 @@ Bericht: `D:/Temp/review-numbers-skeptic.md` (Aussagen des Agenten, nur Seitenzu
 - Wertung des Reviewers: kleine Leitplanke, kein Benchmark-Tool; "reproduced" erst nach Trigger-Test und Fixture mit versteckter Cold-Start-Streuung versprechen. Beides bleibt offen.
 - Trigger-Retest 2026-11-24 nach dem Review-Einbau (Sonnet headless, Fixture make_fixture2.py, `D:/Temp/retest-tests/trig4.py`, `runs4/`, nicht dauerhaft): Skill startete in 8 von 8: "dead code ... delete" 3 von 3, "unused" 3 von 3, "under 150 ms" 1 von 1, "about twice as fast, confirm" 1 von 1. Die 6 Dead-Code-Antworten waren richtig (dynamischer Import gefunden). Zeitwerte sind nicht verwertbar, weil mehrere Laeufe parallel liefen. Kein Vergleich ohne Skill; Sonnet, eine Fixture, ein Wortlaut je Fall. Name bleibt (Jakob, "Alles wie empfohlen"); die Fixture mit verstecktem Kaltstart-Rauschen wird nicht gebaut (Jakob, ebd.).
 
-## Proposed page card (2026-11-24, not approved, not on the page)
+## Page card (2026-11-24, approved by Jakob: "Veröffentlichen")
 
 Group Proof, last entry. Download MD (single file).
 
