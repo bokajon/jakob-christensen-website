@@ -32,7 +32,10 @@ Accepted (20): description in third person (best-practices page: "Always write i
 Rejected (7): missing `---` in frontmatter (paste artifact, file has them, check_skill green); move text to references/ (7.9k characters, far under 500 lines); "5 or fewer tool calls" instead of "handful" (a hard number gets gamed); a named helper count is the yes for the count (kept, tested 4 of 4); separate "user direction" section; overlap points (no copied sentence found; Gemini and ChatGPT could not open every folder, so the overlap check is not exhaustive); the long rewrites of ChatGPT P12, P21, P23 (only their core taken).
 Not verified against first-party docs: Cursor checkout sharing, Codex sandbox and approval inheritance (pages cut off when fetched).
 
+## Second review round: blind read (Sonnet agent, 2026-11-24, 12 points)
+Accepted and applied (10): step 3 as a decision list incl. strong role; forbidden actions named in the brief; step 5 effort scaled to risk and no re-run of a final command with side effects; ownership check asks the user when unclear, git only where it exists; strong-role "no" path and gate only where the tool picks models; ruled-out items only for build and search, none for review, diagnosis, bug hunt; wait for a background stage by ending the turn; script-check sentence fixed; state noted before a writing helper; duplicate "never hide a failed helper" removed (step 6 says failed ones included). Rejected (1): model-switch sentence (already Claude Code scoped, docs checked). Jakob's decision (point 5): the agent keeps doing tiny tasks itself even on a request for helpers, and says so in one line. Not yet done: the second paste round in Gemini, ChatGPT and Copilot (`skill-drafts/cheap-agents.review-paste-2.md`, built from the current SKILL.md).
+
 ## Open questions
 - Does "ask the user first" for the strong role fit tools without an approval step? The text says "if the tool has one".
 - Should the role table name example models of today? Left out on purpose, they age.
-- Two cases did the work themselves although the user asked for helpers (task too small); step 1 says so. Jakob may want the skill to follow an explicit request for helpers anyway.
+- Decided by Jakob 2026-11-24: two cases did the work themselves although the user asked for helpers (task too small); that stays, with one line saying why (step 1).
