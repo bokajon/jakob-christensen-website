@@ -45,7 +45,7 @@ Keep both at the project root, or in the folder the project's instruction file n
 
 ## Start of a session
 
-1. Read both files, if they exist, before you do anything else. Read `STATE.md` in full. Read `DECISIONS.md` in full if it is under 300 lines; otherwise read its last 100 lines and search the rest for the topic you work on and for `replaces`. An entry named in a later `replaces <date> <topic>` line is void; follow the newest line for a topic.
+1. Read both files, if they exist, before you do anything else. This skill loads only after a task matched it, so when the user calls it in the middle of a session, read both files at once and report any entry that touches the current work. Read `STATE.md` in full. Read `DECISIONS.md` in full if it is under 300 lines; otherwise read its last 100 lines and search the rest for the topic you work on and for `replaces`. An entry named in a later `replaces <date> <topic>` line is void; follow the newest line for a topic.
 2. Check the claims in `STATE.md` that your task depends on against the real state (branch, files, running jobs) before you build on them. The file says what was true when it was written.
 3. In a git worktree or branch, a decision recorded on another branch is not visible here: run `git log --all -n 5 --format="%h %s" -- DECISIONS.md`, and if other branches changed it, tell the user.
 4. If neither file exists and the project is a git repository with more than a few commits (or the user calls it a real project), offer once to set them up (below). Do not create them without a yes.
@@ -89,7 +89,8 @@ Then check each line of Now and Open against `DECISIONS.md`, and list the files 
 
 1. Create `STATE.md` with the four headings and `DECISIONS.md` with one line of explanation at the top (what it is, the entry format, that it is append only).
 2. Fill `STATE.md` from what you can verify now. Fill `DECISIONS.md` only with decisions the user confirms or that a commit or file records. Do not invent history.
-3. Tell the user in two lines what each file is for and when you will touch it.
+3. Offer one line for the project's instruction file (`CLAUDE.md`, or `AGENTS.md` if that is what the project uses), because a skill alone does not start in time: "Read STATE.md and DECISIONS.md first. Record decisions the user states in DECISIONS.md (skill now-and-then)." Show the line and ask whether to add it; a request to set the files up is not a yes to this line, so do not touch the instruction file in the same step, write it only after the user's yes; if the file already has a line about these two files, change that line instead of adding a second.
+4. Tell the user in two lines what each file is for and when you will touch it.
 
 ## Guardrails
 
