@@ -70,6 +70,9 @@ def fs_files(path):
 
 def decode(data, name):
     """Text of a file, or None (and a note in SKIPPED) when it is binary."""
+    if data[:4] in (b"\xff\xfe\x00\x00", b"\x00\x00\xfe\xff"):
+        SKIPPED.append((name, "UTF-32"))
+        return None
     if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
         return data.decode("utf-16", "replace")
     if b"\0" in data[:4096]:
@@ -157,6 +160,13 @@ def main(argv):
     try:
         old = collect(a.old, a.git_ref)
         new = collect(a.new)
+        if not a.git_ref:
+            same = {str(Path(n).resolve()) for n, _ in old} & {str(Path(n).resolve()) for n, _ in new}
+            if same:
+                print("error: --old and --new read the same files from disk, so every line would match itself; "
+                      "pass --git-ref or copy the old files to a folder outside the project first: "
+                      + ", ".join(sorted(same)[:3]), file=sys.stderr)
+                return 2
         allow = set()
         if a.allow:
             allow_text = read_text(a.allow)
