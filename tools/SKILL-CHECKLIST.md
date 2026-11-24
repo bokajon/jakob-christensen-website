@@ -183,6 +183,20 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 - Not tested, no fixture: differing push URL, repository without a remote, failing `ls-remote`, no local default branch. The button answers "Push only this one" and "Stop" are not testable headless.
 - Raw data: `D:\Temp\agent-skills-tests\strays-round1-2026-11-23\`, `strays-round2-2026-11-23\`, `strays-round3-2026-11-23\`. Not durable.
 
+## 8g. Test numbers of the cheap-agents skill (2026-11-24)
+
+Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), final SKILL.md 6,086 characters, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
+
+- Without the skill, user asks for four helpers (round 2): 2 of 2 started 4 helpers on the default `general-purpose` model, named no role, model or cost class.
+- With the skill, user asks for four helpers (rounds 2 and 3, 4 runs): 4 of 4 named role, model and cost class before starting, 4 of 4 started 4 Haiku helpers, all re-read the files and re-ran the tests themselves. In the 2 runs where the first brief was read, both limited the helper to its own file, one added "no sub-agents of your own".
+- Natural wording is not tested: every skill run used `/delegate ...`; the Skill tool was never called (0 skill calls in all runs, as `/name` leaves no trace, section 7.5).
+- Small one-file task with the skill: 2 of 2 fixed it without helpers.
+- User says "use sub-agents" with no number, old step 3: 1 of 2 started 4 helpers without asking, 1 of 2 split into 2 helpers "to stay under" the limit. Step 3 then got "end your turn with that message", "never merge or split parts just to stay under the limit" and "a named number is the yes for the count". New text: 1 of 2 stopped with count, role, model, cost class and the question, 1 of 2 did it itself (allowed); 0 of 2 started helpers without a yes.
+- Baseline for the small and the vague case without skill: not run. Without the skill on the plain task (round 1, no helper request) 2 of 2 fixed all four directly, so the "do it yourself" step is a no-op there.
+- With the skill but with the "start now" approval already in the prompt: 2 of 2 started 4 Haiku helpers (this round, P2).
+- Not tested: step 5 (helper reports "failed" with files written, old branch base, script validation), the strong role and its approval, Codex and Cursor, a run without any helper request on a large task.
+- Raw data: `D:\Temp\agent-skills-tests\delegate-round1-2026-11-24-A`, `-B`, `delegate-round2-2026-11-24-r2-B`, `-C`, `delegate-round3-2026-11-24-r2-B`, `-C`, `delegate-round4-2026-11-24-r2-B`, runners `run-delegate-round*.ps1`, `analyze_delegate.py`. Not durable.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.

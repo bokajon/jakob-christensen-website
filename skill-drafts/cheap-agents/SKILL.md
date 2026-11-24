@@ -1,9 +1,9 @@
 ---
-name: delegate
+name: cheap-agents
 description: Decide whether to hand part of a task to another agent or session, pick the cheapest model and effort that does that part well, write a brief the delegate can build from, and check what comes back before you rely on it. Use when a task has independent parts, a long search or read, work that should run in parallel or in the background, or when the user asks you to use agents or sub-sessions. Not for small tasks you can finish in a few tool calls yourself.
 ---
 
-# Delegate
+# Cheap agents
 
 Goal: work goes to a helper only when that is cheaper or faster than doing it yourself, the helper gets exactly what it needs, and nothing it reports is trusted before you looked at the parts that matter. Every helper costs a full context of its own and returns a summary that can be wrong.
 
@@ -38,7 +38,7 @@ Rules:
 
 ## 3. Decide how many
 
-Ask for each additional helper: is its part independent, is its brief short enough to write exactly, and does the speed-up justify one more context? Before you start more than two helpers, tell the user the count, the role and model for each and a cost class for each (small: a search or read, medium: a build, large: a long build or review), and wait for a yes. One or two clearly bounded helpers can start without asking when the user has asked for helpers at all.
+Ask for each additional helper: is its part independent, is its brief short enough to write exactly, and does the speed-up justify one more context? Before you start more than two helpers, tell the user the count, the role and model for each and a cost class for each (small: a search or read, medium: a build, large: a long build or review), and wait for a yes: end your turn with that message and start no helper before the answer. Never merge or split parts just to stay under the limit; the number follows from the independent parts. A user who named the number of helpers they want has given that yes for the count, but you still state role, model and cost class before you start. One or two clearly bounded helpers can start without asking when the user has asked for helpers at all.
 
 Check first whether a helper or session already owns or was offered this task. Two helpers on the same task overwrite each other's files.
 
