@@ -153,8 +153,8 @@
                 <span class="skill-sum">Picks the cheapest model that does the job</span>
               </summary>
               <p class="skill-desc">Helper agents cost extra tokens, and a helper may report something that is not true, so someone has to check it. <strong>This skill makes the agent decide whether a helper is worth it at all, and pick the cheapest model that does the job.</strong></p>
-                <p class="skill-desc">Before it starts several helpers, it tells you how many, which model each runs on and roughly what it costs, and waits for your yes. Each helper gets a written brief, and the agent checks the real files before it relies on a report.</p>
-                <p class="skill-desc">Start it with <code>/cheap-agents</code>, or ask your agent to use helpers. Small tasks it simply does itself.</p>
+                <p class="skill-desc">If you did not ask for helpers, or it wants more than two, it first tells you how many, which model each one uses and a rough cost estimate, and waits for your yes. Each helper gets a written brief with its goal and its limits. When a helper reports back, the agent looks at the real files instead of just trusting the report.</p>
+                <p class="skill-desc">Start it with <code>/cheap-agents</code>, or ask your agent to use helpers. Small tasks it does itself, without helpers.</p>
               </details>
             </li>
             <li>
