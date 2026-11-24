@@ -1,5 +1,6 @@
 ---
 name: lanes
+license: MIT
 description: How several agent sessions work on one git repository at the same time without breaking each other. One worktree and branch per session, a main checkout that stays clean and is only the integration target, named-file staging, a check before every commit, and a bundled script that integrates a branch one at a time (merge and full check in a temporary worktree, then the default branch fast-forwards to the tested result). Use when starting work in a repository other sessions also use, when finishing a branch that must reach the default branch, or when the user asks to set up parallel agent sessions in a project. Not for projects that integrate only through hosted pull requests.
 compatibility: The integration script needs Windows PowerShell 5.1 or newer and git (2.31 or newer, because the script uses `git rev-parse --path-format=absolute`). The guard hook is an optional Claude Code PreToolUse hook and needs Node.js. No macOS or Linux version of the script is bundled.
 ---

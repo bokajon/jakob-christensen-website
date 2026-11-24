@@ -28,11 +28,34 @@ Same reasoning as tidy (checklist 2.3): the desktop app drops user-invoked skill
 `reroll.review-prompt.md` (full prompt with context, the five parts and the SKILL.md inside), 2026-11-24. To paste into Gemini, ChatGPT and Copilot.
 
 ## Open before release (checklist sections 1 to 8)
-- Name: checked 2026-11-24 (Teil 3), Jakob decides whether `reroll` stays next to the two `buddy-reroll` skills.
-- Blind agent review and the other reviews (prompt is ready), then a second test round on the revised text, `different` with more than one run, and the other tools.
-- Card text: say that the separate-session route works only in the Claude Code desktop app.
-- Jakob's OK.
+- Name: checked 2026-11-24 (Teil 3). Done: released as `reroll`.
+- Blind agent review and the other reviews, second test round on the revised text, `different` with more than one run: done or replaced by review round 1, the second and third test rounds and the fifth test round below. The other tools (Codex, Cursor, claude.ai) stay untested.
+- Card text: done, says the separate-session route works only in the Claude Code desktop app.
+- Jakob's OK: given 2026-11-24 (fix sentences and release).
 
 ## Ideas for later (from IDEEN.md F)
 - Compare or merge the answers afterwards (only after both exist, otherwise the blindness is gone).
 - Reroll with another vendor's model (needs to start an external program, much more effort).
+
+## Review round 1 (2026-11-24, Gemini + Copilot; ChatGPT out of usage)
+Applied (Jakob approved 1-8): non-/reroll last message and same-message request; "probably" removed; count only on typed number (default 1 when model-invoked); clipboard via powershell.exe plus print fallback; start_session fallback to copy route; do-not-open list from own tool calls anywhere, omitted if unclear; transcript recovery limited to this session; description/compatibility in third person; background text fixed also for `different`.
+Not applied: reference file for recovery, removing the why-sentence, same-chat retry, vague Copilot P9/P10. Open for Jakob: license field (no draft has one), redundancy vs /rewind.
+Both reviewers could not open the GitHub folders: overlap check (part 1) still open for the blind read.
+
+## Second test round (2026-11-24, text of commit 8d15c6f)
+Setup: count 3 + `different`, model claude-sonnet-5-5, request "5 name ideas for a small bakery in the mountains", three parallel start_session calls (accepted, all three started, titles 1/3 to 3/3).
+Result (read from the first ~400 characters of each reply only): session 2 and 3 both list "Gipfelbrot" as name 1, session 1 does not (it leads with "Brotzeit auf 1200"). So `different` again did not keep the earlier name out: 2 of 3 repeat Gipfelbrot (first round: 2 of 2). Not checked: the full replies, tool calls and transcript reads of the three sessions, whether the model really was Sonnet. Not tested: clipboard route, count 2, description trigger, step 1 on a real message sequence.
+
+## Third test round (2026-11-24, text of commit f21abb6: `different` plus "Avoid the most obvious choices.")
+Same setup as round 2 (count 3, Sonnet, bakery request). Read from the first ~400 characters of each reply only: no "Gipfelbrot" in the visible parts of any of the three (round 2: 2 of 3 had it as name 1). Session 2 still ends with "Gipfelkruste" (name 5, a Gipfel- variant); session 3 and 1 state they avoid "Gipfel", "Alm", "Bergbrot". Visible names are new (Föhnstube, Zwei Grad, Kaser & Korn, Kar & Krume, Erste Gondel, ...). Not checked: the rest of each reply (so "no Gipfelbrot" holds only for the visible part), tool calls, model. n = 3, one run.
+
+## Fourth test round (2026-11-24): clipboard, description trigger
+- Clipboard: `powershell.exe -NoProfile -Command Set-Clipboard` from Git Bash, text with newline and umlaut-like characters, read back with Get-Clipboard: identical, exit 0 (1 run).
+- Description trigger (session "reroll test X", Sonnet): request "3 names for a small grey cat", answered; then the follow-up "Die Namen gefallen mir nicht, versuch es nochmal, aber ohne deine Antwort zu sehen." Result: the session did NOT call the reroll skill (no Skill call in the transcript). It started an in-process Agent with the original request and then wrote "Zwei Namen sind nah an meinen ersten", i.e. it commented on its own answer, which the skill forbids. Confound: the follow-up arrived as a cross-session message from another session, not as typed user text, so this is not a clean trigger test. Not run for that reason: the "ja" walk-back and "/reroll 2" via message (a slash command does not arrive as typed input that way). Needs a real chat with Jakob typing, 1 run each.
+
+## Fifth test round (2026-11-24): description trigger and walk-back, headless
+Setup: Claude Code headless `claude.cmd -p`, Sonnet, one throwaway folder per run, skill in `.claude/skills/reroll`, `--disallowedTools Bash,PowerShell,Write,Edit` so the print route is used and the clipboard is not touched. Turn 1 "Suggest 3 names for a small grey cat, names only.", the follow-up via `--resume`. Scripts in the scratchpad (`run-reroll-trigger.ps1`, `run-reroll-trigger-2.ps1`, `analyze_reroll_trigger.py`), results in `D:\Tempgent-skills-testseroll-trigger-2026-11-24` and `...-r2`.
+- Round A (text before the fix): the skill started by itself in 6 of 6 natural follow-ups (2x "reroll", 2x "I don't like these. Ask a fresh chat.", 2x the German "Die Namen gefallen mir nicht, versuch es nochmal, aber ohne deine Antwort zu sehen."). Handed over correctly in 5 of 6: F2 loaded the skill with the request as arguments and then answered it itself ("Luna, Ash, Minou"). R2 wrote "Copied the request" although no shell was available. Walk-back case (turn 2 "ja", turn 3 `/reroll`): 2 of 2 handed over the cat request, not "ja".
+- Fix approved by Jakob 2026-11-24: "This session only copies and never answers the request itself, also when the request came in as the skill's arguments." and, in step 4, "Say "Copied" only when the clipboard command ran and succeeded."
+- Round B (after the fix, 6 runs R1 R2 F1 F2 D1 D2): `Skill:reroll` in the last turn 6 of 6; reply contains `[reroll]` and the exact request 6 of 6; the word "Copied" in 0 of 6; cat names outside the fenced block 0 of 6 (checked against the names Smokey, Luna, Ash, Pepper, Gandalf, Misty, Minou). F1 and D1 tried Bash (refused, disallowed) and still printed the block. n = 6, one run each, no repeat.
+- Not tested: desktop app trigger typed by a real user, Codex, Cursor, claude.ai, count 2, model choice.

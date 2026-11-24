@@ -1,36 +1,31 @@
 <!doctype html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jakob Christensen - Odds &amp; Ends</title>
-  <meta name="description" content="Projekte von Jakob Christensen.">
+  <title>Jakob Christensen - Tools, Toys &amp; Tinkering</title>
+  <meta name="description" content="Tools, toys and tinkering by Jakob Christensen: agent skills, teaching tools for visual effects and a game in the making.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121110">
   <style>
+    /* Dark by default, whatever the system says (Jakob, 2026-11-24). Light only with data-theme="light". */
     :root {
-      --bg: #fafaf9;
-      --surface: #ffffff;
-      --fg: #1c1917;
-      --muted: #6b6560;
-      --border: #e7e5e4;
-      --accent: #c2410c;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #121110;
-        --surface: #1c1a19;
-        --fg: #f0eeec;
-        --muted: #a29d98;
-        --border: #2e2b29;
-        --accent: #fb923c;
-      }
-    }
-    :root[data-theme="dark"] {
+      color-scheme: dark;
       --bg: #121110;
       --surface: #1c1a19;
       --fg: #f0eeec;
       --muted: #a29d98;
       --border: #2e2b29;
       --accent: #fb923c;
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #fafaf9;
+      --surface: #ffffff;
+      --fg: #1c1917;
+      --muted: #6b6560;
+      --border: #e7e5e4;
+      --accent: #c2410c;
     }
     * { box-sizing: border-box; }
     body {
@@ -52,6 +47,7 @@
       letter-spacing: -0.02em;
     }
     header p { margin: 0.25rem 0 0; color: var(--muted); }
+    header .subtitle { font-size: clamp(1.1rem, 3vw, 1.4rem); letter-spacing: -0.01em; }
     .projects {
       list-style: none;
       margin: 0;
@@ -91,15 +87,18 @@
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
     .skill-head { cursor: pointer; list-style: none; }
     .skill-head::-webkit-details-marker { display: none; }
-    .skills h3::before { content: "▸"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform 0.15s; }
-    details[open]:not(.is-closing) h3::before { transform: rotate(90deg); }
+    .skills h4::before { content: "▸"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform 0.15s; }
+    details[open]:not(.is-closing) h4::before { transform: rotate(90deg); }
     .skill-head { position: relative; }
     .skill-sum { flex-basis: 100%; margin-left: 1.1rem; font-size: 0.9rem; color: var(--muted); }
     @media (min-width: 40rem) {
       .skill-head { display: grid; grid-template-columns: 10.5rem 4.5rem 1fr; gap: 0; align-items: baseline; }
       .skill-sum { margin-left: 0; }
+      .skill-head .download { align-self: center; }
     }
-    .skills h3 { margin: 0; font-size: 1rem; white-space: nowrap; }
+    .skills h4 { margin: 0; font-size: 1rem; white-space: nowrap; }
+    .skill-group { margin: 1rem 0 0.35rem 1.1rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .install + .skill-group { margin-top: 0.5rem; }
     .skill-desc { margin: 0.5rem 0 0; font-size: 0.95rem; color: var(--muted); }
     .download { color: var(--accent); display: inline-flex; align-items: center; gap: 0.35rem; vertical-align: middle; margin-left: 0.4rem; text-decoration: none; }
     .download .ext { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.75; }
@@ -123,7 +122,8 @@
 <body>
   <main>
     <header>
-      <h1>Jakob Christensen - Odds &amp; Ends</h1>
+      <h1>Jakob Christensen</h1>
+      <p class="subtitle">Tools, Toys &amp; Tinkering</p>
     </header>
 
     <ul class="projects">
@@ -132,11 +132,12 @@
           <h2>Jakob's Agent Skills</h2>
           <p class="desc">Agent skills I created from my own workflow, shaped by use: every project showed me something to fix. Some of them run through almost everything I do with AI. If one fits how you work, take it and adapt it.</p>
           <p class="install">Installation: download a skill, drag it into your AI's chat and write "Install this skill."</p>
+          <h3 class="skill-group">Results</h3>
           <ul class="skills">
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/workaround</h3>
+                <h4>/workaround</h4>
                 <a class="download" href="agent-skills/workaround/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Finds another route when the direct one is blocked</span>
               </summary>
@@ -148,7 +149,34 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/cheap-agents</h3>
+                <h4>/reroll</h4>
+                <a class="download" href="agent-skills/reroll/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+                <span class="skill-sum">Asks again in a new chat that never saw the first answer</span>
+              </summary>
+              <p class="skill-desc">When an answer misses, asking again in the same chat starts from the model's own first attempt, so the new answer is shaped by it (it avoids it or circles around it). <strong>This skill hands your own request, word for word, to a brand-new session that has never seen the rejected answer</strong>, so you get an independent second attempt.</p>
+                <p class="skill-desc">It never summarizes or comments on the earlier answer. <code>/reroll 2</code> or <code>/reroll 3</code> starts that many parallel attempts, <code>/reroll different</code> tells the new session that an earlier answer was rejected (never what it said) and asks it to avoid the most obvious choices, and a model name such as <code>/reroll sonnet</code> picks the model. Any other text is added as a note.</p>
+                <p class="skill-desc">The separate session needs the Claude Code desktop app. Everywhere else it copies the prompt to your clipboard or prints it, and you paste it into a new chat yourself. Start it with <code>/reroll</code>, or say "reroll" or "ask a fresh chat".</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/unrobot</h4>
+                <a class="download" href="agent-skills/unrobot.zip" download="unrobot.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Takes the marks of machine writing out of a text</span>
+              </summary>
+              <p class="skill-desc">Text written by a model tends to give itself away: grand one-line closers, "not X, but Y", inflated significance, brochure tone, vague attribution, em dashes. <strong>This skill finds those marks in a text, a file, a folder or a whole site and rewrites the passages so they read as if a person who knows the subject wrote them.</strong> It repairs what the sentence does, not just the flagged word.</p>
+                <p class="skill-desc">It works from a catalogue of signs built on the Wikipedia article "Signs of AI writing", and runs a small Python script (Python 3, nothing else to install) that finds the word and phrase patterns before the rest is judged by reading. A request to only check changes no file and lists each hit with a proposed replacement. Wording you fixed on purpose is left alone, and it does not proofread or translate. The scanner works for English text only.</p>
+                <p class="skill-desc">Start it with <code>/unrobot</code>, or ask to make a text "sound less like AI". Unzip it into your skills folder so <code>unrobot/SKILL.md</code> ends up there.</p>
+              </details>
+            </li>
+          </ul>
+          <h3 class="skill-group">Sessions</h3>
+          <ul class="skills">
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/cheap-agents</h4>
                 <a class="download" href="agent-skills/cheap-agents/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Picks the cheapest model that does the job</span>
               </summary>
@@ -160,13 +188,13 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/fresh</h3>
+                <h4>/fresh</h4>
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Hands your work over to a fresh session</span>
               </summary>
               <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. <strong>This skill carries your work over to a fresh agent session at a natural break, like a long conversation, a long pause, a new topic or a finished task.</strong></p>
                 <p class="skill-desc">It writes a summary of the work so far, names the recommended model and effort for the next session and offers to start it. The summary builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes one when you call it.</p>
-                <p class="skill-desc"><code>/fresh</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. After its first run in Claude Code, <code>/fresh</code> asks once whether to set the hook up; it changes nothing without your yes and keeps a backup of your settings.</p>
+                <p class="skill-desc"><code>/fresh</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. After its first run in Claude Code, <code>/fresh</code> asks once whether to set the hook up. It changes nothing without your yes and keeps a backup of your settings.</p>
                 <p class="skill-desc">It also works the other way round: when a session starts from a handoff file, or you say to continue after a crash or stop, it first checks the real state (git, branch, background jobs), lists what differs from the handoff, then carries on and never kills a process to get around a block.</p>
                 <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
               </details>
@@ -174,7 +202,22 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/strays</h3>
+                <h4>/lanes</h4>
+                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Gives every agent session its own worktree</span>
+              </summary>
+              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every AI agent session in a git repository its own worktree and branch, keeps the main checkout clean as the place where finished work lands, and stages only named files.</strong></p>
+                <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
+                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>. In a project without the integration script it asks once, after its first manual integration, whether to set it up, and changes nothing without your yes.</p>
+              </details>
+            </li>
+          </ul>
+          <h3 class="skill-group">Housekeeping</h3>
+          <ul class="skills">
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/strays</h4>
                 <a class="download" href="agent-skills/strays/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Finds git commits that never reached the remote</span>
               </summary>
@@ -186,7 +229,7 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/freeup</h3>
+                <h4>/freeup</h4>
                 <a class="download" href="agent-skills/freeup.zip" download="freeup.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Frees disk space, deletes only what you approve</span>
               </summary>
@@ -198,7 +241,7 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/tidy-sessions</h3>
+                <h4>/tidy-sessions</h4>
                 <a class="download" href="agent-skills/tidy-sessions/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Archives finished sessions, keeps unfinished ones</span>
               </summary>
@@ -210,31 +253,22 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/tidy-worktree</h3>
-                <a class="download" href="agent-skills/tidy-worktree/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+                <h4>/tidy-worktrees</h4>
+                <a class="download" href="agent-skills/tidy-worktrees/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Removes worktrees whose work has landed</span>
               </summary>
               <p class="skill-desc">Old worktrees and branches pile up in a repository, and it is hard to tell which ones are safe to delete. <strong>This skill removes only the git worktrees and branches whose work has landed in the default branch and whose worktree is clean, and keeps everything else.</strong></p>
                 <p class="skill-desc">It never fetches or pushes, never forces a removal, deletes branches only with the safe <code>git branch -d</code>, and leaves the main checkout, locked worktrees, the one you are in and detached HEADs alone. It only reports stale worktree entries and prunes them after your OK. It needs git 2.31 or newer.</p>
-                <p class="skill-desc">Start it with <code>/tidy-worktree</code>, or ask which worktrees would be removed.</p>
+                <p class="skill-desc">Start it with <code>/tidy-worktrees</code>, or ask which worktrees would be removed.</p>
               </details>
             </li>
+          </ul>
+          <h3 class="skill-group">Proof</h3>
+          <ul class="skills">
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/lanes</h3>
-                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Gives every agent session its own worktree</span>
-              </summary>
-              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every AI agent session in a git repository its own worktree and branch, keeps the main checkout clean as the place where finished work lands, and stages only named files.</strong></p>
-                <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
-                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>. In a project without the integration script it asks once, after its first manual integration, whether to set it up, and changes nothing without your yes.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h3>/blindfold</h3>
+                <h4>/blindfold</h4>
                 <a class="download" href="agent-skills/blindfold.zip" download="blindfold.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Blind test: is the changed prompt really better?</span>
               </summary>
@@ -246,7 +280,34 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/fingerprints</h3>
+                <h4>/media-review</h4>
+                <a class="download" href="agent-skills/media-review.zip" download="media-review.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Checks generated images, audio and video against your brief</span>
+              </summary>
+              <p class="skill-desc">A prompt that worked says nothing about the result it produced. <strong>This skill checks images, audio and video that another model made against your requirements, measures the actual files, and tells you up front which parts only your eyes or ears can judge.</strong></p>
+                <p class="skill-desc">Before a paid or slow generation run, it tells you the cost and what it cannot check, and waits for your yes. It starts with one small sample, shows you only the assets that passed, and names every failed one with the requirement it missed.</p>
+                <p class="skill-desc">Start it with <code>/media-review</code>, or ask whether a generated result is good enough. The image check runs a bundled Python script, the audio and video checks use whatever tools your machine has. Unzip it into your skills folder so <code>media-review/SKILL.md</code> ends up there.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/measure-ui</h4>
+                <a class="download" href="agent-skills/measure-ui/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
+                <span class="skill-sum">Checks a web page with measured numbers instead of by eye</span>
+              </summary>
+              <p class="skill-desc">An agent that looks at one screenshot says a layout is fine and misses the overflow on a phone or the tab that breaks when you switch back. <strong>This skill has the agent set the viewport first, read element sizes and positions from the running page as numbers, switch between items in more than one order and report what it did not check.</strong></p>
+                <p class="skill-desc">It needs an agent tool that can open a page in a real browser and run JavaScript in it (without JavaScript it reports only what screenshots show). It starts only the project's own dev server, never signs in and never triggers anything that changes data. It does not replace a project's own visual tests.</p>
+                <p class="skill-desc">Start it with <code>/measure-ui</code>, or ask whether a layout works on a phone.</p>
+              </details>
+            </li>
+          </ul>
+          <h3 class="skill-group">Safety</h3>
+          <ul class="skills">
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/fingerprints</h4>
                 <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Checks a folder for private traces before you share it</span>
               </summary>
@@ -258,13 +319,13 @@
             <li>
               <details>
               <summary class="skill-head">
-                <h3>/media-review</h3>
-                <a class="download" href="agent-skills/media-review.zip" download="media-review.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Checks generated images, audio and video against your brief</span>
+                <h4>/nothing-lost</h4>
+                <a class="download" href="agent-skills/nothing-lost.zip" download="nothing-lost.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Proves a big rewrite of many files lost no old line</span>
               </summary>
-              <p class="skill-desc">A prompt that worked says nothing about the result it produced. <strong>This skill checks images, audio and video that another model made against your requirements, measures the actual files, and tells you up front which parts only your eyes or ears can judge.</strong></p>
-                <p class="skill-desc">Before a paid or slow generation run, it tells you the cost and what it cannot check, and waits for your yes. It starts with one small sample, shows you only the assets that passed, and names every failed one with the requirement it missed.</p>
-                <p class="skill-desc">Start it with <code>/media-review</code>, or ask whether a generated result is good enough. The image check runs a bundled Python script, the audio and video checks use whatever tools your machine has. Unzip it into your skills folder so <code>media-review/SKILL.md</code> ends up there.</p>
+              <p class="skill-desc">Restructuring, shortening or splitting documents, rule files or data across many files is where words and numbers get lost without anyone noticing. <strong>This skill makes the old state recoverable in git first, moves text verbatim, and then runs a bundled script that checks line by line that every old line still exists in the new files.</strong> It lists every line found nowhere, and marks lines that changed on purpose (with the nearest new line) instead of failing on them.</p>
+              <p class="skill-desc">It runs a small Python script (Python 3 and git, nothing else to install). A line only counts as meant to go when you named it. It does not check line order or counts, and files it cannot read as text are listed as skipped, not checked. It is meant for big rewrites (roughly 5 or more files, or 100 or more lines), not for small edits.</p>
+              <p class="skill-desc">Start it with <code>/nothing-lost</code>, or say that nothing may get lost in a rewrite. Unzip it into your skills folder so <code>nothing-lost/SKILL.md</code> ends up there.</p>
               </details>
             </li>
           </ul>

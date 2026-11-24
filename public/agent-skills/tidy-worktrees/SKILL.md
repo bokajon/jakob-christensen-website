@@ -1,10 +1,11 @@
 ---
-name: tidy-worktree
+name: tidy-worktrees
+license: MIT
 description: Remove local git worktrees and branches whose work has safely landed in the default branch and whose worktree is clean, and keep everything else. Use when the user asks to tidy up, clean up or remove old worktrees and branches in a git repository, or asks which ones would be removed. Needs only git and runs in any tool. Not for pushing unpushed work, not for the single worktree a session just finished with, not for remote branches and not for archiving sessions in an app.
 compatibility: Needs git (2.31 or newer, because the steps read the `prunable` field of `git worktree list --porcelain`) and nothing else. Works in any tool that can run shell commands.
 ---
 
-# Tidy worktree
+# Tidy worktrees
 
 Goal: remove every local worktree and branch that is **landed** (its work is provably in the default branch) and **clean**, and keep the rest. The user's request to tidy up is their permission for exactly that. Both a landed branch and a clean worktree are needed. Removal never forces anything: `git worktree remove <path>` without `--force` and `git branch -d`, never `-D`. If the user only asks what would be removed, run steps 1 to 3, skip step 4, and write the step 5 report in the conditional ("would remove"), including the kept entries. If the user named a scope (a branch prefix, a folder), tidy only that scope.
 
@@ -16,7 +17,7 @@ Remote branches are never touched. There is no `git fetch` and no push, so a rem
 2. **Default branch.** `git symbolic-ref --quiet --short refs/remotes/origin/HEAD` gives `origin/<default>`. If it is unset, use the first of `origin/main`, `origin/master`, `main`, `master` that `git rev-parse --verify --quiet` accepts. Say in the report that the default was chosen by name. If none exists, stop and ask the user which branch is the default. Below, `<default>` is that ref and `<default-tip>` its commit (`git rev-parse <default>`).
 3. **Judge every entry.** An entry is a worktree with a branch, or a branch without a worktree. Give each the first matching result, and keep a one-line reason for every kept entry:
    - **Never touched**: the main checkout, the current worktree, the default branch itself (local branch of the same name as `<default>`), a worktree with `locked`, and a worktree on a detached HEAD (report it, name its commit).
-   - **Prunable**: a worktree marked `prunable` (its folder is gone). Do not remove it. List it, and its branch is judged as a branch without a worktree.
+   - **Prunable**: a worktree marked `prunable` (its folder is gone). Do not remove it, and keep its branch too: `git branch -d` refuses while the dead worktree record exists. List both under **Needs your attention** (also in a dry run, never under "would remove").
    - **No own commits**: the branch tip equals `<default-tip>`, or the reflog of the branch has no entry other than the creation line (`git reflog show --format=%gs refs/heads/<branch>` prints only `branch: Created from ...`). It looks landed (a tip that is an ancestor of the default branch) but may be a session that has just started, so keep it and name it. Never remove it. An empty or expired reflog proves nothing, then the normal checks decide.
    - **Unique reflog commits**: the reflog of the branch (`git reflog show --format=%H refs/heads/<branch>`) lists a commit that `git merge-base --is-ancestor <commit> <default>` does not accept (for example a commit that was reset away). Deleting the branch also deletes its reflog, so keep the entry as "reflog holds commits not in the default branch" and name the first commit. An unreadable reflog skips this check.
    - **Shallow history**: `git rev-parse --is-shallow-repository` prints `true`. Ancestry and patch checks cannot see the full history, so keep the entry as "shallow history, landing not provable".

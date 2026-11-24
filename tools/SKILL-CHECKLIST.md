@@ -35,6 +35,7 @@ Follow this order. In the workaround release (2026-11-22) text changes and test 
 1. Model-invoked: written for the agent. What the skill does, then "Use when ..." with the concrete trigger cases. One explicit non-trigger is fine. (Matt: `.agents/invocation.md:6`; `skills/.../wizard/SKILL.md:3` ends with a non-trigger)
 2. User-invoked: written for a person scrolling slash commands, one line, no trigger list. (Matt: `.agents/invocation.md:5`)
 3. Spec limits: name max 64 characters, lowercase and hyphens, equal to the folder name; description max 1024 characters. `tools/check_skill.py` checks this. (agentskills.io specification)
+3a. Every skill carries `license: MIT` in its frontmatter, right after `name:` (Jakob, 2026-11-24: free downloads, so the reuse terms are stated; the field is part of the open specification). A new skill gets it from the start; the released ones got it on 2026-11-24 together with rebuilt ZIPs.
 4. A good description does not prove the skill fires. `workaround` loaded on its own in 0 of 6 headless runs, even when the prompt said "find a workaround". Claim auto-triggering on the page only after measuring it. (Test, 2026-11-22) A hook note that names the skill does start it: `fresh` started itself 5 of 5 times after its hook's note. (Test, 2026-11-22)
 
 ## 4. Body
@@ -125,6 +126,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
    - Cursor: `.agents/skills/` or `.cursor/skills/`, user level `~/.agents/skills/` or `~/.cursor/skills/`; it also reads `.claude/skills/` and `.codex/skills/`. Start by typing `/`. https://cursor.com/docs/skills
    - Antigravity: `.agents/skills/` or `~/.gemini/config/skills/`, start with `/<name>`. https://antigravity.google/docs/skills
 4a. Before the card entry, run `git merge main` on the release branch and `python -I tools/check_skill.py <folder>` on the result. A release branch that stays behind main meets the other sessions' card entries and section letters as conflicts at the end (2026-11-24: cheap-agents).
+4b. Every new skill goes into one of the groups on the card (`h3.skill-group`: Results, Sessions, Housekeeping, Proof, Safety), at the end of its group, in its own `ul.skills`. Pick the group by benefit; the current assignment is in FAKTEN.md. (Jakob, 2026-11-24)
 5. The next skill is one more `<li>` in that list, with the same markup as `workaround`.
 6. After the deploy, compare the SHA-256 of the live download with the released file, not only of the local copy. Git on this machine checks text out with CRLF (`core.autocrlf=true`) and Wrangler uploads the working files, so `.gitattributes` keeps `public/agent-skills/**` at LF: until 2026-11-23 both downloads went out with CRLF. (Ours, 2026-11-23) For a ZIP, compare three hashes: the live ZIP against the committed ZIP, then unzip the live file into a NEW empty folder and compare each inside file (`SKILL.md`, every `scripts/*`) against the source file, and check that no inside file contains a CR byte (`0x0D`). Any difference means the deploy is not released.
 
@@ -262,6 +264,30 @@ Draft at `skill-drafts/media-review/SKILL.md`, Claude Code headless, Sonnet, thr
 - Step 2 sharpened (stop, ask, wait; "just do it" does not replace the answer) and rerun on the same paid-batch case: billed calls 0 of 12 in 3 of 3 runs, each named cost, measurable and unmeasurable checks and asked for one sample first. A free run not stopping was not measured.
 - Not tested: result only as a link, voice and likeness stop, classifying images from the images, no overwrite of accepted assets, Codex. Test runner: set `MSYS_NO_PATHCONV=1` in Git Bash, or a `/name` prompt is turned into a path.
 - Retest after review round 1 (steps 2, 3 changed; 2026-11-24): same fixture, new folder, 6 runs `/media-review ... just do it` (3 with a judged requirement "natural and warm", 3 with only measurable ones: 44.1 kHz, under 4 s, 12 files). Billed calls 0 of 6 (before the change: 12 in 2 of 2 with the old step 2, and the measurable-only case was never tested). All six named 4.80 USD, listed what can be checked, and stopped with a question. Limits: M runs still listed "do the words match" as unchecked, so they were not purely measurable; headless cannot show the answer being handled; whether the skill loaded is not checked; measurement case and the video sentence not retested.
+
+## 8l. Test numbers of the reroll skill (2026-11-24)
+
+Draft at `skill-drafts/reroll/SKILL.md`, released 2026-11-24. Details: `skill-drafts/reroll.notes.md`. (Test)
+
+- Desktop app rounds 1-3 (`start_session`, bakery request, Sonnet): the handed-over text was exact and there were 0 transcript reads in the two single runs. `different` alone repeated "Gipfelbrot" in 2 of 3 sessions (round 2); after adding "Avoid the most obvious choices." none of the three visible parts had it (round 3, only the first ~400 characters read, n = 3).
+- Clipboard via `powershell.exe -NoProfile -Command Set-Clipboard`: read back identical in 1 run.
+- Trigger round A (headless, Sonnet, text before the fix): the skill started by itself in 6 of 6 natural follow-ups; handed over correctly in 5 of 6 (1 run answered the request itself), 1 run wrote "Copied" without a shell; walk-back ("ja", then `/reroll`) handed over the cat request in 2 of 2.
+- Trigger round B (after the two sentences "never answers the request itself" and "Copied only after success"): 6 of 6 loaded the skill, handed over the exact request with `[reroll]`, 0 of 6 said "Copied", 0 of 6 answered with cat names outside the block. n = 6, one run each.
+- Not tested: desktop app trigger typed by a real user, Codex, Cursor, claude.ai, count 2, model choice.
+
+## 8m. Test numbers of the nothing-lost skill (2026-11-24)
+
+Draft at `skill-drafts/nothing-lost/SKILL.md`, released 2026-11-24 as ZIP. Details: `skill-drafts/nothing-lost.notes.md` (section "Test round"). (Test)
+
+- Final text, Claude Code headless, Sonnet: natural prompt 2 of 2 and `/nothing-lost` 1 of 2 checked against the snapshot hash and committed with a path list; the other `/nothing-lost` run stopped before the change and asked. Baseline without the skill 0 of 2 (line comparison only).
+- Not tested: Codex, Cursor, a symbolic link on disk (WinError 1314), absolute `--old` paths with `--git-ref`. The fixture is weak (a table rebuild is the reflow case). n = 2 per cell.
+
+## 8n. Test numbers of the unrobot skill (2026-11-24)
+
+Released 2026-11-24 as ZIP (SKILL.md, references/signs.md, scripts/check_ai_signs.py), Results group. Details and all review rounds: `skill-drafts/unrobot.notes.md` (section "Test round 2026-11-24"). (Test)
+
+- Test round: 9 headless runs, Claude Code, Sonnet. After the description fix (names "sound less like AI" and "remove the AI tells", 738 characters) the skill started in 4 of 4 runs on a blog and an email prompt, before the fix 0 of 4. Scanner hits went from 9 to 0 or 1; the one hit left in each email run is the real request "Tuesday at 10", kept on purpose. 4 runs only.
+- Not tested: Codex and Cursor, Python availability across tools, the spec `compatibility` field, runs without the skill as baseline, non-English text, a 30-file case, the rest of the network comparison (BooleOS contents unreadable via WebFetch). The page says the scanner is English only.
 
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 

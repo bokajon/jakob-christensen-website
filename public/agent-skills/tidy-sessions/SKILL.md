@@ -1,12 +1,13 @@
 ---
 name: tidy-sessions
-description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived. Not for deleting sessions and not for the running session. To remove landed git worktrees and branches without the desktop app, use the tidy-worktree skill.
+license: MIT
+description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived. Not for deleting sessions and not for the running session. To remove landed git worktrees and branches without the desktop app, use the tidy-worktrees skill.
 compatibility: Claude desktop app (Code tab) only. Needs its session tools list_sessions, list_events, get_session and archive_session, and git.
 ---
 
 # Tidy sessions
 
-This skill works on the app's sessions. Checking git worktrees and branches alone, without the app, is the job of the `tidy-worktree` skill.
+This skill works on the app's sessions. Checking git worktrees and branches alone, without the app, is the job of the `tidy-worktrees` skill.
 
 Goal: archive every session whose work is **settled**, and keep the rest. The user's request to tidy is their permission to archive every session that counts as settled below. The session itself can be restored (the Archived list, `unarchive_session`), but its worktree is not a backup: uncommitted changes can be lost when it is archived, and the desktop app removes a local worktree about 30 days after the session was archived or last opened (Claude Code desktop docs, "Archive a session"), so the dirty check in step 3 is what protects the work (it also lists ignored files, because it is not known whether the app deletes them when it removes a worktree). With that check in place, decide per session yourself and do not ask first. If the user named a scope (a project, a title, "older than a day"), tidy only that scope. If they only ask what would be archived, stop in step 4 right after its parent and child check, before any `archive_session` call, and give the step 5 report in the conditional ("would archive"), including kept sessions and **Needs your attention**.
 

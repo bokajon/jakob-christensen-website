@@ -1,5 +1,6 @@
 ---
-name: tidy
+name: tidy-sessions
+license: MIT
 description: Show where every session in the Claude desktop app's session list stands (waiting for the user, working, unmerged or uncommitted work, stopped with open steps, finished), then archive the finished or superseded ones so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions wait for an answer, have uncommitted work, should continue or would be archived. Not for deleting sessions and not for the running session.
 compatibility: Claude desktop app (Code tab) only. Needs its session tools list_sessions, list_events, get_session and archive_session, and git.
 ---
