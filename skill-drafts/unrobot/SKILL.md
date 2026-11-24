@@ -1,5 +1,6 @@
 ---
 name: unrobot
+license: MIT
 description: Turn text into prose that carries no marks of machine writing, based on the Wikipedia "Signs of AI writing" catalogue plus further prose tics (dramatic one-line closers, deep-sounding sayings, repeated sentence starts, "not X, but Y", inflated significance, brochure tone, vague attribution, em dashes, bold-label bullets, chatbot leftovers). Use when text should be de-AI'd, humanised, made "less robotic", or checked for AI tells before publishing: blog posts, web copy, emails, docs, game text, whole sites. Also use when the user says a draft sounds like AI.
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: numbers-skeptic
+license: MIT
 compatibility: Needs a shell to run the measurement commands.
 description: Measures performance, timing, size, share, ranking and "unused" or dead-code claims itself, with a warm-up, repeated runs, median and spread, a machine-load check and runtime values taken from the running app and not from test fixtures. Use it before reporting a speed-up, a regression, a frame rate, a load time, a ranking, a share, a bundle size or unused code. A single fixed fact that can be read directly (a line count, one file's size) needs one command and no repetition. It does not review other people's claims or reports.
 ---

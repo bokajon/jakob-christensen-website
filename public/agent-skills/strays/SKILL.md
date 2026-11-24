@@ -1,5 +1,6 @@
 ---
 name: strays
+license: MIT
 description: Find stray local git work (branches and commits not on the remote yet) and push it with safe pushes only - no force, each branch by its exact commit, the default branch only fast-forwarded. Shows an overview first and pushes nothing before the user agrees. Use when the user asks to push their already committed work, to find unpushed commits or branches, or to check what is only local. Not for staging or committing changes, opening pull requests, merging or resolving diverged branches.
 ---
 

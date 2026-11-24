@@ -1,5 +1,6 @@
 ---
 name: tidy-worktree
+license: MIT
 description: Remove local git worktrees and branches whose work has safely landed in the default branch and whose worktree is clean, and keep everything else. Use when the user asks to tidy up, clean up or remove old worktrees and branches in a git repository, or asks which ones would be removed. Needs only git and runs in any tool. Not for pushing unpushed work, not for the single worktree a session just finished with, not for remote branches and not for archiving sessions in an app.
 compatibility: Needs git (2.31 or newer, because the steps read the `prunable` field of `git worktree list --porcelain`) and nothing else. Works in any tool that can run shell commands.
 ---

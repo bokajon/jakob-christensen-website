@@ -1,5 +1,6 @@
 ---
 name: freeup
+license: MIT
 description: Frees disk space on the Windows system drive C:. Use with /freeup or when the user asks for space on C ("C is full", "free up disk space"). Measures junk caches, shows a size table, deletes the shown rows after one yes. Windows only.
 ---
 

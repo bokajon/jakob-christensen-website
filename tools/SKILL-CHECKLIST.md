@@ -35,6 +35,7 @@ Follow this order. In the workaround release (2026-11-22) text changes and test 
 1. Model-invoked: written for the agent. What the skill does, then "Use when ..." with the concrete trigger cases. One explicit non-trigger is fine. (Matt: `.agents/invocation.md:6`; `skills/.../wizard/SKILL.md:3` ends with a non-trigger)
 2. User-invoked: written for a person scrolling slash commands, one line, no trigger list. (Matt: `.agents/invocation.md:5`)
 3. Spec limits: name max 64 characters, lowercase and hyphens, equal to the folder name; description max 1024 characters. `tools/check_skill.py` checks this. (agentskills.io specification)
+3a. Every skill carries `license: MIT` in its frontmatter, right after `name:` (Jakob, 2026-11-24: free downloads, so the reuse terms are stated; the field is part of the open specification). A new skill gets it from the start; the released ones got it on 2026-11-24 together with rebuilt ZIPs.
 4. A good description does not prove the skill fires. `workaround` loaded on its own in 0 of 6 headless runs, even when the prompt said "find a workaround". Claim auto-triggering on the page only after measuring it. (Test, 2026-11-22) A hook note that names the skill does start it: `fresh` started itself 5 of 5 times after its hook's note. (Test, 2026-11-22)
 
 ## 4. Body
