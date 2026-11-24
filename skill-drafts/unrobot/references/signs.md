@@ -42,7 +42,7 @@ Before: "The recipe isn't about speed, it's about patience." After: "The recipe 
 **3.1 Title Case headings.** Sentence case is the default, unless house style says else.
 **3.2 Boldface everywhere.** No bold in body prose, at most a term where it is defined.
 **3.3 Bold-label bullets.** "**Speed:** The tool runs..." Turn them into prose, a plain list or a proper table.
-**3.4 Em dash overuse.** Recast with a comma, colon, parentheses or full stop. An en dash is no substitute, and a spaced en dash used as a break is a sign too. Ranges (2020-2024), quotations, titles, URLs and code stay. (This skill uses no dash as punctuation at all, unless the author's own sample does.)
+**3.4 Em dash overuse.** Recast with a comma, colon, parentheses or full stop. An en dash is no substitute, and a spaced en dash or a spaced double hyphen (" -- ") used as a break is a sign too. Ranges (2020-2024), quotations, titles, URLs and code stay. (This skill uses no dash as punctuation at all, unless the author's own sample does.)
 **3.5 Emoji as formatting.** Strip them from headings and bullets.
 **3.6 Tiny tables.** A table of two or three rows that a sentence serves better.
 **3.7 Mixed curly and straight quotes.** Follow the convention of the surrounding text.
