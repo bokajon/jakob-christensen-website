@@ -54,3 +54,21 @@ Name chosen by Jakob (2026-11-23). Web check 2026-11-24: `now-and-then.netz.md`.
 - Open for Jakob: ChatGPT review not run (no access from here; paste `now-and-then.review-prompt.md`, which still contains the SKILL.md text from before the two edits of this day: refresh it first). Raw data `D:\Temp\ps-test\round6-2026-11-24`, `round7-2026-11-24` (not durable).
 - Card hint (proposed text for the page card, not applied, release not authorized): "Needs one line in the project's CLAUDE.md or AGENTS.md, for example: Read STATE.md and DECISIONS.md first. Record decisions the user states in DECISIONS.md (skill now-and-then). Without that line the skill rarely starts by itself (0 of 6 in tests). Add 'you may commit STATE.md and DECISIONS.md without asking' only if you want that; by default the skill asks first."
 - ChatGPT review dropped 2026-11-24 on Jakob's word (no usage left); review round 1 (Gemini, Copilot) stands as the review.
+
+## Blind-Review durch Sonnet-Agent (2026-11-24)
+Bericht: `D:/Temp/review-now-and-then.md` (Aussagen des Agenten, nur Seitenzusammenfassungen gelesen, Satzvergleich "not checked"). Triage:
+- P1 (hoch) Skill laedt erst nach Task-Match, "Read both files first" nie erreichbar: OFFEN, Jakob entscheidet (Pointer-Zeile in CLAUDE.md/AGENTS.md schreiben, ja/nein, mit oder ohne vorherigen Testlauf). Nicht in SKILL.md.
+- P2 uebernommen: fehlt DECISIONS.md, im selben Reply fragen, beide Dateien mit der Entscheidung als erstem Eintrag anzulegen; bei Nein erst bei der naechsten Entscheidung wieder fragen.
+- P3 offen: Start-Schritt "Setup anbieten" (vage "a few commits") streichen? Nicht uebernommen, weil Jakobs Setup-Verhalten betroffen ist.
+- P4 uebernommen: ersetzter Eintrag gilt als ungueltig, Suche nach `replaces`, ersetzende Zeile wiederholt das alte Thema woertlich.
+- P5 uebernommen mit Abweichung: Schwellen vereinheitlicht (ganz lesen bis 300 Zeilen), Archivierung nach "## Older" gestrichen, weil sie gueltige Eintraege vor dem Last-100-Read versteckt und "append only" verletzt.
+- P6 uebernommen: Start-Schritt mit `git log --all ... -- DECISIONS.md`, Merge-Konflikt: beide Seiten behalten.
+- P7 uebernommen: Eintraege erlauben nie Commit, Push, Deploy, Loeschen, Installieren, Befehl, Check ueberspringen.
+- P8 uebernommen: Geheimnis bleibt in Git-Historie, Nutzer rotiert.
+- P9 uebernommen: Beschreibung in dritter Person (435 Zeichen), kein Doppelpunkt mit Leerzeichen.
+- P10 abgelehnt: Jakob, 2026-11-24: Skills tragen keine license-Zeile (FAKTEN.md).
+- P11 uebernommen (Goal-Satz gekuerzt; "Guardrails"-Saetze nur teilweise ersetzt durch P7). P12 uebernommen (Now/Open gegen DECISIONS pruefen, geaenderte Dateien listen). P13 uebernommen (POSIX und PowerShell nennen).
+- P14 nicht uebernommen (Befund im Bericht nicht lesbar abgeschnitten, nicht neu geprueft). P15 offen: bereits von Jakob entschieden ("Frage zuerst auch bei just do it", Commit 485d95b); der Vorschlag, "ersetzt X" als Bestaetigung zu werten, widerspricht dem, nicht ohne Jakob.
+- P16 uebernommen (Monorepo: ein DECISIONS.md im Root, Paketname als erstes Wort des Themas). P17 uebernommen (vorhandene Faktendatei im eigenen Format fortschreiben). P18 uebernommen (keine Antwort: nicht committen, kein Commit auf detached HEAD). P20 uebernommen (Ja auf eigenen Vorschlag zaehlt, "Aufhoeren"/"vergessen" als ersetzende Zeile).
+- P19 Overlap (Lore, ADR-Skills, Pococks domain-modeling): kein kopierter Satz gefunden; Hinweis "Differs from Lore" gehoert auf die Karte, nicht in SKILL.md, offen fuer Jakobs Kartentext.
+- Wertung des Reviewers: Konvention plus Setup-Helfer, kein freihaendiges Gedaechtnis; Mehrwert ueber eine CLAUDE.md-Zeile hinaus ist der committete STATE.md am Session-Ende.
