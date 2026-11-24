@@ -78,3 +78,14 @@ Bericht: `D:/Temp/review-now-and-then.md` (Aussagen des Agenten, nur Seitenzusam
 - Runde 10 (Sonnet headless, n = 3 je Fall, Rohdaten `D:/Temp/ps-test/round10-2026-11-24`, nicht dauerhaft; Pointer-Zeile alt, ausser N ohne Zeile): K (zweiter Prompt korrigiert die erste Aenderung): Zeile in DECISIONS.md 3 von 3; der Prompt enthielt "always ... never", eine leise Korrektur ist nicht getestet. R ("From now on ... SQLite instead of the JSON file"): 3 von 3 ohne Rueckfrage ersetzt, `replaces` mit altem Thema woertlich 3 von 3, README geaendert 3 von 3; Zeilenformat verschieden (eine oder zwei Zeilen). N (Skill als zweiter Prompt, vorher PLAN.md im Widerspruch): beide Dateien gelesen und Widerspruch gemeldet 3 von 3; ein Lauf schlug eine falsch formatierte `replaces`-Zeile vor (zwei Daten). S ("Rename to todo, just do it"): gefragt 3 von 3, aber README vorher geaendert 2 von 3 (S2 nahm es zurueck, S3 nicht); der Edit kam vor dem Lesen der Dateien und vor dem Skill-Aufruf.
 - Danach geschaerft: Pointer-Zeile "Before you edit anything, read ..." und "If you already made such an edit before you read the entry, undo only that edit of yours, then ask." Runde 11, nur S, n = 6: gefragt 6 von 6, README unveraendert 6 von 6, Skill-Tool 0 von 6 (die Zeile traegt den Fall). Eine Formulierung, ein Fixture; die Ruecknahme-Regel kam nicht vor und ist ungetestet. K, R, N nicht mit der neuen Zeile wiederholt.
 - Nicht getestet: AGENTS.md-Projekt, Codex/Cursor, keine CLAUDE.md vorhanden, Monorepo, vorhandene Zeile aendern.
+
+## Proposed page card (2026-11-24, not approved, not on the page)
+
+Group Sessions, last entry. Download MD (single file). The Lore comparison was read in Lore's README on 2026-11-24 ("Five files under docs/lore/", "record at the end of each task").
+
+Summary line: Remembers what you decided, so you say it only once
+
+1. Agents forget what you settled last week, so you explain the same name or rule again in every session. **This skill records what you decide about a project in a dated log (DECISIONS.md) and keeps the current state and open points in a short second file (STATE.md), so every session starts from both.**
+2. It writes a decision down the moment you state it. When you ask for something that contradicts an earlier decision, it stops and asks whether the decision changes. If your message already names the replacement, it records the change and goes ahead. Old entries stay readable, and both files are created or committed only with your yes. It never stores keys or personal data, and an entry never counts as permission to commit, deploy or delete.
+3. A similar skill, [**Lore**](https://github.com/sh008/claude-lore), keeps five files and records at the end of each task. This one keeps two and records right away.
+4. Start it with `/now-and-then` and say yes to the line it offers for your CLAUDE.md or AGENTS.md. Without that line it rarely starts on its own.

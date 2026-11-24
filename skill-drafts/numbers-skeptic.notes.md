@@ -74,3 +74,14 @@ Bericht: `D:/Temp/review-numbers-skeptic.md` (Aussagen des Agenten, nur Seitenzu
 - P13 `compatibility` bleibt, Ordnername geprueft. P14 (N) Laufzahl nach Dauer, schnelle Befehle in einer Schleife: uebernommen. P15 Overlap: kein kopierter Satz gefunden; Hinweis "Arbeitsbaum sauber" nicht uebernommen (Step 8 verlangt schon Commit/Version).
 - Wertung des Reviewers: kleine Leitplanke, kein Benchmark-Tool; "reproduced" erst nach Trigger-Test und Fixture mit versteckter Cold-Start-Streuung versprechen. Beides bleibt offen.
 - Trigger-Retest 2026-11-24 nach dem Review-Einbau (Sonnet headless, Fixture make_fixture2.py, `D:/Temp/retest-tests/trig4.py`, `runs4/`, nicht dauerhaft): Skill startete in 8 von 8: "dead code ... delete" 3 von 3, "unused" 3 von 3, "under 150 ms" 1 von 1, "about twice as fast, confirm" 1 von 1. Die 6 Dead-Code-Antworten waren richtig (dynamischer Import gefunden). Zeitwerte sind nicht verwertbar, weil mehrere Laeufe parallel liefen. Kein Vergleich ohne Skill; Sonnet, eine Fixture, ein Wortlaut je Fall. Name bleibt (Jakob, "Alles wie empfohlen"); die Fixture mit verstecktem Kaltstart-Rauschen wird nicht gebaut (Jakob, ebd.).
+
+## Proposed page card (2026-11-24, not approved, not on the page)
+
+Group Proof, last entry. Download MD (single file).
+
+Summary line: Makes your agent measure a number before it reports it
+
+1. Agents like to report that something is now faster, smaller or unused after one run, or after none. **This skill has the agent measure every claim about speed, size, share, ranking or unused code in your software, and mark what it could not measure as "not checked".**
+2. For timings it checks the machine's load, warms up, repeats the run, and gives the median and the spread. A result counts as reproduced only after a second, separate series, and a difference smaller than the noise counts as no difference. Values come from the running app and never from a test fixture. Before it calls code unused, it searches code, tests, config, scripts and docs for it.
+3. It needs a shell. It changes no system settings, does not repeat commands that deploy, send or call a paid or shared service, and does not review other people's reports. Careful measuring takes longer than guessing.
+4. Start it with `/numbers-skeptic`, or ask whether something really got faster, smaller or is unused.
