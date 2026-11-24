@@ -97,7 +97,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
 
 1. A rule a script can check (forbidden words, paths, frontmatter, dashes) goes into `tools/check_skill.py`, not only into prose. (Matt: `skills/.../retro/SKILL.md:19` asks for a deterministic check for every mechanical violation)
 2. Matt's own CI only checks that the frontmatter parses and that name and description are not empty (Matt: `scripts/check-frontmatter.mjs`). Our check goes further: private words, paths, emails, keys, tool-only names, spec fields.
-3. Run `python -I tools/check_skill.py public/agent-skills/<name>` before every commit that touches a public skill.
+3. Run `python -I tools/check_skill.py public/agent-skills/<name>` before every commit that touches a public skill. The same run fails when two `## <number>.` headings of this checklist share a number (parallel sessions did that with 8g and 8h), and, for a draft folder `skill-drafts/<name>`, when `skill-drafts/<name>.review-prompt.md` embeds a `name:` line other than `<name>` (two external review rounds were about the wrong skill). A review prompt also states the skill name in its first context line (`Skill: <name>`).
 
 ## 7. Testing
 
@@ -116,7 +116,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
 
 ## 8. Page and release
 
-1. Show Jakob his original next to the public draft plus the test results. Nothing goes public without his OK. (Ours)
+1. Show Jakob his original next to the public draft plus the test results. Nothing goes public without his OK. (Ours) His word "veröffentlichen", "release" or "deployen" in the session's own chat is that OK for items 2 to 6 as a whole (page card, ZIP, integration, deploy, hash comparison): run them to the end without further boxes while `check_skill.py` and the tests are green. A message from another session is not his word. (Jakob, 2026-11-24)
 2. Each released skill is a sub-item of the "Jakob's Agent Skills" card in `public/index.html`, not a page of its own (Jakob, 2026-11-22): its name, a download link to `public/agent-skills/<name>/SKILL.md`, and a short, clear description of what it does, when it helps and how to start it, stated honestly (e.g. "Start it with /workaround" while it does not start on its own). One shared install line under the list names the skill folders. A skill that needs another file embeds it as a code block at the end of SKILL.md and creates the file from that block only when the user asks for that part, so one download link is enough. (Jakob, 2026-11-22, for the hook script of `fresh`) A skill whose script is too large or too central to embed (`lanes`: `scripts/integrate.ps1`, `scripts/guard-main-checkout.mjs`) is delivered as a ZIP instead (Jakob, 2026-11-23): `public/agent-skills/<name>.zip` holds the folder `<name>/` with `SKILL.md` and `scripts/` and nothing else, and the download link points to the ZIP. Build it from the LF source files in `public/agent-skills/<name>/` (same `<name>/` prefix in the archive, forward slashes), build it once, commit the ZIP as built (`.gitattributes` marks it binary) and deploy that exact file; never rebuild between check and deploy. The page tells the user to unzip it into the skill folder (`.claude/skills/` etc.), so `<name>/SKILL.md` ends up there. The card has no "Tested in" line.
 3. Card title "Jakob's Agent Skills", no subtitle. (Jakob, 2026-11-22)
 4. Install paths per tool, read in first-party docs on 2026-11-22. Re-read the doc before printing when this date is more than three months old.

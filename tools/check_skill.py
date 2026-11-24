@@ -128,13 +128,51 @@ def check(folder):
     return problems, hints
 
 
+def check_checklist_numbers(path):
+    """Two '## <number>.' headings with the same number are a merge collision."""
+    problems, seen = [], {}
+    for i, line in enumerate(Path(path).read_text(encoding="utf-8").splitlines(), 1):
+        m = re.match(r"^## (\d+[a-z]?)\.", line)
+        if m:
+            if m.group(1) in seen:
+                problems.append(f"{Path(path).name}:{i}: heading number {m.group(1)} already used on line {seen[m.group(1)]}")
+            seen.setdefault(m.group(1), i)
+    return problems
+
+
+def check_review_prompt(folder):
+    """A review prompt next to a draft folder must be about that skill."""
+    folder = Path(folder).resolve()
+    prompt = folder.parent / f"{folder.name}.review-prompt.md"
+    if not prompt.is_file():
+        return []
+    text = prompt.read_text(encoding="utf-8")
+    problems = []
+    names = re.findall(r"^name:\s*(\S+)", text, re.M)
+    if not names:
+        problems.append(f"{prompt.name}: no embedded 'name:' line found")
+    for n in names:
+        if n != folder.name:
+            problems.append(f"{prompt.name}: embedded name '{n}' differs from skill '{folder.name}'")
+    if f"Skill: {folder.name}." not in text:
+        problems.append(f"{prompt.name}: context line 'Skill: {folder.name}.' missing")
+    return problems
+
+
 def main(argv):
     if not argv:
         print(__doc__)
         return 2
     failed = False
+    checklist = Path(__file__).resolve().parent / "SKILL-CHECKLIST.md"
+    if checklist.is_file():
+        nums = check_checklist_numbers(checklist)
+        for p in nums:
+            print(f"PROBLEM {p}")
+        failed = bool(nums)
     for folder in argv:
         problems, hints = check(folder)
+        problems += check_review_prompt(folder)
         print(f"== {folder}")
         for p in problems:
             print(f"PROBLEM {p}")
