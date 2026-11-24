@@ -1,4 +1,4 @@
-# Netz-Abgleich project-state (Stand 2026-11-24)
+# Netz-Abgleich now-and-then (zuvor project-state) (Stand 2026-11-24)
 
 Format wie `NETZ-ABGLEICH.md` Teil 3. Diese Datei steht für sich, weil `NETZ-ABGLEICH.md` von parallelen Sessions beschrieben wird; Jakob oder die Hauptsession kann sie dort als "Teil 4" einfügen.
 
