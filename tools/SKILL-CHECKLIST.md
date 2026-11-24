@@ -185,7 +185,7 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 
 ## 8g. Test numbers of the cheap-agents skill (2026-11-24)
 
-Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), final SKILL.md 6,094 characters, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
+Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), SKILL.md 6,094 characters before review round 1 and 7,899 after it, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
 
 - Without the skill, user asks for four helpers (round 2): 2 of 2 started 4 helpers on the default `general-purpose` model, named no role, model or cost class.
 - With the skill, user asks for four helpers (rounds 2 and 3, 4 runs): 4 of 4 named role, model and cost class before starting, 4 of 4 started 4 Haiku helpers, all re-read the files and re-ran the tests themselves. In the 2 runs where the first brief was read, both limited the helper to its own file, one added "no sub-agents of your own".
@@ -195,7 +195,8 @@ Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders
 - Baseline for the small and the vague case without skill: not run. Without the skill on the plain task (round 1, no helper request) 2 of 2 fixed all four directly, so the "do it yourself" step is a no-op there.
 - With the skill but with the "start now" approval already in the prompt: 2 of 2 started 4 Haiku helpers (this round, P2).
 - Not tested: step 5 (helper reports "failed" with files written, old branch base, script validation), the strong role and its approval, Codex and Cursor, a run without any helper request on a large task.
-- Raw data: `D:\Temp\agent-skills-tests\delegate-round1-2026-11-24-A`, `-B`, `delegate-round2-2026-11-24-r2-B`, `-C`, `delegate-round3-2026-11-24-r2-B`, `-C`, `delegate-round4-2026-11-24-r2-B`, runners `run-delegate-round*.ps1`, `analyze_delegate.py`. Not durable.
+- After review round 1 (SKILL.md 7,899 characters, round 5, 10 runs, `/cheap-agents`): four helpers asked for, 2 of 2 named role, model and cost class (1 of 2 also effort) and started 4 Haiku helpers, briefs limited to one file, "no sub-agents of your own", command written out, all re-read files and re-ran tests. One-file task: 2 of 2 without helpers. "Use sub-agents, whatever you think is sensible": 2 of 2 did it themselves and said why, 0 asked (before: 1 of 2 asked). User approval in the prompt plus "use helpers where it makes sense": 2 of 2 did it themselves (before: 2 of 2 started 4 helpers). No number, no helper request: 2 of 2 did it themselves. So the new gain test in step 1 makes the skill drop helpers for four one-line bugs unless the user names the count; whether that is wanted is Jakob's open decision.
+- Raw data: `D:\Temp\agent-skills-tests\delegate-round5-2026-11-24-r3-A` to `-C` (runner `run-delegate-round5.ps1`), `delegate-round1-2026-11-24-A`, `-B`, `delegate-round2-2026-11-24-r2-B`, `-C`, `delegate-round3-2026-11-24-r2-B`, `-C`, `delegate-round4-2026-11-24-r2-B`, runners `run-delegate-round*.ps1`, `analyze_delegate.py`. Not durable.
 
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
