@@ -185,7 +185,7 @@ Public name of the former push skill. Final SKILL.md 8,165 characters, live on m
 
 ## 8g. Test numbers of the cheap-agents skill (2026-11-24)
 
-Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), final SKILL.md 6,086 characters, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
+Draft `skill-drafts/cheap-agents` (old working name `delegate`; the test folders still held it as `delegate`), final SKILL.md 6,094 characters, not yet released. Claude Code headless, Sonnet, `--max-turns 40`, 2 runs per case, fixture of four independent one-line bugs (`mod_a.py` to `mod_d.py` with tests) plus a one-file task. Name check and notes: `skill-drafts/cheap-agents.notes.md`. (Test)
 
 - Without the skill, user asks for four helpers (round 2): 2 of 2 started 4 helpers on the default `general-purpose` model, named no role, model or cost class.
 - With the skill, user asks for four helpers (rounds 2 and 3, 4 runs): 4 of 4 named role, model and cost class before starting, 4 of 4 started 4 Haiku helpers, all re-read the files and re-ran the tests themselves. In the 2 runs where the first brief was read, both limited the helper to its own file, one added "no sub-agents of your own".
