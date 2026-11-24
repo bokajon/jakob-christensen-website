@@ -82,7 +82,8 @@ Setup: Sonnet, `claude -p`, one throwaway folder per run, skill in `.claude/skil
 | check, natural (2 runs) | "check our copy before launch" | 2 of 2 | Check-only: home.md unchanged, 9 scanner hits plus by-reading signs, contact.md clean. |
 
 Findings:
-- The natural phrases "sound less like AI" and "remove the AI tells" did not start the skill in 4 of 4 runs, although the description names "de-AI'd", "humanised" and "sounds like AI". Needs a description change or a decision to accept it; not changed yet.
+- The natural phrases "sound less like AI" and "remove the AI tells" did not start the skill in 4 of 4 runs, although the description named "de-AI'd", "humanised" and "sounds like AI".
+- Fix: the description now says "Also use when the user asks to make text \"sound less like AI\" or to \"remove the AI tells\", or says a draft sounds like AI." (738 characters). Re-test with the same two prompts (`D:/Temp/unrobot-tests-2026-11-24-r2`): the skill started in 4 of 4 runs; scanner hits 9 to 0 or 1, the one left in each email run is the real request "Tuesday at 10", kept on purpose. 4 runs only.
 - Whether the 4 natural runs invented facts and whether the skill runs avoided it was not compared systematically; not checked.
 - Not tested: runs without the skill as a baseline, Codex, Cursor, a non-English text, a case with many files (30).
 
