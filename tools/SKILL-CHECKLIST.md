@@ -263,6 +263,16 @@ Draft at `skill-drafts/media-review/SKILL.md`, Claude Code headless, Sonnet, thr
 - Not tested: result only as a link, voice and likeness stop, classifying images from the images, no overwrite of accepted assets, Codex. Test runner: set `MSYS_NO_PATHCONV=1` in Git Bash, or a `/name` prompt is turned into a path.
 - Retest after review round 1 (steps 2, 3 changed; 2026-11-24): same fixture, new folder, 6 runs `/media-review ... just do it` (3 with a judged requirement "natural and warm", 3 with only measurable ones: 44.1 kHz, under 4 s, 12 files). Billed calls 0 of 6 (before the change: 12 in 2 of 2 with the old step 2, and the measurable-only case was never tested). All six named 4.80 USD, listed what can be checked, and stopped with a question. Limits: M runs still listed "do the words match" as unchecked, so they were not purely measurable; headless cannot show the answer being handled; whether the skill loaded is not checked; measurement case and the video sentence not retested.
 
+## 8l. Test numbers of the reroll skill (2026-11-24)
+
+Draft at `skill-drafts/reroll/SKILL.md`, released 2026-11-24. Details: `skill-drafts/reroll.notes.md`. (Test)
+
+- Desktop app rounds 1-3 (`start_session`, bakery request, Sonnet): the handed-over text was exact and there were 0 transcript reads in the two single runs. `different` alone repeated "Gipfelbrot" in 2 of 3 sessions (round 2); after adding "Avoid the most obvious choices." none of the three visible parts had it (round 3, only the first ~400 characters read, n = 3).
+- Clipboard via `powershell.exe -NoProfile -Command Set-Clipboard`: read back identical in 1 run.
+- Trigger round A (headless, Sonnet, text before the fix): the skill started by itself in 6 of 6 natural follow-ups; handed over correctly in 5 of 6 (1 run answered the request itself), 1 run wrote "Copied" without a shell; walk-back ("ja", then `/reroll`) handed over the cat request in 2 of 2.
+- Trigger round B (after the two sentences "never answers the request itself" and "Copied only after success"): 6 of 6 loaded the skill, handed over the exact request with `[reroll]`, 0 of 6 said "Copied", 0 of 6 answered with cat names outside the block. n = 6, one run each.
+- Not tested: desktop app trigger typed by a real user, Codex, Cursor, claude.ai, count 2, model choice.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
