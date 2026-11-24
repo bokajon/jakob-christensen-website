@@ -64,7 +64,7 @@ SIGNS = {
     ],
     "3.4 em/en dash": [r"\u2014", r"\s\u2013\s", r"\s--\s"],
     "3.5 emoji": [r"[\U0001F300-\U0001FAFF\u2600-\u27bf\u2b50\u2705]"],
-    "3.7 curly quotes": [r"[\u201c\u201d\u2018\u2019]"],
+    "3.7 mixed quotes": [],  # file-level, see mixed_quotes()
     "4.1 chat leftovers": [
         r"i hope this helps", r"^certainly!", r"great question", r"let me know if",
         r"would you like me to", r"^here is (?:a|an|the) ", r"in this (?:section|article), we will",
@@ -85,7 +85,7 @@ SIGNS = {
         r"here'?s (?:what|the thing|why)", r"let'?s be (?:honest|clear)", r"the truth is",
         r"let that sink in",
     ],
-    "6.7 stacked qualifiers": [r"(?:could|may|might) potentially", r"potentially (?:possibly|perhaps)"],
+    "6.7 stacked qualifiers": [r"(?:could|may|might) (?:potentially|possibly)", r"potentially (?:possibly|perhaps)"],
 }
 
 COMPILED = {
@@ -94,41 +94,63 @@ COMPILED = {
 }
 
 
+def _blank(m):
+    """Replace a stripped block by as many newlines as it held, so line numbers stay true."""
+    n = m.group(0).count("\n")
+    return "\n" * n if n else " "
+
+
 def strip_html(text):
-    text = re.sub(r"(?is)<(script|style|code|pre)\b.*?</\1>", " ", text)
-    text = re.sub(r"(?s)<!--.*?-->", " ", text)
-    text = re.sub(r"(?i)<br\s*/?>|</(?:p|div|li|h\d|tr|section|article)>", "\n", text)
-    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"(?is)<(script|style|code|pre)\b.*?</\1>", _blank, text)
+    text = re.sub(r"(?s)<!--.*?-->", _blank, text)
+    text = re.sub(r"(?i)<br\s*/?>|</(?:p|div|li|h\d|tr|section|article)>", "\x00", text)  # sentence break, no new line
+    text = re.sub(r"<[^>]+>", _blank, text)
     return html.unescape(text)
 
 
 def strip_markdown(text):
-    text = re.sub(r"(?s)```.*?```", " ", text)
-    text = re.sub(r"`[^`]*`", " ", text)
-    text = re.sub(r"(?s)\A---\n.*?\n---\n", "", text)  # front matter
+    text = re.sub(r"(?s)```.*?```", _blank, text)
+    text = re.sub(r"`[^`]*`", _blank, text)
+    text = re.sub(r"(?s)\A---\n.*?\n---\n", _blank, text)  # front matter
     return text
 
 
 def sentences(text):
     for line_no, line in enumerate(text.splitlines(), 1):
-        line = line.strip()
-        if not line:
-            continue
-        for s in re.split(r"(?<=[.!?])\s+(?=[A-Z\"'\u201c])", line):
-            if s.strip():
-                yield line_no, s.strip()
+        for part in line.split("\x00"):
+            part = part.strip()
+            if not part:
+                continue
+            for s in re.split(r"(?<=[.!?])\s+(?=[A-Z\"'\u201c])", part):
+                if s.strip():
+                    yield line_no, s.strip()
+
+
+def mixed_quotes(text):
+    """3.7 is a file-level sign: straight and curly quotes (or apostrophes) in the same text."""
+    mixed = (re.search(r'"', text) and re.search(r"[\u201c\u201d]", text)) or (
+        re.search(r"\w'\w", text) and re.search(r"\w\u2019\w", text))
+    if not mixed:
+        return []
+    for line_no, line in enumerate(text.splitlines(), 1):
+        m = re.search(r"[\u201c\u201d\u2019]", line)
+        if m:
+            return [("3.7 mixed quotes", line_no, m.group(0), line.strip())]
+    return []
 
 
 def scan(text):
     hits = []
-    for line_no, s in sentences(text):
+    for idx, (line_no, s) in enumerate(sentences(text)):
         for name, pats in COMPILED.items():
+            if idx > 0 and name.startswith("1.7"):
+                continue  # a title-defining lead can only be the first sentence of the text
             for p in pats:
                 m = p.search(s)
                 if m:
                     hits.append((name, line_no, m.group(0), s))
                     break
-    return hits
+    return hits + mixed_quotes(text)
 
 
 def load(path):
