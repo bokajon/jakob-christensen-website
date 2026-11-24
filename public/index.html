@@ -87,7 +87,7 @@
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
     .skill-head { cursor: pointer; list-style: none; }
     .skill-head::-webkit-details-marker { display: none; }
-    .skills h4::before { content: ""; display: inline-block; width: 1.1rem; height: 1em; vertical-align: middle; background: var(--accent); -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%208%2011%22%3E%3Cpath%20d%3D%22M0%200L8%205.5L0%2011Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E") left center / 0.5em 0.7em no-repeat; mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%208%2011%22%3E%3Cpath%20d%3D%22M0%200L8%205.5L0%2011Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E") left center / 0.5em 0.7em no-repeat; transform-origin: 0.16em 50%; transition: transform 0.15s; }
+    .skills h4::before { content: "▸"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform 0.15s; }
     details[open]:not(.is-closing) h4::before { transform: rotate(90deg); }
     .skill-head { position: relative; }
     .skill-sum { flex-basis: 100%; margin-left: 1.1rem; font-size: 0.9rem; color: var(--muted); }
