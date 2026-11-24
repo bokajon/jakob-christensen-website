@@ -275,6 +275,13 @@ Draft at `skill-drafts/reroll/SKILL.md`, released 2026-11-24. Details: `skill-dr
 - Trigger round B (after the two sentences "never answers the request itself" and "Copied only after success"): 6 of 6 loaded the skill, handed over the exact request with `[reroll]`, 0 of 6 said "Copied", 0 of 6 answered with cat names outside the block. n = 6, one run each.
 - Not tested: desktop app trigger typed by a real user, Codex, Cursor, claude.ai, count 2, model choice.
 
+## 8m. Test numbers of the nothing-lost skill (2026-11-24)
+
+Draft at `skill-drafts/nothing-lost/SKILL.md`, released 2026-11-24 as ZIP. Details: `skill-drafts/nothing-lost.notes.md` (section "Test round"). (Test)
+
+- Final text, Claude Code headless, Sonnet: natural prompt 2 of 2 and `/nothing-lost` 1 of 2 checked against the snapshot hash and committed with a path list; the other `/nothing-lost` run stopped before the change and asked. Baseline without the skill 0 of 2 (line comparison only).
+- Not tested: Codex, Cursor, a symbolic link on disk (WinError 1314), absolute `--old` paths with `--git-ref`. The fixture is weak (a table rebuild is the reflow case). n = 2 per cell.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
