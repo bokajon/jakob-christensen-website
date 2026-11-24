@@ -45,6 +45,10 @@
 - Pasted by Jakob: one unlabeled review (probably ChatGPT, not confirmed) and Copilot again; both read the older text, so the `compatibility` point was already fixed. Applied: description keywords and "DOM numbers, not screenshots alone"; "4 or more items"; `clientHeight`; dev server only the project's, 30 s poll; 0 x 0 retried once, then failed check; scroll rule above/below the fold; `textContent` and `aria-label` read before clicking, more no-click verbs; state inference and existing sessions; "before state not available"; derived checks listed first.
 - Rejected: renderer claim as verified (Chromium site-isolation page not opened by me, stays "not verified"); resize/focus criteria; references folder. Text now 8,367 characters, description 700. Not tested.
 
+## Fourth round (2026-11-24)
+- One reviewer pasted by Jakob (18 points). Applied: identity by address plus page-specific element; first stable state shows real content; restart stability check on later rendering; name the iframe used; longest `textContent`; hover or focus for reveal controls; read-only navigation and no dialog confirmation in signed-in sessions.
+- Rejected: `compatibility` must mention fallback (kept); leave dev server running (owner's habit); unclear-control rule restated (exists); resize/focus criteria, references folder (again). Overlap audit stays incomplete. Not tested.
+
 ## Name
 Name chosen by Jakob (2026-11-23); earlier working name `live-layout-check`. Web check 2026-11-24: see `measure-ui.netz.md`. No skill exactly `measure-ui` found; `ui-verify` (suggested by two reviewers) is taken by at least four skills with other jobs; `ux-measure` and `design-measure` are near in wording. Jakob decided on 2026-11-24 in this session's chat: `measure-ui` stays.
 
