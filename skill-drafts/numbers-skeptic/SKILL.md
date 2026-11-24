@@ -1,9 +1,9 @@
 ---
-name: retest
-description: Verify a performance, timing, size or share claim by measuring it, repeating the measurement and reporting the spread, before calling it reproduced or true. Repeats a run, reports median and spread, checks the machine's load, takes runtime values from the running app and not from test fixtures, and measures sizes, shares, "largest" and "unused" instead of estimating them. Use before you report a speed-up, a regression, a frame rate, a load time, a ranking, a share, a bundle size or dead code. A fixed fact you read directly (a line count, one file's size) needs one command and no repetition. Not for planning work.
+name: numbers-skeptic
+description: Verify a performance, timing, size or share claim by measuring it, repeating the measurement and reporting the spread, before calling it reproduced or true. Repeats a run, reports median and spread, checks the machine's load, takes runtime values from the running app and not from test fixtures, and measures sizes, shares, "largest" and "unused" instead of estimating them. Use before you report a speed-up, a regression, a frame rate, a load time, a ranking, a share, a bundle size or dead code. A fixed fact you read directly (a line count, one file's size) needs one command and no repetition. Measures the numbers itself; it does not review other people's claims or reports.
 ---
 
-# Retest
+# Numbers skeptic
 
 Goal: every number in a report was measured by you, repeated where it varies, and comes from the thing that actually runs. A single run is an anecdote, and a guess from names or sizes is not a measurement.
 

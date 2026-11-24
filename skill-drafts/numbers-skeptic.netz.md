@@ -1,5 +1,7 @@
 ## Netz-Abgleich retest (Stand 2026-11-24)
 
+Hinweis: `retest` war der frühere Name dieses Skills. Jakob hat ihn am 2026-11-24 durch `numbers-skeptic` ersetzt (Ordner und Dateien umbenannt). Der Abgleich unten betrifft den alten Namen und bleibt so stehen; zu `numbers-skeptic` siehe Notizen, Abschnitt Name.
+
 Methode: 6 Websuchen (standard) mit "retest" plus agent skill, SKILL.md, skills.sh, Claude Code, /retest, Benchmark-Disziplin, verification-before-completion, Namensvarianten; 6 Seiten von Haiku-Agenten gelesen (2 vollständig, 3 in der Mitte abgeschnitten, 1 mit HTTP 404). Eine Suche ist kein Beweis, dass es nichts gibt.
 
 ### Namenskollision: der Name ist mehrfach belegt, mit anderem Job
@@ -25,6 +27,6 @@ Namensvorschläge (nur Vorschläge, Jakob entscheidet; Umbenennen ist nicht gema
 - `measure-twice`: schon vorher geprüft (NETZ-ABGLEICH.md Teil 1) und vergeben (mattshepphard/skills/measure-twice und agensi.io, anderer Zweck).
 - `bench-check`, `perf-verify`, `benchmark-check` (Namen der Reviewer): `bench-check` und `benchmark-check` gesucht, kein Skill gleichen Namens gefunden (eine Suche, nicht belegt; nächster Treffer `check-benchmark`, anders herum benannt). `perf-verify` nicht gesucht.
 - `measure-before-claim`, `remeasure`: `remeasure` in der Suche nicht gefunden, `measure-before-claim` nicht gesucht. Ob die Namen zum Inhalt passen: `bench-check` verengt auf Benchmarks, der Skill deckt aber auch Größe, Anteil und "unused" ab; `measure-before-claim` sagt das, ist aber lang.
-- Meine Empfehlung: umbenennen. `retest` hat zwei bekannte Gegenstücke mit anderem Zweck. Nach dieser Suche am wenigsten belegt und inhaltlich passend: `measure-before-claim` (nicht gesucht, vor der Entscheidung noch prüfen).
+- Empfehlung damals: umbenennen (umgesetzt, neuer Name `numbers-skeptic`). `retest` hat zwei bekannte Gegenstücke mit anderem Zweck. Nach dieser Suche am wenigsten belegt und inhaltlich passend: `measure-before-claim` (nicht gesucht, vor der Entscheidung noch prüfen).
 
 Anfragen: "retest agent skill SKILL.md repeat measurement before claiming"; "skills.sh retest skill Claude Code"; "obra superpowers verification-before-completion SKILL.md"; "agent skill benchmark warm-up median variance repeat runs claude code skill performance measurement"; "github retest claude code skill OR slash command /retest"; "agent skill remeasure OR measure-claims OR claim-check OR bench-check SKILL.md skills.sh".
