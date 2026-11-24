@@ -47,7 +47,7 @@ Do this when the user signals the end (wrapping up, switching to another task, "
 - **Parked**: ideas set aside on purpose, one line each.
 - **Where things live**: only what a newcomer would not find by searching the project.
 
-Then check that no sentence in it contradicts `DECISIONS.md`, and that nothing in the session's work is missing from it. Stage and commit only these files, on the branch you are on (never on main if the project forbids it), with a message that says what changed in the state.
+Then check that no sentence in it contradicts `DECISIONS.md`, and that nothing in the session's work is missing from it. Say in one sentence what you changed in `STATE.md` and ask whether to commit exactly these files. Commit without asking only if the project's instruction file explicitly allows it. When you commit, stage only these files, on the branch you are on (never on main if the project forbids it), with a message that says what changed in the state.
 
 ## Keeping it short
 
