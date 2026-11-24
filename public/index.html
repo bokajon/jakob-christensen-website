@@ -140,7 +140,7 @@
                 <a class="download" href="agent-skills/workaround/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Finds another route when the direct one is blocked</span>
               </summary>
-              <p class="skill-desc">AI agents sometimes keep running into the same wall instead of looking for a way around it. This skill finds another way to your goal when something outside your control blocks the direct one, like a failing tool or a missing feature.</p>
+              <p class="skill-desc">AI agents sometimes keep running into the same wall instead of looking for a way around it. <strong>This skill finds another way to your goal when something outside your control blocks the direct one, like a failing tool or a missing feature.</strong></p>
                 <p class="skill-desc">It checks that the new route really works and tells you what it cost. It stops at permission and security checks instead of getting around them, and asks before system-wide changes like a global install or before deleting something that can't be restored.</p>
                 <p class="skill-desc">Start it with <code>/workaround</code>.</p>
               </details>
@@ -152,7 +152,7 @@
                 <a class="download" href="agent-skills/cheap-agents/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Picks the cheapest model that does the job</span>
               </summary>
-              <p class="skill-desc">Helper agents cost extra tokens, and a helper's report can be wrong. This skill makes the agent decide whether a helper is worth it at all, and pick the cheapest model that does the job.</p>
+              <p class="skill-desc">Helper agents cost extra tokens, and a helper's report can be wrong. <strong>This skill makes the agent decide whether a helper is worth it at all, and pick the cheapest model that does the job.</strong></p>
                 <p class="skill-desc">Before it starts several helpers, it tells you how many, which model each runs on and roughly what it costs, and waits for your yes. Each helper gets a written brief, and the agent checks the real files before it relies on a report.</p>
                 <p class="skill-desc">Start it with <code>/cheap-agents</code>, or ask your agent to use helpers. Small tasks it simply does itself.</p>
               </details>
@@ -164,8 +164,8 @@
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Hands your work over to a fresh session</span>
               </summary>
-              <p class="skill-desc">The longer a session runs, the more context piles up. The agent gets slower and less precise, and every message costs more. This skill carries your work over to a fresh agent session at a natural break, like a long conversation, a long pause, a new topic or a finished task.</p>
-                <p class="skill-desc">It writes a summary of the work so far, names the recommended model and effort for the next session and offers to start it. The summary builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener">Matt Pocock</a>'s <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes one when you call it.</p>
+              <p class="skill-desc">The longer a session runs, the more context piles up, and the slower, costlier and less precise the agent gets. <strong>This skill carries your work over to a fresh agent session at a natural break, like a long conversation, a long pause, a new topic or a finished task.</strong></p>
+                <p class="skill-desc">It writes a summary of the work so far, names the recommended model and effort for the next session and offers to start it. The summary builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes one when you call it.</p>
                 <p class="skill-desc"><code>/fresh</code> also decides when it is time to create a handoff, and an optional Claude Code hook nudges it when the context gets large or after a long pause. After its first run in Claude Code, <code>/fresh</code> asks once whether to set the hook up; it changes nothing without your yes and keeps a backup of your settings.</p>
                 <p class="skill-desc">It also works the other way round: when a session starts from a handoff file, or you say to continue after a crash or stop, it first checks the real state (git, branch, background jobs), lists what differs from the handoff, then carries on and never kills a process to get around a block.</p>
                 <p class="skill-desc">Runs on its own when the hook is set up (Claude Code), or start it with <code>/fresh</code>.</p>
@@ -178,7 +178,7 @@
                 <a class="download" href="agent-skills/strays/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Finds git commits that never reached the remote</span>
               </summary>
-              <p class="skill-desc">Work you committed but never pushed is easy to forget. This skill finds git commits that never reached the remote, on a side branch, the wrong branch or in a worktree, and shows them in one table before anything is sent.</p>
+              <p class="skill-desc">Work you committed but never pushed is easy to forget. <strong>This skill finds git commits that never reached the remote, on a side branch, the wrong branch or in a worktree, and shows them in one table before anything is sent.</strong></p>
                 <p class="skill-desc">It pushes only after your OK, with safe pushes only: no force, each branch by its exact commit, and the default branch only as a fast-forward. A diverged branch is reported and left to you, and uncommitted changes are never touched.</p>
                 <p class="skill-desc">Start it with <code>/strays</code>, or add "push everything" to skip the question. It only works with committed work.</p>
               </details>
@@ -190,7 +190,7 @@
                 <a class="download" href="agent-skills/freeup.zip" download="freeup.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Frees disk space, deletes only what you approve</span>
               </summary>
-              <p class="skill-desc">Windows slowly fills the system drive with caches and temp files nobody needs. This skill measures the junk on C: (temp folders, npm cache, graphics shader caches, crash dumps) and can also find cache-like folders on your other drives, shows you a size table and deletes the rows you approve with one yes.</p>
+              <p class="skill-desc">Windows slowly fills the system drive with caches and temp files nobody needs. <strong>This skill measures the junk on C: (temp folders, npm cache, graphics shader caches, crash dumps) and can also find cache-like folders on your other drives, shows you a size table and deletes the rows you approve with one yes.</strong></p>
                 <p class="skill-desc">It deletes only files that programs rebuild on their own and that are older than the age limit shown in the table. Files in use stay, and nothing is retried or forced. Downloads, worktrees and logs are only shown, never touched. It can also list cache-like folders on your other drives and cleans only the ones you accept.</p>
                 <p class="skill-desc">Windows only, it runs a PowerShell script and needs nothing else to install. Start it with <code>/freeup</code>, or ask for space on C. Unzip it into your skills folder so <code>freeup/SKILL.md</code> ends up there.</p>
               </details>
@@ -202,7 +202,7 @@
                 <a class="download" href="agent-skills/tidy-sessions/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Archives finished sessions, keeps unfinished ones</span>
               </summary>
-              <p class="skill-desc">Finished sessions pile up in the sidebar. This skill archives your finished sessions in the Claude desktop app and keeps every session with unfinished work, after it has read how each one ended and checked in git that its branch has landed and its worktree is clean.</p>
+              <p class="skill-desc">Finished sessions pile up in the sidebar. <strong>This skill archives your finished sessions in the Claude desktop app and keeps every session with unfinished work</strong>, after it has read how each one ended and checked in git that its branch has landed and its worktree is clean.</p>
                 <p class="skill-desc">It never deletes a session and never archives the one it runs in. Archived sessions can be restored, but their worktree is not a backup, so it keeps every session with uncommitted work and lists what needs your attention.</p>
                 <p class="skill-desc">Only for the Claude desktop app (Code tab), because it uses the app's session tools. Ask it to tidy your sessions, or which ones would be archived.</p>
               </details>
@@ -214,7 +214,7 @@
                 <a class="download" href="agent-skills/tidy-worktree/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Removes worktrees whose work has landed</span>
               </summary>
-              <p class="skill-desc">Old worktrees and branches pile up in a repository, and it is hard to tell which ones are safe to delete. This skill removes only the git worktrees and branches whose work has landed in the default branch and whose worktree is clean, and keeps everything else.</p>
+              <p class="skill-desc">Old worktrees and branches pile up in a repository, and it is hard to tell which ones are safe to delete. <strong>This skill removes only the git worktrees and branches whose work has landed in the default branch and whose worktree is clean, and keeps everything else.</strong></p>
                 <p class="skill-desc">It never fetches or pushes, never forces a removal, deletes branches only with the safe <code>git branch -d</code>, and leaves the main checkout, locked worktrees, the one you are in and detached HEADs alone. It only reports stale worktree entries and prunes them after your OK. It needs git 2.31 or newer.</p>
                 <p class="skill-desc">Start it with <code>/tidy-worktree</code>, or ask which worktrees would be removed.</p>
               </details>
@@ -226,7 +226,7 @@
                 <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Gives every agent session its own worktree</span>
               </summary>
-              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. This skill gives every AI agent session in a git repository its own worktree and branch, keeps the main checkout clean as the place where finished work lands, and stages only named files.</p>
+              <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every AI agent session in a git repository its own worktree and branch, keeps the main checkout clean as the place where finished work lands, and stages only named files.</strong></p>
                 <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
                 <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>. In a project without the integration script it asks once, after its first manual integration, whether to set it up, and changes nothing without your yes.</p>
               </details>
@@ -238,7 +238,7 @@
                 <a class="download" href="agent-skills/blindfold.zip" download="blindfold.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Blind test: is the changed prompt really better?</span>
               </summary>
-              <p class="skill-desc">It is easy to believe a rewrite helped and hard to know. This skill runs a blind, counted test of whether a changed prompt, skill or agent does better than the old version and than none at all, or a calibrated audit of many texts by blind readers. The audit first checks the readers on known bad and good examples before a clean result is trusted.</p>
+              <p class="skill-desc">It is easy to believe a rewrite helped and hard to know. <strong>This skill runs a blind, counted test of whether a changed prompt, skill or agent does better than the old version and than none at all, or a calibrated audit of many texts by blind readers.</strong> The audit first checks the readers on known bad and good examples before a clean result is trusted.</p>
                 <p class="skill-desc">It fixes the right answers before any answer is read, hides which version wrote what, lets two judges score each answer in a different order and counts hits, misses, extras and false alarms. It tells you the setup, its weaknesses and the cost first and starts nothing before your OK.</p>
                 <p class="skill-desc">Start it with <code>/blindfold</code>.</p>
               </details>
@@ -250,7 +250,7 @@
                 <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Checks a folder for private traces before you share it</span>
               </summary>
-              <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. This skill checks a folder (a skill, a repository, a project or a site) before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens. For a skill folder it also checks the header and terms that belong to one tool.</p>
+              <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a folder (a skill, a repository, a project or a site) before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong> For a skill folder it also checks the header and terms that belong to one tool.</p>
                 <p class="skill-desc">It runs a small Python script (Python 3, nothing else to install), reads the working files but not the git history, shows a found key only masked, and changes nothing unless you ask for fixes. It is not a full secret scanner and does not judge whether the content is good.</p>
                 <p class="skill-desc">Start it with <code>/fingerprints</code>, or ask whether a folder is safe to share. Unzip it into your skills folder so <code>fingerprints/SKILL.md</code> ends up there.</p>
               </details>
@@ -262,7 +262,7 @@
                 <a class="download" href="agent-skills/media-review.zip" download="media-review.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
                 <span class="skill-sum">Checks generated images, audio and video against your brief</span>
               </summary>
-              <p class="skill-desc">A prompt that worked says nothing about the result it produced. This skill checks images, audio and video that another model made against your requirements, measures the actual files, and tells you up front which parts only your eyes or ears can judge.</p>
+              <p class="skill-desc">A prompt that worked says nothing about the result it produced. <strong>This skill checks images, audio and video that another model made against your requirements, measures the actual files, and tells you up front which parts only your eyes or ears can judge.</strong></p>
                 <p class="skill-desc">Before a paid or slow generation run, it tells you the cost and what it cannot check, and waits for your yes. It starts with one small sample, shows you only the assets that passed, and names every failed one with the requirement it missed.</p>
                 <p class="skill-desc">Start it with <code>/media-review</code>, or ask whether a generated result is good enough. The image check runs a bundled Python script, the audio and video checks use whatever tools your machine has. Unzip it into your skills folder so <code>media-review/SKILL.md</code> ends up there.</p>
               </details>
