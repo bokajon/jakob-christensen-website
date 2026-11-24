@@ -28,7 +28,7 @@ Goal: a big rewrite of content or data loses nothing by accident. Git is the bac
 
 ## What the check does not cover
 
-It works on lines, as a set: a line that occurred three times and now occurs once is not reported, and a changed line that looks similar to another new line is reported as `CHANGED`, not as an error. It does not check order, structure, meaning or links between files. It cannot tell a reworded rule from a rule that changed meaning: that is why `CHANGED` lines are read by a person. Binary files are skipped and listed; files that are not UTF-8 are read with replacement characters, so a changed non-UTF-8 byte may go unnoticed. If the rewrite reflows paragraphs or reformats JSON or tables, every old line shows as `LOST` or `CHANGED`: put one sentence or token per line in old and new first, or tell the user the line check does not apply. In the report state only the limits that matter here.
+It works on lines, as a set: a line that occurred three times and now occurs once is not reported, and a changed line that looks similar to another new line is reported as `CHANGED`, not as an error. It does not check order, structure, meaning or links between files. It cannot tell a reworded rule from a rule that changed meaning: that is why `CHANGED` lines are read by a person. Binary files, symbolic links and submodules are skipped and listed; files that are not UTF-8 are read with replacement characters, so a changed non-UTF-8 byte may go unnoticed. If the rewrite reflows paragraphs or reformats JSON or tables, every old line shows as `LOST` or `CHANGED`: put one sentence or token per line in old and new first, or tell the user the line check does not apply. In the report state only the limits that matter here.
 
 ## Exit codes
 

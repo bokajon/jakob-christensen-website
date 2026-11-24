@@ -5,7 +5,7 @@ Context
 - It must work in: Claude Code, Codex and Cursor (needs git and Python 3, standard library only).
 - Origin: written by me from my own working rule ("back up before a large rewrite and run a loss check"). Part 1 is there to catch anything that slipped in from other people's skills anyway.
 - Decided by me. Do not argue these, but flag one if it makes the skill unsafe or broken: model-invoked (no disable-model-invocation); git is the backup (no backup folder); set semantics (order and counts are not checked, stated in the skill); a CHANGED line does not fail the run, a person reads it; the default similarity limit 0.8 stays (adjustable with `--similar`); the allow file lists only text the user named as meant to go.
-- Already answered in an earlier review round (round 1: Copilot and Gemini), do not raise again unless the new text brings the problem back: (a) the repositories under Sources could not be opened by the round-1 reviewers, so overlap there stays "not checked" (not a text problem); (b) the path placeholder "<this skill's folder>" stays, the step says to use the full path; (c) the snapshot commit before the rewrite is intended and told to the user; (d) SKILL.md stays one file (about 6 KB); (e) the script runs only as a command line tool, so its module-level `SKIPPED` list is accepted. Changed after round 1, check the new text: description front-loaded; `git commit --only` with a staged-files check; allow file holds only user-named lines; rename and build-folder notes; `--allow` read like every other file with BOM removed; `--similar` and `--git-ref` validated.
+- Already answered in an earlier review round (round 1: Copilot and Gemini), do not raise again unless the new text brings the problem back: (a) the repositories under Sources could not be opened by the round-1 reviewers, so overlap there stays "not checked" (not a text problem); (b) the path placeholder "<this skill's folder>" stays, the step says to use the full path; (c) the snapshot commit before the rewrite is intended and told to the user; (d) SKILL.md stays one file (about 6 KB); (e) the script runs only as a command line tool, so its module-level `SKIPPED` list is accepted; (f) Gemini P2, Codex rejects the "compatibility" field: checked, Codex CLI 0.171.0-alpha.13 lists a skill with that field normally in its model-visible skill list (codex debug prompt-input); only the authoring script quick_validate.py of Codex's own skill-creator rejects unknown keys, so the field stays; (g) Gemini P10, submodules and symbolic links: reproduced and fixed, both are now skipped and listed. Changed after round 1, check the new text: description front-loaded; `git commit --only` with a staged-files check; allow file holds only user-named lines; rename and build-folder notes; `--allow` read like every other file with BOM removed; `--similar` and `--git-ref` validated; submodules and symbolic links are skipped and listed; the skipped list is no longer cleared when --allow is given.
 - Known from my own checks, you need not repeat them, but tell me where the text or script still allows a loss: (a) Web search for the name on 2026-11-24 found no skill called nothing-lost; nearest in idea are preservation-verifier (tessl.io, checks protected content classes after a rewrite), safe-edit (backups, diffs) and safe-refactor (tests before and after); none seen with a line-by-line script over an old-versus-new pool. (b) Script runs of my own: identical, removed, changed-number, reworded, white-space-only, moved-to-another-file and allowed lines were classified as intended; 20000 lines with 2000 reworded took 0.28 s. Not tested: Windows paths with spaces, non-UTF-8 files, very long lines, submodules, the skill's description for triggering. A line of only punctuation cannot be matched by similarity and is LOST unless identical or allowed.
 
 Sources
@@ -59,7 +59,7 @@ Goal: a big rewrite of content or data loses nothing by accident. Git is the bac
 
 ## What the check does not cover
 
-It works on lines, as a set: a line that occurred three times and now occurs once is not reported, and a changed line that looks similar to another new line is reported as `CHANGED`, not as an error. It does not check order, structure, meaning or links between files. It cannot tell a reworded rule from a rule that changed meaning: that is why `CHANGED` lines are read by a person. Binary files are skipped and listed; files that are not UTF-8 are read with replacement characters, so a changed non-UTF-8 byte may go unnoticed. If the rewrite reflows paragraphs or reformats JSON or tables, every old line shows as `LOST` or `CHANGED`: put one sentence or token per line in old and new first, or tell the user the line check does not apply. In the report state only the limits that matter here.
+It works on lines, as a set: a line that occurred three times and now occurs once is not reported, and a changed line that looks similar to another new line is reported as `CHANGED`, not as an error. It does not check order, structure, meaning or links between files. It cannot tell a reworded rule from a rule that changed meaning: that is why `CHANGED` lines are read by a person. Binary files, symbolic links and submodules are skipped and listed; files that are not UTF-8 are read with replacement characters, so a changed non-UTF-8 byte may go unnoticed. If the rewrite reflows paragraphs or reformats JSON or tables, every old line shows as `LOST` or `CHANGED`: put one sentence or token per line in old and new first, or tell the user the line check does not apply. In the report state only the limits that matter here.
 
 ## Exit codes
 
@@ -93,7 +93,7 @@ counts as LOST):
   CHANGED  similar line found (listed with the nearest new line), does not fail the run
   ALLOWED  listed in the --allow file, does not fail the run
   LOST     nothing similar found: fails the run, exit code 1
-Files that look binary are skipped and listed as "skipped"; UTF-16 files with a byte order mark are
+Files that look binary, symbolic links and submodules are skipped and listed as "skipped"; UTF-16 files with a byte order mark are
 read. Exit codes: 0 no lost line, 1 at least one lost line, 2 wrong call or unreadable input.
 
 Set semantics: a line that occurs three times before and once after is not reported (the check
@@ -116,16 +116,27 @@ def norm(line, ignore_case):
     return s.lower() if ignore_case else s
 
 
+SKIPPED = []  # (name, reason) of entries that were not read: binary, symbolic link, submodule
+
+
 def fs_files(path):
     p = Path(path)
+    if p.is_symlink():
+        SKIPPED.append((str(p), "symbolic link"))
+        return []
     if p.is_dir():
-        return [f for f in sorted(p.rglob("*")) if f.is_file() and ".git" not in f.parts]
+        out = []
+        for f in sorted(p.rglob("*")):
+            if ".git" in f.parts:
+                continue
+            if f.is_symlink():
+                SKIPPED.append((str(f), "symbolic link"))
+            elif f.is_file():
+                out.append(f)
+        return out
     if p.is_file():
         return [p]
     raise FileNotFoundError(path)
-
-
-SKIPPED = []  # names of files that were not read (binary)
 
 
 def decode(data, name):
@@ -133,7 +144,7 @@ def decode(data, name):
     if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
         return data.decode("utf-16", "replace")
     if b"\0" in data[:4096]:
-        SKIPPED.append(name)
+        SKIPPED.append((name, "binary"))
         return None
     return data.decode("utf-8-sig", "replace")  # a UTF-8 byte order mark is dropped
 
@@ -153,11 +164,22 @@ def git_texts(ref, path):
     """Yield (name, text) for a file or folder as it was at ref."""
     if ref.startswith("-"):
         raise RuntimeError(f"invalid git ref: {ref}")
-    raw = git(["ls-tree", "-r", "-z", "--full-name", "--name-only", ref, "--", path])
-    names = [n.decode("utf-8", "replace") for n in raw.split(b"\0") if n]
-    if not names:
+    raw = git(["ls-tree", "-r", "-z", "--full-name", ref, "--", path])
+    entries = []
+    for rec in raw.split(b"\0"):
+        if not rec:
+            continue
+        meta, _, n = rec.partition(b"\t")
+        entries.append((meta.split(b" ")[0], n.decode("utf-8", "replace")))
+    if not entries:
         raise FileNotFoundError(f"{ref}:{path}")
-    for n in names:
+    for mode, n in entries:
+        if mode == b"160000":
+            SKIPPED.append((n, "submodule"))
+            continue
+        if mode == b"120000":
+            SKIPPED.append((n, "symbolic link"))
+            continue
         text = decode(git(["show", f"{ref}:{n}"]), n)
         if text is not None:
             yield n, text
@@ -211,7 +233,6 @@ def main(argv):
             allow_text = read_text(a.allow)
             if allow_text is None:
                 raise RuntimeError(f"--allow file looks binary: {a.allow}")
-            SKIPPED.clear()
             allow = {norm(l, keep) for l in allow_text.splitlines() if l.strip()}
     except (OSError, RuntimeError, ValueError) as e:
         print(f"error: {e}", file=sys.stderr)
@@ -274,8 +295,8 @@ def main(argv):
         else:
             lost.append((name, i, orig))
 
-    for name in SKIPPED:
-        print(f"skipped (binary, not checked): {name}")
+    for name, reason in dict.fromkeys(SKIPPED):
+        print(f"skipped ({reason}, not checked): {name}")
     print(f"old lines (non-blank): {total}, distinct missing from new pool: {len(missing)}")
     print(f"LOST {len(lost)}, CHANGED {len(changed)}, ALLOWED {len(allowed)}")
     for name, i, orig in lost:

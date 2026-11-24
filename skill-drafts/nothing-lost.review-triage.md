@@ -31,8 +31,8 @@ Selbst nachgemessen (Skript, Wegwerf-Repo, 2026-11-24):
 - C10, C14-C17, C12, G14 (Bestätigungen, globaler SKIPPED-Zustand): kein Handlungsbedarf, Skript läuft nur als CLI.
 
 ## Offen, erst prüfen
-- G2: Behauptung, Codex-Validator lehne `compatibility` ab. Erst Codex-Doku lesen. reroll nutzt das Feld ebenfalls. C3 (git in `compatibility` nennen) hängt daran.
-- G10: Submodule und Symlinks im Skript. Erst mit einem Test-Repo reproduzieren.
+- G2: geprüft, Feld bleibt. Codex CLI 0.171.0-alpha.13 listet einen Skill mit `compatibility` normal (`codex debug prompt-input`); nur das Autoren-Skript `quick_validate.py` aus Codex' skill-creator lehnt unbekannte Felder ab. C3 ist damit erledigt: der aktuelle `compatibility`-Text ("Needs git and Python 3") nennt git schon.
+- G10: reproduziert und behoben. Submodule brachen den Lauf ab (exit 2), Symlinks gaben einen falschen LOST-Alarm (exit 1); beides wird jetzt übersprungen und als skipped gelistet. Dazu der Fund: `--allow` löschte die skipped-Liste (seit dem Runde-1-Fix), auch behoben.
 
 ## Wert (Teil 5)
 Beide: nicht redundant für große Mehrdatei-Umbauten, weil `git diff` verstreute Einzelzeilen nicht zeigt; der Workflow darum ist für manche zu schwer. Gemini: bricht bei umgebrochener Prosa und umformatiertem JSON (steht im Skill).

@@ -22,7 +22,7 @@ counts as LOST):
   CHANGED  similar line found (listed with the nearest new line), does not fail the run
   ALLOWED  listed in the --allow file, does not fail the run
   LOST     nothing similar found: fails the run, exit code 1
-Files that look binary are skipped and listed as "skipped"; UTF-16 files with a byte order mark are
+Files that look binary, symbolic links and submodules are skipped and listed as "skipped"; UTF-16 files with a byte order mark are
 read. Exit codes: 0 no lost line, 1 at least one lost line, 2 wrong call or unreadable input.
 
 Set semantics: a line that occurs three times before and once after is not reported (the check
@@ -45,16 +45,27 @@ def norm(line, ignore_case):
     return s.lower() if ignore_case else s
 
 
+SKIPPED = []  # (name, reason) of entries that were not read: binary, symbolic link, submodule
+
+
 def fs_files(path):
     p = Path(path)
+    if p.is_symlink():
+        SKIPPED.append((str(p), "symbolic link"))
+        return []
     if p.is_dir():
-        return [f for f in sorted(p.rglob("*")) if f.is_file() and ".git" not in f.parts]
+        out = []
+        for f in sorted(p.rglob("*")):
+            if ".git" in f.parts:
+                continue
+            if f.is_symlink():
+                SKIPPED.append((str(f), "symbolic link"))
+            elif f.is_file():
+                out.append(f)
+        return out
     if p.is_file():
         return [p]
     raise FileNotFoundError(path)
-
-
-SKIPPED = []  # names of files that were not read (binary)
 
 
 def decode(data, name):
@@ -62,7 +73,7 @@ def decode(data, name):
     if data[:2] in (b"\xff\xfe", b"\xfe\xff"):
         return data.decode("utf-16", "replace")
     if b"\0" in data[:4096]:
-        SKIPPED.append(name)
+        SKIPPED.append((name, "binary"))
         return None
     return data.decode("utf-8-sig", "replace")  # a UTF-8 byte order mark is dropped
 
@@ -82,11 +93,22 @@ def git_texts(ref, path):
     """Yield (name, text) for a file or folder as it was at ref."""
     if ref.startswith("-"):
         raise RuntimeError(f"invalid git ref: {ref}")
-    raw = git(["ls-tree", "-r", "-z", "--full-name", "--name-only", ref, "--", path])
-    names = [n.decode("utf-8", "replace") for n in raw.split(b"\0") if n]
-    if not names:
+    raw = git(["ls-tree", "-r", "-z", "--full-name", ref, "--", path])
+    entries = []
+    for rec in raw.split(b"\0"):
+        if not rec:
+            continue
+        meta, _, n = rec.partition(b"\t")
+        entries.append((meta.split(b" ")[0], n.decode("utf-8", "replace")))
+    if not entries:
         raise FileNotFoundError(f"{ref}:{path}")
-    for n in names:
+    for mode, n in entries:
+        if mode == b"160000":
+            SKIPPED.append((n, "submodule"))
+            continue
+        if mode == b"120000":
+            SKIPPED.append((n, "symbolic link"))
+            continue
         text = decode(git(["show", f"{ref}:{n}"]), n)
         if text is not None:
             yield n, text
@@ -140,7 +162,6 @@ def main(argv):
             allow_text = read_text(a.allow)
             if allow_text is None:
                 raise RuntimeError(f"--allow file looks binary: {a.allow}")
-            SKIPPED.clear()
             allow = {norm(l, keep) for l in allow_text.splitlines() if l.strip()}
     except (OSError, RuntimeError, ValueError) as e:
         print(f"error: {e}", file=sys.stderr)
@@ -203,8 +224,8 @@ def main(argv):
         else:
             lost.append((name, i, orig))
 
-    for name in SKIPPED:
-        print(f"skipped (binary, not checked): {name}")
+    for name, reason in dict.fromkeys(SKIPPED):
+        print(f"skipped ({reason}, not checked): {name}")
     print(f"old lines (non-blank): {total}, distinct missing from new pool: {len(missing)}")
     print(f"LOST {len(lost)}, CHANGED {len(changed)}, ALLOWED {len(allowed)}")
     for name, i, orig in lost:
