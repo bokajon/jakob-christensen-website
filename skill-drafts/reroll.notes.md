@@ -41,3 +41,7 @@ Same reasoning as tidy (checklist 2.3): the desktop app drops user-invoked skill
 Applied (Jakob approved 1-8): non-/reroll last message and same-message request; "probably" removed; count only on typed number (default 1 when model-invoked); clipboard via powershell.exe plus print fallback; start_session fallback to copy route; do-not-open list from own tool calls anywhere, omitted if unclear; transcript recovery limited to this session; description/compatibility in third person; background text fixed also for `different`.
 Not applied: reference file for recovery, removing the why-sentence, same-chat retry, vague Copilot P9/P10. Open for Jakob: license field (no draft has one), redundancy vs /rewind.
 Both reviewers could not open the GitHub folders: overlap check (part 1) still open for the blind read.
+
+## Second test round (2026-11-24, text of commit 8d15c6f)
+Setup: count 3 + `different`, model claude-sonnet-5-5, request "5 name ideas for a small bakery in the mountains", three parallel start_session calls (accepted, all three started, titles 1/3 to 3/3).
+Result (read from the first ~400 characters of each reply only): session 2 and 3 both list "Gipfelbrot" as name 1, session 1 does not (it leads with "Brotzeit auf 1200"). So `different` again did not keep the earlier name out: 2 of 3 repeat Gipfelbrot (first round: 2 of 2). Not checked: the full replies, tool calls and transcript reads of the three sessions, whether the model really was Sonnet. Not tested: clipboard route, count 2, description trigger, step 1 on a real message sequence.
