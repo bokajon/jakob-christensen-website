@@ -22,7 +22,14 @@ Standard library only. Every non-blank old line, trimmed and white space collaps
 - Windows line endings and Git's CRLF warnings do not matter (lines are compared trimmed).
 
 ## Name
-Name chosen by Jakob (2026-11-23); earlier working name `backup-before-rewrite`. Name not checked against the web.
+Name chosen by Jakob (2026-11-23); earlier working name `backup-before-rewrite`. Web check 2026-11-24: no skill or command called `nothing-lost` found, see `skill-drafts/nothing-lost.netz.md` (6 searches, 2 pages read partly, 1 unreadable). Review prompt for Gemini, ChatGPT and Copilot: `skill-drafts/nothing-lost.review-prompt.md` (not yet pasted into any of them).
+
+## Test run 2026-11-24 (checklist section 7)
+Throwaway repos in the session scratchpad, script `scripts/loss_check.py` at the state of this draft.
+- Script on a real git before/after pair (2 files, 11 non-blank old lines; rewrite: a heading changed, one line moved to `docs/detail/ops.md`, `3 attempts` to `5 attempts`, one line deleted, one line meant to go, one line duplicated): result LOST 1 (`Backups live in D:/backups.`), CHANGED 1 (`3` to `5`, nearest line and differing words shown), ALLOWED 1, exit 1. Same run without the allow file: exit 1. With `--new` leaving out the detail folder: LOST 3, so the moved lines are found only through the pool (as the skill says). After restoring the lost line and the number: `OK`, exit 0 (LOST 0, CHANGED 0, ALLOWED 1).
+- Agent run (Claude Code headless, Sonnet, `--max-turns 25`, skill in `.claude/skills/nothing-lost/`, 2 runs, `/nothing-lost` prompt): split a 16-line handbook into 4 files and delete the old one; the user said only the fax line may go. Both runs wrote an allow file outside the project, ran the script with `python -I`, read the pairs (8 CHANGED: heading level, reworded lines), and 2 of 2 stopped with `# Handbook` as the one LOST line and asked whether it may go, instead of adding it to the allow file themselves. Committed: 0 of 2 (HEAD still the base commit, files left uncommitted). My own run of the script on both final states gave the same 1 LOST, 8 CHANGED, 1 ALLOWED.
+- Observations: (1) the repository was clean, so step 1 needed no snapshot commit; the snapshot step was not exercised. (2) In both runs the check was reached through a `PY=$(command -v python ...) | ...` pipe construct, which only worked because the output was still shown; not a skill problem, not investigated. (3) Whether the skill loaded by itself is not checked (a `/name` start leaves no trace, checklist 7.5). (4) Not tested: natural prompt without `/nothing-lost`, a run without the skill (baseline), Codex, untracked or ignored files, a repository without git, more than 50 CHANGED lines.
+- Raw data (not durable): `D:/Temp/claude/9dc38ff85235d23c/c563d232-db6c-41d5-aea3-16480c5d4417/scratchpad/nl1` and `.../nlh/run1`, `run2` (`out.jsonl`).
 
 ## Open questions
 - Decided (Jakob 2026-11-23): keep 0.8 as the default similarity limit. It is still an untuned starting value, adjustable with `--similar`.
