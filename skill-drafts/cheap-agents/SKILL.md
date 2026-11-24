@@ -50,7 +50,7 @@ Ask for each additional helper: is its part independent, is its brief short enou
 
 - Any helper in the strong role, including one that inherits it: state the reason and wait for the yes, as in step 2.
 - The user did not ask for helpers: state the count, role, model and cost class and wait for a yes before you start even one. If you cannot ask (a non-interactive run), do the work yourself unless the prompt already allows helpers.
-- More than two helpers: tell the user the count, the role and model for each and a cost class for each, end your turn with that message and start no helper before the answer. A user who named that number has given the yes for the count; you still state role, model and cost class before you start.
+- More than two helpers: tell the user the count, the role and model for each and one cost class for the whole group, end your turn with that message and start no helper before the answer. A user who named that number has given the yes for the count; you still state role, model and cost class before you start, but you do not wait again.
 - One or two clearly bounded helpers that the user asked for: state role, model and cost class, then start.
 
 The cost class estimates the total helper work. Small: one short, low-effort search or read. Medium: a bounded build or several short helpers. Large: many helpers, long contexts, high effort or several stages. It is a qualitative estimate; say "unknown" if you cannot tell.
