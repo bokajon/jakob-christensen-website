@@ -282,6 +282,13 @@ Draft at `skill-drafts/nothing-lost/SKILL.md`, released 2026-11-24 as ZIP. Detai
 - Final text, Claude Code headless, Sonnet: natural prompt 2 of 2 and `/nothing-lost` 1 of 2 checked against the snapshot hash and committed with a path list; the other `/nothing-lost` run stopped before the change and asked. Baseline without the skill 0 of 2 (line comparison only).
 - Not tested: Codex, Cursor, a symbolic link on disk (WinError 1314), absolute `--old` paths with `--git-ref`. The fixture is weak (a table rebuild is the reflow case). n = 2 per cell.
 
+## 8n. Test numbers of the unrobot skill (2026-11-24)
+
+Released 2026-11-24 as ZIP (SKILL.md, references/signs.md, scripts/check_ai_signs.py), Results group. Details and all review rounds: `skill-drafts/unrobot.notes.md` (section "Test round 2026-11-24"). (Test)
+
+- Test round: 9 headless runs, Claude Code, Sonnet. After the description fix (names "sound less like AI" and "remove the AI tells", 738 characters) the skill started in 4 of 4 runs on a blog and an email prompt, before the fix 0 of 4. Scanner hits went from 9 to 0 or 1; the one hit left in each email run is the real request "Tuesday at 10", kept on purpose. 4 runs only.
+- Not tested: Codex and Cursor, Python availability across tools, the spec `compatibility` field, runs without the skill as baseline, non-English text, a 30-file case, the rest of the network comparison (BooleOS contents unreadable via WebFetch). The page says the scanner is English only.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.

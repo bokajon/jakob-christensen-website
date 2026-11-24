@@ -158,6 +158,18 @@
                 <p class="skill-desc">The separate session needs the Claude Code desktop app. Everywhere else it copies the prompt to your clipboard or prints it, and you paste it into a new chat yourself. Start it with <code>/reroll</code>, or say "reroll" or "ask a fresh chat".</p>
               </details>
             </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/unrobot</h4>
+                <a class="download" href="agent-skills/unrobot.zip" download="unrobot.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Takes the marks of machine writing out of a text</span>
+              </summary>
+              <p class="skill-desc">Text written by a model tends to give itself away: grand one-line closers, "not X, but Y", inflated significance, brochure tone, vague attribution, em dashes. <strong>This skill finds those marks in a text, a file, a folder or a whole site and rewrites the passages so they read as if a person who knows the subject wrote them.</strong> It repairs what the sentence does, not just the flagged word.</p>
+                <p class="skill-desc">It works from a catalogue of signs built on the Wikipedia article "Signs of AI writing", and runs a small Python script (Python 3, nothing else to install) that finds the word and phrase patterns before the rest is judged by reading. A request to only check changes no file and lists each hit with a proposed replacement. Wording you fixed on purpose is left alone, and it does not proofread or translate. The scanner works for English text only.</p>
+                <p class="skill-desc">Start it with <code>/unrobot</code>, or ask to make a text "sound less like AI". Unzip it into your skills folder so <code>unrobot/SKILL.md</code> ends up there.</p>
+              </details>
+            </li>
           </ul>
           <h3 class="skill-group">Sessions</h3>
           <ul class="skills">
