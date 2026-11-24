@@ -185,7 +185,7 @@
               </summary>
               <p class="skill-desc">When several agent sessions change one git repository at the same time, they overwrite each other's work and break the main branch. <strong>This skill gives every session its own worktree and branch</strong>, keeps the main checkout clean as the place where finished work lands, and stages only named files.</p>
                 <p class="skill-desc">A bundled script integrates one branch at a time: it merges into a temporary worktree, runs the full check there and moves the main branch with a fast-forward only when the check is green. It waits for uncommitted work of other sessions instead of touching it. The script runs on Windows PowerShell and needs git, an optional guard hook needs Claude Code and Node.js.</p>
-                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>, and it only sets up a project when you ask for it.</p>
+                <p class="skill-desc">Unzip it into your skill folder, so <code>lanes/SKILL.md</code> ends up there. Start it with <code>/lanes</code>. In a project without the integration script it asks once, after its first manual integration, whether to set it up, and changes nothing without your yes.</p>
               </details>
             </li>
             <li>

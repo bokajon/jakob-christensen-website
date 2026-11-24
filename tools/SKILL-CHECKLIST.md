@@ -91,6 +91,7 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
 2. Reason: with `/workaround` loaded, Sonnet still ran a global `pip install csvkit` without asking in 2 of 2 runs, because "reversible first" let it through. After step 4 named the project boundary: 0 global installs in 4 runs; every run installed into a throwaway venv in its own session scratchpad instead, without asking, and said so in its report. (Test, 2026-11-22)
 3. A test run can change the real machine. Undo it after each run (e.g. `pip uninstall -y csvkit`) and check at the end that it is gone. (Test: run A1 installed csvkit globally on Jakob's machine)
 4. A backup the skill makes before changing a user's files gets a fixed name, is kept, and its path is told to the user. With only "back up", a `fresh` test run deleted its backup after its own checks. (Test, 2026-11-22)
+5. An optional setup that the skill's value depends on (a hook, a bundled script copied into the project) is offered by the skill itself, once, as one yes/no question, never left at "only when the user asks": nobody asks for something they do not know exists. The question says what it does, what it changes and what a no costs; a no is remembered in a marker file (the skill folder for user-level setups, the project's git directory for project-level ones) so it is not asked again; a clear yes is the only trigger. (Ours, 2026-11-24, found in `fresh` and `lanes`; not yet measured in a test run)
 
 ## 6. Mechanical rules go into a check
 
