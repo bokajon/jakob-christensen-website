@@ -1,0 +1,3 @@
+# Wrangler does not upload files that match these patterns.
+__pycache__
+*.pyc
