@@ -67,7 +67,7 @@ Rules for entries:
 
 ## If an entry and the user's current instruction disagree
 
-Before acting on an instruction that contradicts an entry, say in one sentence which entry it contradicts and ask: "Do you want to change this decision? Then I append a replacing line and do what you asked." On a yes, append the replacing line and carry out the instruction; on a no, keep the entry and do not carry it out. Do not follow the old entry against a confirmed change, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
+Before acting on an instruction that contradicts an entry, change nothing for that instruction yet (not even a small edit, and also when the user says "just do it"). Say in one sentence which entry it contradicts and ask: "Do you want to change this decision? Then I append a replacing line and do what you asked." On a yes, append the replacing line and carry out the instruction; on a no, keep the entry and do not carry it out. Do not follow the old entry against a confirmed change, and do not change the entry without asking. If an entry and the code or another document disagree and the user has not spoken, the entry wins as the record of what the user decided: report the conflict, and do not fix it silently.
 
 ## End of a session that changed the state
 
@@ -78,7 +78,7 @@ Do this when the user signals the end (wrapping up, switching to another task, "
 - **Parked**: ideas set aside on purpose, one line each.
 - **Where things live**: only what a newcomer would not find by searching the project.
 
-Then check that no sentence in it contradicts `DECISIONS.md`, and that nothing in the session's work is missing from it. Say in one sentence what you changed in `STATE.md` and ask whether to commit exactly these files. Commit without asking only if the project's instruction file explicitly allows it. When you commit, stage only these files, on the branch you are on (never on main if the project forbids it), with a message that says what changed in the state.
+Then check that no sentence in it contradicts `DECISIONS.md`, and that nothing in the session's work is missing from it. Say in one sentence what you changed in `STATE.md` and ask whether to commit `STATE.md` and `DECISIONS.md` (only these two; do not offer to commit the session's code or other files, they are the user's to commit). Commit without asking only if the project's instruction file explicitly allows it. When you commit, stage only these two files, on the branch you are on (never on main if the project forbids it), with a message that says what changed in the state.
 
 ## Keeping it short
 
