@@ -87,10 +87,13 @@
     .link { font-size: 0.9rem; color: var(--accent); font-weight: 400; overflow-wrap: anywhere; text-align: right; }
     .coming { font-size: 0.9rem; font-weight: 400; color: var(--muted); text-align: right; }
     .skills { margin: 0.25rem 0 0; padding-left: 0; list-style: none; }
-    .skills { display: grid; grid-template-columns: 1fr; gap: 0.75rem 1.5rem; align-items: start; }
+    .skill-cols { display: block; }
+    .skills li + li { margin-top: 0.75rem; }
+    .skills + .skills { margin-top: 0.75rem; }
     @media (min-width: 40rem) {
-      .skills { grid-template-columns: 1fr 1fr; }
-      .skills li:nth-child(even) .skill-head[data-tip]::after { left: auto; right: 0; }
+      .skill-cols { display: flex; align-items: flex-start; gap: 1.5rem; }
+      .skill-cols .skills { flex: 1 1 0; min-width: 0; margin-top: 0.25rem; }
+      .skill-cols .skills + .skills .skill-head[data-tip]::after { left: auto; right: 0; }
     }
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
     .skill-head { cursor: pointer; list-style: none; }
@@ -134,6 +137,7 @@
           <h2>Jakob's Agent Skills</h2>
           <p class="desc">Agent skills I created from my own workflow, shaped by use: every project showed me something to fix. Some of them run through almost everything I do with AI. If one fits how you work, take it and adapt it.</p>
           <p class="install">Download a skill, drag it into your AI's chat and write "Install this skill."</p>
+          <div class="skill-cols">
           <ul class="skills">
             <li>
               <details>
@@ -203,6 +207,8 @@
                 <p class="skill-desc">Only for the Claude desktop app (Code tab), because it uses the app's session tools. Ask it to tidy your sessions, or which ones would be archived.</p>
               </details>
             </li>
+          </ul>
+          <ul class="skills">
             <li>
               <details>
               <summary class="skill-head">
@@ -259,6 +265,7 @@
               </details>
             </li>
           </ul>
+          </div>
         </div>
       </li>
       <li>
