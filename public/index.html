@@ -87,7 +87,7 @@
     .skill-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem; }
     .skill-head { cursor: pointer; list-style: none; }
     .skill-head::-webkit-details-marker { display: none; }
-    .skills h4::before { content: "▸"; display: inline-block; width: 1.1rem; color: var(--accent); transition: transform 0.15s; }
+    .skills h4::before { content: ""; display: inline-block; width: 0.45em; height: 0.7em; margin-right: 0.65rem; vertical-align: -0.1em; background: var(--accent); clip-path: polygon(0 0, 100% 50%, 0 100%); transition: transform 0.15s; }
     details[open]:not(.is-closing) h4::before { transform: rotate(90deg); }
     .skill-head { position: relative; }
     .skill-sum { flex-basis: 100%; margin-left: 1.1rem; font-size: 0.9rem; color: var(--muted); }
