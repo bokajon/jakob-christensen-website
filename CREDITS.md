@@ -1,0 +1,16 @@
+# Credits
+
+Third-party parts of this site and the license under which each is used.
+
+| Part | Source (URL) | License | Used in (repo path) | Credit needed | Note |
+|---|---|---|---|---|---|
+| fresh skill: handoff rules (Matt Pocock) | https://github.com/mattpocock/skills | MIT | public/agent-skills/fresh, skill-drafts/fresh | yes | Four rules for the handoff contents build on Matt Pocock's handoff skill (SKILL.md section Credits); resume mode is not from there |
+| unrobot skill: Wikipedia Signs of AI writing | https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing | unknown, check | public/agent-skills/unrobot, skill-drafts/unrobot | yes | Ideas and sign catalogue build on the WikiProject AI Cleanup page (SKILL.md line 46); the repo states no license for it |
+| unrobot skill: blader/humanizer v4.0.0 | https://github.com/blader/humanizer | MIT | public/agent-skills/unrobot, skill-drafts/unrobot | yes | Named in unrobot SKILL.md line 46 as MIT; wording of the skill is new |
+| unrobot skill: BooleSystems/BooleOS de-ai-writing | https://github.com/BooleSystems/BooleOS | MIT | public/agent-skills/unrobot, skill-drafts/unrobot | yes | Named in unrobot SKILL.md line 46 as MIT; wording of the skill is new |
+| Atkinson Hyperlegible (Students on the Loose) | https://github.com/googlefonts/atkinson-hyperlegible | OFL-1.1 (SIL Open Font License 1.1) | public/students-on-the-loose/fonts/LICENSE-AtkinsonHyperlegible.txt, public/students-on-the-loose/fonts/atkinson-hyperlegible-*.woff2 | yes | Copyright 2020 Braille Institute of America, Inc., per the license file; Source URL is the family's public repository, not stated in the license file |
+| Figtree (Students on the Loose) | https://github.com/erikdkennedy/figtree | OFL-1.1 (SIL Open Font License 1.1) | public/students-on-the-loose/fonts/LICENSE-Figtree.txt, public/students-on-the-loose/fonts/figtree-*.woff2 | yes | Copyright 2022 The Figtree Project Authors, URL from the license file |
+| JetBrains Mono (Students on the Loose) | https://github.com/JetBrains/JetBrainsMono | OFL-1.1 (SIL Open Font License 1.1) | public/students-on-the-loose/fonts/LICENSE-JetBrainsMono.txt, public/students-on-the-loose/fonts/jetbrains-mono-*.woff2 | yes | Copyright 2020 The JetBrains Mono Project Authors, URL from the license file |
+| Plus Jakarta Sans (Students on the Loose) | https://github.com/tokotype/PlusJakartaSans | OFL-1.1 (SIL Open Font License 1.1) | public/students-on-the-loose/fonts/LICENSE-PlusJakartaSans.txt, public/students-on-the-loose/fonts/plus-jakarta-sans-*.woff2 | yes | Copyright 2020 The Plus Jakarta Sans Project Authors, URL from the license file |
+| Barlow Condensed (Niagara workshop) | https://fontsource.org/fonts/barlow-condensed | OFL-1.1 | public/niagara-workshop/assets/barlow-condensed-* | yes | License read from @fontsource/barlow-condensed package.json in the NiagaraUI checkout; no license file in this folder |
+| Marcellus (Niagara workshop and tutor UI) | https://fontsource.org/fonts/marcellus | OFL-1.1 | public/niagara-workshop/assets/marcellus-*, public/niagara-tutor-ui/assets/marcellus-* | yes | License read from @fontsource/marcellus package.json in the NiagaraUI checkout; no license file in this folder |
