@@ -158,7 +158,7 @@
     .card h2 { margin: 0; font-family: var(--f-display); font-weight: var(--w-title); font-size: 1.25rem; line-height: 1.25; letter-spacing: var(--ls-title); text-wrap: balance; }
     .nowrap { white-space: nowrap; }
     .desc { margin: 0; color: var(--muted); flex: 1; }
-    .desc, .install, .skill-desc { font-size: 1rem; max-width: var(--measure); text-wrap: pretty; }
+    .desc, .install, .skill-desc { font-size: 1rem; text-wrap: pretty; }
     .link, .coming { font-size: 0.82rem; font-weight: 400; line-height: 1.3; text-align: right; }
     .link { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--muted); overflow-wrap: anywhere; transition: color 0.2s; }
     /* Arrow after the address: right for a page on this site, up-right for one that leaves it. */
@@ -169,8 +169,7 @@
     a.card[href^="http"]:hover .link::after, a.card[href^="http"]:focus-visible .link::after { transform: translate(2px, -2px); }
     .coming { padding: 0.14rem 0.7rem; border: 1px solid var(--border-strong); border-radius: 999px; color: var(--muted); white-space: nowrap; }
     .install { margin: 0 0 0.4rem; font-style: italic; color: var(--muted); text-wrap: balance; }
-    .desc, .install { margin-left: 1.1rem; }
-    /* The four groups start closed and open on their own, several can be open at once (Jakob, 2026-11-25). */
+    .desc, .install { margin-left: 1.1rem; }    /* The four groups start closed and open on their own, several can be open at once (Jakob, 2026-11-25). */
     .group { margin: 0 -0.65rem; padding: 0 0.65rem; }
     .group + .group { margin-top: -0.6rem; }
     .install + .group { margin-top: 0.6rem; }
