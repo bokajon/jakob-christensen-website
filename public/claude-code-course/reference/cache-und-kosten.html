@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cache und Kosten</title>
+<script>
+/* dunkel als Standard, egal was das System sagt; eine Wahl mit dem Schalter wird gemerkt und vor dem ersten Zeichnen angewendet */
+(function(){var t=null;try{t=localStorage.getItem("site-theme");}catch(e){}document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");})();
+</script>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<div class="topbar"><a href="../index.html">Kursübersicht</a><button class="theme" id="theme" type="button" aria-label="Zwischen dunkel und hell wechseln">Hell / dunkel</button></div>
+<header class="lesson-head">
+  <div class="kicker">Spickzettel · Claude Code · Stand 2026-11-19</div>
+  <h1>Cache und Kosten</h1>
+  <p class="lede">Jede Nachricht schickt den ganzen Kontext. Warm kostet sie wenig, kalt viel.</p>
+</header>
+
+<h2>Preisfaktoren (Input)</h2>
+<table>
+  <tr><th>Vorgang</th><th class="num">x Input-Preis</th></tr>
+  <tr><td>Cache lesen, Opus 5.5 / Sonnet 5.5</td><td class="num">0.05</td></tr>
+  <tr><td>Cache lesen, die meisten anderen</td><td class="num">0.1</td></tr>
+  <tr><td>Cache lesen, Fable 5.1 / 5.2</td><td class="num">0.025</td></tr>
+  <tr><td>Cache schreiben, 5 min</td><td class="num">1.25</td></tr>
+  <tr><td>Cache schreiben, 1 h</td><td class="num">2</td></tr>
+</table>
+<p class="src"><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">API-Docs: Prompt caching</a></p>
+
+<h2>Lebensdauer (TTL)</h2>
+<table>
+  <tr><th>Anfrage</th><th>Abo im Plan</th><th>Credits / API-Key</th></tr>
+  <tr><td>Hauptsession</td><td>1 h</td><td>5 min</td></tr>
+  <tr><td>Subagent, Workflow, Compaction</td><td>5 min</td><td>5 min</td></tr>
+</table>
+<p>Jeder Treffer setzt den Timer zurück. Eigene Wahl: <code>promptCacheTtl</code>, <code>subagentPromptCacheTtl</code> (<code>5m</code> / <code>1h</code>). Prüfen: <code>claude -p "hello" --output-format json</code>, Feld <code>usage.cache_creation</code>.</p>
+<p class="src"><a href="https://code.claude.com/docs/en/prompt-caching#cache-lifetime">Docs: Cache lifetime</a></p>
+
+<h2>Bricht / bleibt</h2>
+<div class="two-col">
+<div><h3>Bricht</h3><ul>
+  <li>Modellwechsel (auch Skill mit <code>model</code>, <code>opusplan</code>)</li>
+  <li>Effort ändern (nicht auf 5.5-Modellen und Fable 5.1+ mit Abo/API-Key)</li>
+  <li>Fast mode umschalten</li>
+  <li><code>/compact</code>, Auto-Compaction</li>
+  <li>MCP-Server dazu, wenn Tools nicht deferred</li>
+  <li>viele Bilder</li>
+  <li>Update von Claude Code</li>
+</ul></div>
+<div><h3>Bleibt</h3><ul>
+  <li>Dateien bearbeiten</li>
+  <li>CLAUDE.md ändern (wirkt erst nach <code>/clear</code>, <code>/compact</code>, Neustart)</li>
+  <li>Permission mode, Output style</li>
+  <li>Skills, Befehle, Plugin-Skills/Hooks</li>
+  <li><code>/rewind</code>, <code>/recap</code></li>
+  <li>Subagent starten (eigener Cache); Fork liest den Cache der Hauptsession</li>
+</ul></div>
+</div>
+<p class="src"><a href="https://code.claude.com/docs/en/prompt-caching#actions-that-invalidate-the-cache">Docs: Actions that invalidate the cache</a></p>
+
+<h2>Faustregeln</h2>
+<ul>
+  <li>Modell und Effort am Anfang der Session wählen.</li>
+  <li><code>/compact</code> an einer Pause <em>während</em> der Arbeit, nicht nach langer Abwesenheit.</li>
+  <li>Holzweg verwerfen: <code>/rewind</code> statt <code>/compact</code>.</li>
+  <li>Neues Thema: <code>/clear</code>, kostet nichts.</li>
+  <li>Cache gleicher Ordner wird zwischen parallelen Sessions geteilt, verschiedene Ordner (Worktrees) nicht.</li>
+</ul>
+
+<h2>Messen</h2>
+<table>
+  <tr><th>Wo</th><th>Was</th></tr>
+  <tr><td><code>/usage</code></td><td>Zeile <code>Prompt cache (main)</code>: Trefferquote, Fehltreffer mit Ursache, warm/kalt</td></tr>
+  <tr><td>Statusline</td><td>Felder <code>prompt_cache</code>, <code>cache_read_input_tokens</code>, <code>cache_creation_input_tokens</code></td></tr>
+  <tr><td><code>/insights</code></td><td>HTML-Bericht über deine Arbeitsweise (kostet selbst Usage)</td></tr>
+</table>
+<p class="src"><a href="https://code.claude.com/docs/en/costs">Docs: Manage costs effectively</a></p>
+
+<nav class="lesson-nav">
+  <a href="../lessons/0001-prompt-cache.html">Lektion 0001: Prompt-Cache</a>
+</nav>
+</main>
+<script src="../assets/theme.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kontext und /compact</title>
+<script>
+/* dunkel als Standard, egal was das System sagt; eine Wahl mit dem Schalter wird gemerkt und vor dem ersten Zeichnen angewendet */
+(function(){var t=null;try{t=localStorage.getItem("site-theme");}catch(e){}document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");})();
+</script>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<div class="topbar"><a href="../index.html">Kursübersicht</a><button class="theme" id="theme" type="button" aria-label="Zwischen dunkel und hell wechseln">Hell / dunkel</button></div>
+<header class="lesson-head">
+  <div class="kicker">Spickzettel · Claude Code · Stand 2026-11-20</div>
+  <h1>Kontext und /compact</h1>
+  <p class="lede">Was wann in den Kontext lädt und was ein Compact übrig lässt.</p>
+</header>
+
+<h2>Wann was lädt</h2>
+<table>
+  <tr><th>Wann</th><th>Was</th></tr>
+  <tr><td>Beim Start</td><td>Systemanweisung, CLAUDE.md (global, Projekt, Elternordner), Regeln ohne <code>paths:</code>, Auto-Memory (<code>MEMORY.md</code>), Skill-<em>Beschreibungen</em>, MCP-Tool-Namen, Umgebungsinfo</td></tr>
+  <tr><td>Bei Bedarf</td><td>Skill-Text (beim Aufruf), Regeln mit <code>paths:</code> und CLAUDE.md aus Unterordnern (beim Zugriff auf passende Dateien), Memory-Themendateien (Claude liest sie selbst), jede Datei, die Claude liest</td></tr>
+  <tr><td>Immer weiter</td><td>Tool-Ergebnisse, Hook-Ausgaben, Antworten</td></tr>
+</table>
+<p class="src"><a href="https://code.claude.com/docs/en/context-window.md">Docs: Explore the context window</a>, <a href="https://code.claude.com/docs/en/memory.md">Docs: Memory</a></p>
+
+<h2>Grenzen</h2>
+<table>
+  <tr><th>Was</th><th>Grenze</th></tr>
+  <tr><td><code>MEMORY.md</code> beim Start</td><td>erste 200 Zeilen oder 25 KB</td></tr>
+  <tr><td>CLAUDE.md</td><td>ganze Datei bis 4 MiB, Ziel unter 200 Zeilen. Imports sparen keinen Kontext</td></tr>
+  <tr><td>Skill-Text nach Compact</td><td>5.000 Tokens je Skill, 25.000 gesamt</td></tr>
+  <tr><td>Dateien nach Compact</td><td>bis zu 5, zuletzt geänderte zuerst, über 5.000 Tokens nur als Pfad</td></tr>
+  <tr><td>Auto-Compact, 1M-Modelle</td><td>etwa 967.000 Tokens, oder deine Grenze (<code>autoCompactWindow</code>, <code>/autocompact</code>, mindestens 100K)</td></tr>
+</table>
+<p class="src"><a href="https://code.claude.com/docs/en/model-config.md#set-the-auto-compact-window">Docs: Set the auto-compact window</a></p>
+
+<h2>Nach /compact</h2>
+<div class="two-col">
+<div><h3>Kommt zurück</h3><ul>
+  <li>Projekt-CLAUDE.md, Regeln ohne <code>paths:</code></li>
+  <li>Auto-Memory</li>
+  <li>Skill-Beschreibungen</li>
+  <li>Plan aus dem Plan-Mode</li>
+  <li>bis zu 5 Dateien, Skill-Texte (gekappt)</li>
+  <li>SessionStart-Hooks mit Quelle <code>compact</code></li>
+  <li>Hintergrund-Befehle laufen weiter</li>
+</ul></div>
+<div><h3>Wird zusammengefasst</h3><ul>
+  <li>der Gesprächsverlauf</li>
+  <li>Regeln mit <code>paths:</code> (laden bei passender Datei neu)</li>
+  <li>CLAUDE.md aus Unterordnern (laden bei Bedarf neu)</li>
+  <li>frühere Hook-Ausgaben</li>
+  <li>Dateien jenseits der fünf</li>
+</ul></div>
+</div>
+<p class="src"><a href="https://code.claude.com/docs/en/context-window.md#what-survives-compaction">Docs: What survives compaction</a></p>
+
+<h2>Befehle</h2>
+<table>
+  <tr><th>Befehl</th><th>Wirkung</th></tr>
+  <tr><td><code>/context</code>, <code>/context all</code></td><td>Live-Aufteilung nach Kategorie; <code>all</code> zeigt unter Memory files, was beim Start geladen wurde</td></tr>
+  <tr><td><code>/memory</code></td><td>CLAUDE.md und Auto-Memory öffnen und bearbeiten</td></tr>
+  <tr><td><code>/compact focus on ...</code></td><td>Zusammenfassung behält, was du nennst</td></tr>
+  <tr><td><code>/rewind</code>, Summarize from / up to here</td><td>nur einen Teil des Verlaufs zusammenfassen</td></tr>
+  <tr><td><code>/autocompact 500k</code></td><td>Füllgrenze für das aktuelle Modell setzen, <code>auto</code> setzt zurück</td></tr>
+  <tr><td><code>/clear</code></td><td>neues Thema, leert den Kontext</td></tr>
+</table>
+
+<h2>Faustregeln</h2>
+<ul>
+  <li>Regel, die immer gelten muss: Projekt-Root-CLAUDE.md, nicht <code>paths:</code> und nicht Unterordner.</li>
+  <li>Wichtigstes in einem Skill an den Anfang von <code>SKILL.md</code>.</li>
+  <li>Große Lesearbeit an einen Subagenten: dein Fenster bleibt klein, seine Tokens kosten trotzdem.</li>
+  <li>Fehlt eine CLAUDE.md in <code>/context all</code> unter Memory files, sieht Claude sie nicht.</li>
+</ul>
+
+<nav class="lesson-nav">
+  <a href="../lessons/0002-kontextfenster.html">Lektion 0002: Kontextfenster</a>
+  <a href="cache-und-kosten.html">Spickzettel Cache und Kosten</a>
+</nav>
+</main>
+<script src="../assets/theme.js"></script>
+</body>
+</html>
