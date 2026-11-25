@@ -112,11 +112,11 @@ def main():
     if ctx >= BIG:
         note = (f"Context checkpoint: the context is about {ctx // 1000}k tokens and is re-read on every turn. "
                 "At the end of this turn, tell the user in one line why a fresh session pays off, "
-                "then follow the /fresh skill.")
+                "then write the handoff file now by following the /fresh skill. This note is an order: do not ask whether to write it and do not offer it.")
     elif gap >= STALE_MIN and ctx >= STALE_CTX:
         note = (f"Context checkpoint: the user was away for over {int(gap)} minutes, so the prompt cache has probably "
                 f"expired and the context (about {ctx // 1000}k tokens) is now rewritten in full. "
-                "Say so in one line and follow the /fresh skill if the topic changes or the task is done.")
+                "Say so in one line and, if the topic changes or the task is done, write the handoff file now by following the /fresh skill: do not ask and do not offer it.")
     if note:
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": note}}))
 
