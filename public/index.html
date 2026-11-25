@@ -46,10 +46,6 @@
       font-size: clamp(1.75rem, 5vw, 2.5rem);
       letter-spacing: -0.02em;
     }
-    h1, .card h2, .skill-group { display: flex; align-items: center; gap: 0.5rem; }
-    h1 { justify-content: center; }
-    .heading-character { flex: none; image-rendering: pixelated; }
-    h1 .heading-character { width: 60px; height: 60px; }
     header p { margin: 0.25rem 0 0; color: var(--muted); }
     header .subtitle { font-size: clamp(1.1rem, 3vw, 1.4rem); letter-spacing: -0.01em; }
     .projects {
@@ -146,19 +142,19 @@
 <body>
   <main>
     <header>
-      <h1><img class="heading-character" src="header-characters/jakob.png" width="40" height="40" alt=""><span>Jakob Christensen</span></h1>
+      <h1>Jakob Christensen</h1>
       <p class="subtitle">Tools, Toys &amp; Tinkering</p>
     </header>
 
     <ul class="projects">
       <li>
         <div class="card">
-          <h2><img class="heading-character" src="header-characters/agent-skills.png" width="40" height="40" alt=""><span>Jakob's Agent Skills</span></h2>
+          <h2>Jakob's Agent Skills</h2>
           <p class="desc">Agent skills I created from my own workflow and improved with every project. Some of them run through almost everything I do with AI. If one fits how you work, take it and adapt it.</p>
           <p class="install">Installation: download a skill, drag it into your AI's chat and write "Install this skill."</p>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group"><img class="heading-character" src="header-characters/handlers.png" width="40" height="40" alt=""><span>Handlers</span></h3>
+            <h3 class="skill-group">Handlers</h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -215,7 +211,7 @@
           </details>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group"><img class="heading-character" src="header-characters/fixers.png" width="40" height="40" alt=""><span>Fixers</span></h3>
+            <h3 class="skill-group">Fixers</h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -259,7 +255,7 @@
           </details>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group"><img class="heading-character" src="header-characters/cleaners.png" width="40" height="40" alt=""><span>Cleaners</span></h3>
+            <h3 class="skill-group">Cleaners</h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -327,7 +323,7 @@
           </details>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group"><img class="heading-character" src="header-characters/detectives.png" width="40" height="40" alt=""><span>Detectives</span></h3>
+            <h3 class="skill-group">Detectives</h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -399,7 +395,7 @@
       <li>
         <div class="card is-soon" aria-disabled="true">
           <div class="card-head">
-            <h2><img class="heading-character" src="header-characters/little-lights.png" width="40" height="40" alt=""><span>Little Lights: An Alpine Retreat</span></h2>
+            <h2>Little Lights: An Alpine Retreat</h2>
             <span class="coming">Coming soon</span>
           </div>
           <p class="desc">Lost lanterns against the mountain dark.</p>
@@ -408,7 +404,7 @@
       <li>
         <a class="card" href="niagara-workshop/">
           <div class="card-head">
-            <h2><img class="heading-character" src="header-characters/niagara-workshop.png" width="40" height="40" alt=""><span>Niagara Workshop</span></h2>
+            <h2>Niagara Workshop</h2>
             <span class="link">jakobchristensen.com/niagara-workshop</span>
           </div>
           <p class="desc">A teaching tool for Realtime Art &amp; Visual Effects students at the Salzburg University of Applied Sciences (FH Salzburg), made for a workshop on visual effects in Unreal Engine. Each Niagara module is a card you can try out on a particle emitter in the browser. An export script brings the setup into Unreal.</p>
@@ -417,7 +413,7 @@
       <li>
         <a class="card" href="https://choirtool.com">
           <div class="card-head">
-            <h2><img class="heading-character" src="header-characters/choir.png" width="40" height="40" alt=""><span>Choir · Critique Orchestrator</span></h2>
+            <h2>Choir · Critique Orchestrator</h2>
             <span class="link">choirtool.com</span>
           </div>
           <p class="desc">A tool for getting feedback on a concept from many sides, using an AI like Claude or ChatGPT. It writes the prompts, and a simulated persona plays each side, so the feedback is varied and detailed.</p>
@@ -426,7 +422,7 @@
       <li>
         <a class="card" href="students-on-the-loose/">
           <div class="card-head">
-            <h2><img class="heading-character" src="header-characters/students-on-the-loose.png" width="40" height="40" alt=""><span>Students on the Loose <span class="nowrap">(incl. Inca 3D &amp; Pict 2D)</span></span></h2>
+            <h2>Students on the Loose <span class="nowrap">(incl. Inca 3D &amp; Pict 2D)</span></h2>
             <span class="link">jakobchristensen.com/students-on-the-loose</span>
           </div>
           <p class="desc">Small pixel students walk across the page and react to the objects you place there. You create the objects with two built-in programs: Inca for 3D and Pict for 2D drawing.</p>
@@ -435,7 +431,7 @@
       <li>
         <a class="card" href="https://studentbenefits.page">
           <div class="card-head">
-            <h2><img class="heading-character" src="header-characters/student-handbook.png" width="40" height="40" alt=""><span>Student Handbook</span></h2>
+            <h2>Student Handbook</h2>
             <span class="link">studentbenefits.page</span>
           </div>
           <p class="desc">A guide for animation students at the Salzburg University of Applied Sciences (FH Salzburg) in Austria. It explains the equipment and software the school gives them access to, and lists student events, film festivals, job offers and discounts.</p>
