@@ -11,3 +11,7 @@
   X-Robots-Tag: noindex, nofollow
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+
+# Self-hosted fonts of the homepage: cached for 30 days.
+/fonts/*
+  Cache-Control: public, max-age=2592000
