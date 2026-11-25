@@ -232,6 +232,8 @@
     .video iframe { position: absolute; width: 135%; height: 135%; left: -17.5%; top: -17.5%; border: 0; display: block; }
     .video .cover { position: absolute; width: 135%; height: 135%; left: -17.5%; top: -17.5%; object-fit: cover; cursor: pointer; display: block; }
     .video .cover[hidden] { display: none; }
+    /* Clip with a red channel banner baked into the top left: zoom in a bit further so it stays cropped out. */
+    .video.zoom iframe, .video.zoom .cover { width: 145%; height: 145%; left: -22.5%; top: -27.5%; }
     footer { margin-top: 3rem; font-size: 0.85rem; color: var(--muted); text-align: center; }
     @media (max-width: 30rem) {
       .card { --pad: 1.15rem; }
@@ -563,6 +565,7 @@
         var n = (parseInt(localStorage.getItem("visits"), 10) || 0) + 1;
         localStorage.setItem("visits", n);
         var id = clips[(n - 1) % clips.length];
+        document.querySelector(".video").classList.toggle("zoom", id === "3OmeWkcd5z4");
         document.getElementById("clip").src = "https://www.youtube-nocookie.com/embed/" + id + "?enablejsapi=1&cc_load_policy=0&controls=0&modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1";
       } catch (e) {}
       var cover = document.getElementById("cover");
