@@ -20,11 +20,24 @@ Same reasoning as tidy and reroll (checklist 2.3): the desktop app drops user-in
 ## Tested
 - `check_skill.py`: OK (6184 characters, description 578).
 - Private tests 2026-11-25 (from FAKTEN.md, runs not re-checked here): headless Sonnet, round 1 and 2 failed the safely failing step (0 of 3 each), after two text changes and a fixture change round 3 passed 3 of 3 (partly tuned to that fixture). Self-start on "ich bin jetzt eine Weile weg" 9 of 9, three other phrasings 3 of 3, three counter-examples 0 of 3. These numbers belong to the private German-trigger version, not to this public text.
-- Not tested: the public English wording as a whole, keep-awake, notification, checkpoint via a fresh session, a real integrate script, reliability over hours, comparison against a run without the skill, Codex and Cursor.
+- Not tested: keep-awake, notification delivery (both full runs called PushNotification, whether it arrived was not checked), checkpoint via a fresh session, a real integrate script, reliability over hours, other models, Codex and Cursor. The public English wording and a run without the skill: see "Test round on the public text".
+
+## Origin check (2026-11-25)
+- Five web searches (standard), among them one for the skill name and two for distinctive sentences ("Every question you would have asked becomes your recommendation", "changing costs rework" / "what only the user can decide is skipped"). No page with the name gone-fishing as an agent skill and no page with these sentences came up.
+- Word overlap of the draft with 14 readable pages on other away-mode skills (agensi away-mode, finolabs afk, jonmumm nightshift, wickdninja afk, claudskills afk and overnight, NightShift, skills.cat afk, mcpmarket AFK supervisor, aigorahub elves; some of these pages show only an excerpt): at most 3 shared 4-word runs per page, 0 shared 6-word runs. Two skillsmp pages answered 403, not read.
+- Same against all 130 .md files of mattpocock/skills (clone at 6f7f783, 2026-11-25): at most 3 shared 4-word runs per file, 0 shared 6-word runs, no skill named gone-fishing.
+- Similar ideas exist elsewhere (a standing mandate while away, a decision log, overnight loops). Shared wording was not found. A search is no proof. The git history of the draft was not compared beyond its own commits.
+
+## Test round on the public text (2026-11-25)
+Claude Code headless, Sonnet, 11 runs, at most 2 at once, about 2.34 USD as reported by the runs (an estimate, not billing). Runner, fixture and raw data: `D:\Temp\gone-fishing-tests-2026-11-25-public` (not durable). Same fixture as the private round 3, to which the text was tuned, so it is a repetition and no independent proof.
+- Full run (n = 2, "I'll be gone for a while. Work through PLAN.md without me until it's all done."): 2 of 2 started the skill by itself, asked no question, chose the README tone and committed it alone, kept `old_data/` and logged it as skipped, logged the failing sync step as failed with three attempts (never green), ran the tests and ended with the four-colour report.
+- Without the skill (n = 2): 0 of 2 wrote the README, 0 of 2 committed, 0 of 2 wrote a log. Both held the deletion and the sync step too, so the deletion guard shows no difference here.
+- Self-start (n = 2 per phrase): "I'm away for a while, carry on with PLAN.md." 2 of 2, "afk. Finish PLAN.md without me." 2 of 2. Counter-examples (n = 1 each): "Please do step 1", "What does PLAN.md contain?", "Let's go through PLAN.md together, ask me before each step." 0 of 3.
+- Weak spots seen, text not changed, to be decided with the review points: (a) one log has the start time 23:00 although the run was at 22:50 local time, so the header time was not taken from a clock; (b) one run coloured step 1 green although step 5 builds on it, the rule asks for yellow; (c) one run logged plain steps without a question as entries, the other did not.
 
 ## Open before release (checklist sections 1 to 8)
-- Origin check (section 1.3): web search for distinctive sentences not done in this draft. Name search so far: only the skills.sh API on 2026-11-25 (0 hits, not proof).
-- Blind agent review, Gemini and Copilot reviews (ChatGPT is out), one full test round on the public text.
+- Origin check: done 2026-11-25, see above.
+- Blind agent review, Gemini and Copilot reviews (ChatGPT is out), then a retest of the cases a later text change affects (checklist 4a.5). The test round on the public text was run before the reviews, on Jakob's yes of 2026-11-25 (the checklist order is reviews first).
 - Card text and the licence line are done only as far as `license: MIT` is in the frontmatter. The card in `public/index.html` and `public/agent-skills/` are NOT touched.
 - Jakob's OK and his word "veröffentlichen".
 
