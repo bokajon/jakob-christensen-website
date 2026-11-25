@@ -171,10 +171,11 @@
     .install { margin: 0 0 0.4rem; font-style: italic; color: var(--muted); text-wrap: balance; }
     .desc, .install { margin-left: 1.1rem; }    /* The four groups start closed and open on their own, several can be open at once (Jakob, 2026-11-25). */
     .group { margin: 0 -0.65rem; padding: 0 0.65rem; }
-    .group + .group { margin-top: 0.35rem; }
+    /* A closed group head sits centred between its two lines (measured, 2026-11-26): the -0.6rem cancels the card's flex gap, the last group reaches into the card padding, and the head's bottom padding is 0.06rem larger because the caps sit 1px high in their line box. */
+    .group + .group { margin-top: -0.6rem; }
     .install + .group { margin-top: 0.6rem; }
-    .group:last-child { margin-bottom: -0.6rem; }
-    .group-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.15rem 0 0.85rem; border-top: 1px solid var(--border); cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none; }
+    .group:last-child { margin-bottom: calc(-1 * var(--pad)); }
+    .group-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.445rem 0 1.505rem; border-top: 1px solid var(--border); cursor: pointer; list-style: none; -webkit-user-select: none; user-select: none; }
     .group-head::-webkit-details-marker { display: none; }
     .group-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .skill-group { margin: 0; font-size: 0.78rem; font-weight: 650; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg); transition: color 0.15s; }
@@ -187,7 +188,9 @@
     .group-sign::after { transform: rotate(90deg); }
     .group[open]:not(.is-closing) .group-sign::before { transform: rotate(180deg); }
     .group[open]:not(.is-closing) .group-sign::after { transform: rotate(180deg); }
-    .group > .skills { margin: 0; padding-bottom: 0.9rem; transition: opacity 0.2s ease; }
+    /* Open groups keep their old spacing: the list pulls up by the head's extra padding and takes over the old gap below. */
+    .group > .skills { margin: -0.95rem 0 0; padding-bottom: 1.85rem; transition: opacity 0.2s ease; }
+    .group:last-child > .skills { padding-bottom: calc(var(--pad) + 0.3rem); }
     .group[open] > .skills { animation: group-in 0.3s ease; }
     .group.is-closing > .skills { opacity: 0; }
     @keyframes group-in { from { opacity: 0; transform: translateY(-4px); } }
