@@ -286,7 +286,7 @@
               <summary class="skill-head">
                 <h4>/lanes</h4>
                 <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Gives every agent session its own worktree</span>
+                <span class="skill-sum">Keeps agent sessions from overwriting each other's work in one repo</span>
               </summary>
               <p class="skill-desc">Agent sessions that change one git repository at the same time overwrite each other's work, causing lost changes and broken builds. <strong>This skill gives every agent session its own worktree and branch, keeps the main checkout clean and lands finished work there one branch at a time.</strong></p>
               <p class="skill-desc">A bundled script moves the main branch only when the full check on the merged result is green. Uncommitted work of other sessions stays untouched.</p>
@@ -311,7 +311,7 @@
               <summary class="skill-head">
                 <h4>/now-and-then</h4>
                 <a class="download" href="agent-skills/now-and-then/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
-                <span class="skill-sum">Remembers what you decided, so you say it only once</span>
+                <span class="skill-sum">Remembers decisions and open points, so every session knows them</span>
               </summary>
               <p class="skill-desc">Agents forget what you settled last week, so you explain the same name or rule again in every session. <strong>This skill records what you decide about a project in a dated log (DECISIONS.md) and keeps the current state and open points in a short second file (STATE.md), so every session starts from both.</strong></p>
               <p class="skill-desc">It writes a decision down the moment you state it. When you ask for something that contradicts an earlier decision, it stops and asks whether the decision changes. If your message already names the replacement, it records the change and goes ahead. Old entries stay readable, and both files are created or committed only with your yes. It never stores keys or personal data, and an entry never counts as permission to commit, deploy or delete.</p>
@@ -375,7 +375,7 @@
               <summary class="skill-head">
                 <h4>/strays</h4>
                 <a class="download" href="agent-skills/strays/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
-                <span class="skill-sum">Finds work you committed but never pushed to GitHub</span>
+                <span class="skill-sum">Finds commits you never pushed, and pushes them after your OK</span>
               </summary>
               <p class="skill-desc">Work you committed but never pushed is easy to forget. <strong>This skill finds git commits that never reached the remote, on a side branch, the wrong branch or in a worktree, and shows them in one table before anything is sent.</strong></p>
               <p class="skill-desc">It pushes only after your OK and never by force. Diverged branches and uncommitted changes are left to you.</p>
@@ -387,7 +387,7 @@
               <summary class="skill-head">
                 <h4>/freeup</h4>
                 <a class="download" href="agent-skills/freeup.zip" download="freeup.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Frees disk space, deletes only what you approve</span>
+                <span class="skill-sum">Frees disk space on Windows, deletes only what you approve</span>
               </summary>
               <p class="skill-desc">Windows slowly fills the system drive with caches and temp files nobody needs. <strong>This skill measures the junk on C:, can also find cache-like folders on your other drives, shows you a size table and deletes the rows you approve with one yes.</strong></p>
               <p class="skill-desc">It deletes only files that programs rebuild on their own. Files in use, Downloads, worktrees and logs stay, and folders on other drives are cleaned only if you accept them.</p>
@@ -411,7 +411,7 @@
               <summary class="skill-head">
                 <h4>/tidy-worktrees</h4>
                 <a class="download" href="agent-skills/tidy-worktrees/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
-                <span class="skill-sum">Removes worktrees whose work has landed</span>
+                <span class="skill-sum">Removes worktrees and branches that have landed, keeps the rest</span>
               </summary>
               <p class="skill-desc">Old worktrees and branches pile up, and it is hard to tell which ones are safe to delete. <strong>This skill removes only the git worktrees and branches whose work has landed in the default branch and whose worktree is clean, and keeps everything else.</strong></p>
               <p class="skill-desc">It never pushes or forces a removal, and leaves locked worktrees and the one you are in alone.</p>
@@ -423,7 +423,7 @@
               <summary class="skill-head">
                 <h4>/fingerprints</h4>
                 <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Checks a folder for private traces before you share it</span>
+                <span class="skill-sum">Checks a folder for names, paths and keys before you share it</span>
               </summary>
               <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a skill, repository, project or site before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong></p>
               <p class="skill-desc">It changes nothing unless you ask for fixes. It does not read the git history and is not a full secret scanner.</p>
@@ -455,7 +455,7 @@
               <summary class="skill-head">
                 <h4>/numbers-skeptic</h4>
                 <a class="download" href="agent-skills/numbers-skeptic/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
-                <span class="skill-sum">Makes your agent prove a number with a measurement, not a guess</span>
+                <span class="skill-sum">Makes your agent measure claims like faster, smaller or unused</span>
               </summary>
               <p class="skill-desc">Agents like to report that something is now faster, smaller or unused after one run, or after none. <strong>This skill has the agent measure every claim about speed, size, share, ranking or unused code in your software, and mark what it could not measure as "not checked".</strong></p>
               <p class="skill-desc">For timings it checks the machine's load, warms up, repeats the run, and gives the median and the spread. A result counts as reproduced only after a second, separate series, and a difference smaller than the noise counts as no difference. Values come from the running app and never from a test fixture. Before it calls code unused, it searches code, tests, config, scripts and docs for it.</p>
@@ -492,7 +492,7 @@
               <summary class="skill-head">
                 <h4>/nothing-lost</h4>
                 <a class="download" href="agent-skills/nothing-lost.zip" download="nothing-lost.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">After a big rewrite, checks that no old line got lost</span>
+                <span class="skill-sum">Backs up before a big rewrite, then checks that no line got lost</span>
               </summary>
               <p class="skill-desc">Big rewrites lose words and numbers without anyone noticing. <strong>This skill makes the old state recoverable in git first, moves text word for word, and then has a script check that every old line still exists in the new files.</strong></p>
               <p class="skill-desc">It lists every line found nowhere and marks lines that changed on purpose. Line order and counts are not checked.</p>
