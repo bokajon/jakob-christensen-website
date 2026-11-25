@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0002 Kontextfenster</title>
+<script>
+/* dunkel als Standard, egal was das System sagt; eine Wahl mit dem Schalter wird gemerkt und vor dem ersten Zeichnen angewendet */
+(function(){var t=null;try{t=localStorage.getItem("site-theme");}catch(e){}document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark");})();
+</script>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+<div class="topbar"><a href="../index.html">Kursübersicht</a><button class="theme" id="theme" type="button" aria-label="Zwischen dunkel und hell wechseln">Hell / dunkel</button></div>
+<header class="lesson-head">
+  <div class="kicker">Lektion 0002 · Kontext · etwa 6 Minuten</div>
+  <p class="stand">Stand: 2026-11-22. Fakten zu Claude Code gelten zu diesem Datum und können sich ändern.</p>
+  <h1>Was Claude auf dem Schreibtisch hat, und was /compact übrig lässt</h1>
+  <p class="lede">Das Kontextfenster ist ein Schreibtisch mit begrenzter Fläche. Einiges liegt schon beim Start drauf, beim Arbeiten kommt mehr dazu, und <code>/compact</code> räumt auf. Danach weißt du, was beim Aufräumen bleibt und was verschwindet.</p>
+</header>
+
+<div class="note"><strong>Vorab, aus dem Kopf</strong><br>
+Du tippst <code>/compact</code>. Was glaubst du: Muss Claude deine CLAUDE.md danach neu kennenlernen, oder ist sie sofort wieder da? Rate einfach. Die Antwort steht in Abschnitt 6.</div>
+
+<h2>1. Was ist das Kontextfenster?</h2>
+<p>Claude merkt sich nichts von einer Nachricht zur nächsten (das war <a href="0001-prompt-cache.html">Lektion 0001</a>). Alles, was es für deine Session wissen soll, steht deshalb in einem einzigen Textstapel, der bei jeder Nachricht mitgeschickt wird. Dieser Stapel heißt <strong>Kontext</strong>, und der Platz dafür ist das <strong>Kontextfenster</strong>.</p>
+<p>Laut den Docs steckt darin: deine Anweisungen, die Dateien, die Claude gelesen hat, Claudes eigene Antworten und Inhalte, die du im Terminal nie siehst. <span class="src">(<a href="https://code.claude.com/docs/en/context-window.md">Docs: Explore the context window</a>)</span></p>
+<p><strong>Bild:</strong> ein Schreibtisch mit begrenzter Fläche. Was darauf liegt, kann Claude sehen. Was nicht darauf liegt, weiß es nicht.</p>
+<p>Der Platz wird in <strong>Tokens</strong> gemessen, das sind kleine Textstücke. Ist der Tisch fast voll, endet deine Session nicht: Claude Code räumt dann von selbst auf, das ist dasselbe wie <code>/compact</code> (mehr dazu in Abschnitt 6).</p>
+
+<h2>2. Wo siehst du das?</h2>
+<p>Tippe in einer laufenden Session <code>/context</code>. Du bekommst eine Übersicht, wie viel gerade belegt ist, sortiert nach Kategorien, dazu Spartipps und die Liste, welche CLAUDE.md- und Memory-Dateien geladen wurden. <span class="src">(<a href="https://code.claude.com/docs/en/context-window.md#check-your-own-session">Docs: Check your own session</a>)</span> Mit <code>/memory</code> kannst du diese Dateien öffnen und bearbeiten.</p>
+<p>Zur Anschauung: In der Beispiel-Session der Docs sind nach etwas Arbeit gut 22.000 Tokens belegt (die Zahlen sind laut Docs nur Beispiele). Deine echten Zahlen siehst du nur mit <code>/context</code>.</p>
+<p class="src">Ob die Desktop-App zusätzlich eine eigene Anzeige hat: nicht geprüft.</p>
+
+<h2>3. Drei Zeitpunkte</h2>
+<p>Wichtig ist, <em>wann</em> etwas auf den Tisch kommt:</p>
+<ol>
+  <li><strong>Beim Start:</strong> ein paar feste Dinge liegen schon da.</li>
+  <li><strong>Beim Arbeiten:</strong> alles, was Claude liest, kommt dazu.</li>
+  <li><strong>Beim Aufräumen (<code>/compact</code>):</strong> das Gespräch wird zu einer Kurzfassung, einiges wird frisch hingelegt.</li>
+</ol>
+<p class="src">Quelle für alles hier: <a href="https://code.claude.com/docs/en/context-window.md">Docs: Explore the context window</a></p>
+
+<h2>4. Was beim Start schon daliegt</h2>
+<ul>
+  <li><strong>Deine Regeln:</strong> die globale und die Projekt-CLAUDE.md.</li>
+  <li><strong>Deine Notizen:</strong> die Memory (<code>MEMORY.md</code>).</li>
+  <li><strong>Visitenkarten der Skills:</strong> nur die Kurzbeschreibung. Der ganze Text eines Skills liegt erst auf dem Tisch, wenn du ihn aufrufst.</li>
+  <li><strong>Namen der Werkzeuge</strong> von angeschlossenen Diensten (MCP).</li>
+</ul>
+<p>Es gibt Grenzen, wie viel davon geladen wird. <span class="src">(<a href="https://code.claude.com/docs/en/memory.md">Docs: Memory</a>)</span> Diese Grenzen gelten:</p>
+<table>
+  <tr><th>Datei</th><th>Grenze</th></tr>
+  <tr><td>Memory (<code>MEMORY.md</code>)</td><td>200 Zeilen</td></tr>
+  <tr><td>CLAUDE.md</td><td>Ziel: unter 200 Zeilen</td></tr>
+</table>
+
+<h2>5. Was beim Arbeiten dazukommt</h2>
+<ul>
+  <li><strong>Jede Datei, die Claude liest.</strong> Sie bleibt, bis du aufräumst.</li>
+  <li><strong>Regeln, die nur für bestimmte Dateien gelten</strong> (Frontmatter <code>paths:</code>) und <strong>CLAUDE.md aus Unterordnern.</strong> Die kommen erst, wenn Claude eine passende Datei anfasst.</li>
+  <li><strong>Antworten von Hooks.</strong> Ein eingerichteter Hook läuft zum Beispiel bei jedem Edit.</li>
+</ul>
+<p><strong>Bild für Subagenten:</strong> Ein Subagent ist ein Praktikant. Er liest einen Berg Dateien in seinem eigenen Zimmer und bringt dir nur eine Kurzfassung. Dein Schreibtisch bleibt leer. Aber die Arbeit des Praktikanten kostet trotzdem Usage.</p>
+
+<h2>6. Was /compact übrig lässt</h2>
+<p>Beim Aufräumen schreibt Claude euer Gespräch zu einer Kurzfassung zusammen. Einiges wird danach frisch vom Datenträger neu hingelegt, anderes geht in der Kurzfassung auf. <span class="src">(<a href="https://code.claude.com/docs/en/context-window.md#what-survives-compaction">Docs: What survives compaction</a>)</span></p>
+<div class="two-col">
+<div>
+<h3>Kommt frisch wieder</h3>
+<ul>
+  <li>deine CLAUDE.md im Projekt-Hauptordner</li>
+  <li>Regeln ohne <code>paths:</code></li>
+  <li>die Memory</li>
+  <li>die Skill-Kurzbeschreibungen</li>
+  <li>bis zu <strong>fünf</strong> zuletzt benutzte Dateien (sehr große nur als Pfad)</li>
+  <li>Skills, die du aufgerufen hast, gekürzt</li>
+</ul>
+</div>
+<div>
+<h3>Geht in der Kurzfassung auf</h3>
+<ul>
+  <li>euer Gespräch</li>
+  <li>Regeln mit <code>paths:</code></li>
+  <li>CLAUDE.md aus Unterordnern</li>
+  <li>alle weiteren gelesenen Dateien</li>
+</ul>
+<p>Regeln und Unterordner-CLAUDE.md kommen wieder, sobald Claude die nächste passende Datei anfasst.</p>
+</div>
+</div>
+<p><strong>Die Vorab-Frage:</strong> deine CLAUDE.md ist sofort wieder da.</p>
+<h3>Was du daraus machst</h3>
+<ul>
+  <li>Soll eine Regel <em>immer</em> gelten, gehört sie in die CLAUDE.md im Hauptordner, nicht in <code>paths:</code> oder einen Unterordner.</li>
+  <li>Ein Skill wird beim Aufräumen von hinten gekürzt. Schreib das Wichtigste an den Anfang von <code>SKILL.md</code>.</li>
+  <li>Du kannst Claude sagen, was in der Kurzfassung wichtig ist: <code>/compact focus on ...</code></li>
+</ul>
+
+<h2>7. Wann räumt Claude von selbst auf?</h2>
+<p>Sonnet 5.5 hat einen riesigen Schreibtisch (1 Million Tokens). Ohne Einstellung räumt es erst auf, wenn er fast voll ist, bei etwa 967.000. <span class="src">(<a href="https://code.claude.com/docs/en/model-config.md#default-auto-compact-thresholds">Docs: Default auto-compact thresholds</a>)</span></p>
+<p>Setzt du in der <code>settings.json</code> <code>"autoCompactWindow": 200000</code>, räumt Claude nach den Docs schon bei 200.000 auf. <span class="src">(<a href="https://code.claude.com/docs/en/model-config.md#set-the-auto-compact-window">Docs: Set the auto-compact window</a>)</span> Dass das im Alltag wirklich so läuft: nicht beobachtet.</p>
+
+<h2>Abruf</h2>
+<p>Ohne nach oben zu scrollen. Gezählt wird der erste Versuch. Die zweite Frage wiederholt <a href="0001-prompt-cache.html">Lektion 0001</a>.</p>
+
+<div class="quiz" data-answer="4" data-why="Das Kontextfenster ist der Platz für alles, was Claude über deine Session weiß: Anweisungen, gelesene Dateien, Antworten. Wie voll es ist, siehst du mit /context.">
+  <p class="q">Was ist das Kontextfenster?</p>
+  <ol>
+    <li><button>Ein Terminalfenster mit dem ganzen Chat</button></li>
+    <li><button>Die Liste deiner letzten Sessions</button></li>
+    <li><button>Ein Ordner mit allen Projektdateien</button></li>
+    <li><button>Der Platz für alles, was Claude weiß</button></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="3" data-why="Eine CLAUDE.md zu ändern zerreißt den Zettel nicht (die Regel gilt erst nach /clear, /compact oder Neustart). Modellwechsel, Fast mode und /compact zerreißen ihn.">
+  <p class="q">Welche Aktion lässt den Merkzettel (Cache) deiner Hauptsession bestehen?</p>
+  <ol>
+    <li><button>Mit /model das Modell wechseln</button></li>
+    <li><button>Mit /compact das Gespräch kürzen</button></li>
+    <li><button>Die CLAUDE.md im Editor ändern</button></li>
+    <li><button>Fast mode in der Session anschalten</button></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="1" data-why="Beim Start liegen deine Regeln, die Memory und die Skill-Kurzbeschreibungen schon da. Skill-Texte und Dateien kommen erst später.">
+  <p class="q">Was liegt schon auf dem Schreibtisch, bevor du die erste Nachricht tippst?</p>
+  <ol>
+    <li><button>CLAUDE.md, Memory und Skill-Kurzbeschreibungen</button></li>
+    <li><button>CLAUDE.md, Memory und die ganzen Skill-Texte</button></li>
+    <li><button>Nur die Systemanweisung, sonst gar nichts</button></li>
+    <li><button>Der komplette Chat deiner letzten Session</button></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="4" data-why="Beim Start liegt nur die Visitenkarte (Kurzbeschreibung) des Skills da. Der lange Text kommt erst beim Aufruf dazu.">
+  <p class="q">Dein Skill hat 3.000 Wörter Text. Wann belegt dieser Text Platz auf dem Tisch?</p>
+  <ol>
+    <li><button>Von Anfang an, in jeder Session</button></li>
+    <li><button>Nur solange /context offen ist</button></li>
+    <li><button>Nur bis zum nächsten /compact</button></li>
+    <li><button>Erst wenn du den Skill aufrufst</button></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="2" data-why="Regeln mit paths: liegen im Gespräch und gehen in der Kurzfassung auf. Sie kommen wieder, wenn Claude eine passende Datei anfasst. Soll eine Regel immer gelten, gehört sie in die CLAUDE.md im Hauptordner.">
+  <p class="q">Eine Regel mit <code>paths:</code> ist geladen. Was macht /compact mit ihr?</p>
+  <ol>
+    <li><button>Sie bleibt unverändert auf dem Tisch</button></li>
+    <li><button>Sie geht in der Kurzfassung auf</button></li>
+    <li><button>Sie wird sofort frisch geholt</button></li>
+    <li><button>Sie wird dauerhaft gelöscht</button></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="3" data-why="Der Subagent liest in seinem eigenen Zimmer. Zu dir kommt nur seine Kurzfassung. Seine Arbeit läuft aber trotzdem auf deine Usage.">
+  <p class="q">Ein Subagent liest 40 Dateien für dich. Was kommt auf deinen Schreibtisch?</p>
+  <ol>
+    <li><button>Alle 40 Dateien, nur anders sortiert</button></li>
+    <li><button>Nur die Namen der gelesenen Dateien</button></li>
+    <li><button>Seine Kurzfassung der Ergebnisse</button></li>
+    <li><button>Nichts, du siehst kein Ergebnis</button></li>
+  </ol>
+</div>
+
+<div class="quiz" data-answer="1" data-why="autoCompactWindow ist die Füllgrenze, bei der Claude von selbst aufräumt. Ohne die Einstellung wären es bei Sonnet 5.5 etwa 967.000 Tokens.">
+  <p class="q">Sonnet 5.5 hat 1 Million Tokens Platz, du setzt autoCompactWindow auf 200000. Wann räumt es auf?</p>
+  <ol>
+    <li><button>Bei etwa 200.000 Tokens Füllstand</button></li>
+    <li><button>Erst bei etwa 967.000 Tokens</button></li>
+    <li><button>Nie, die Einstellung ist nur Anzeige</button></li>
+    <li><button>Nach genau 200 Zeilen Gespräch</button></li>
+  </ol>
+</div>
+
+<p class="score" id="score"></p>
+
+<h2>Weiter</h2>
+<p><strong>Primärquelle:</strong> <a href="https://code.claude.com/docs/en/context-window.md">Explore the context window</a> (Claude Code Docs). Die Seite hat eine Zeitleiste, die diese drei Phasen mit echten Zahlen zeigt.</p>
+<p><strong>Spickzettel:</strong> <a href="../reference/kontext-und-compact.html">Kontext und /compact</a>, zum Nachschlagen und Ausdrucken. Zum Cache: <a href="../reference/cache-und-kosten.html">Cache und Kosten</a>.</p>
+<p><strong>Kleine Übung, optional:</strong> Tipp in einer laufenden Session <code>/context</code>. Welche Kategorie ist am größten, und hättest du das so geraten?</p>
+
+<footer class="ask">Unklar oder willst du tiefer rein? Frag Claude einfach in deiner Session. Die nächste Lektion vergleicht Subagent, Fork und neue Session nach Kosten und fragt dabei einige Punkte von hier nochmal ab.</footer>
+
+<nav class="lesson-nav">
+  <a href="0001-prompt-cache.html">Lektion 0001: Prompt-Cache</a>
+  <a href="../reference/kontext-und-compact.html">Spickzettel Kontext und /compact</a>
+  <a href="0003-subagent-fork-session.html">Lektion 0003: Subagent, Fork, Session</a>
+</nav>
+</main>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/theme.js"></script>
+</body>
+</html>
