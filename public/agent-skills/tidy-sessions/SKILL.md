@@ -1,7 +1,7 @@
 ---
 name: tidy-sessions
 license: MIT
-description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived. Not for deleting sessions and not for the running session. To remove landed git worktrees and branches without the desktop app, use the tidy-worktrees skill.
+description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived or which are waiting for them. Not for deleting sessions and not for the running session. To remove landed git worktrees and branches without the desktop app, use the tidy-worktrees skill.
 compatibility: Claude desktop app (Code tab) only. Needs its session tools list_sessions, list_events, get_session and archive_session, and git.
 ---
 
@@ -46,5 +46,17 @@ A session that matches a live condition is live even when it also matches a sett
    - each kept session with its one-line reason (live, or refused because it is pinned or open on screen: the user archives it from the sidebar)
    - one line of notes when they apply: the list may be cut off, a possibly stale git ref was used, sessions the tools do not list were not checked
    - **Needs your attention:** every open point or unverified state of a kept session (an unanswered question, a command only the user can run, a claim that turned out false, a git or branch problem, an unprotected current-session parent), one line each with the session title and the exact question or issue
+
+## Waiting report (no archiving)
+
+When the user asks what is waiting for them, which sessions need them, or for an overview of the sidebar ("what waits on me"), run steps 0 to 3 and then, instead of step 4, call `archive_session` for nothing. Answer with one table, sorted in three blocks, each row a session link (`[title](#<sessionId>)`):
+
+1. **Waiting for you**: live because of an open question or approval. Put the exact open question in the row, in one line.
+2. **Running or waiting for a result**: `isRunning` true, or a pending result or unmerged branch. Say what it waits for.
+3. **Settled, can go**: would be archived by a normal tidy run. One line with the basis.
+
+Keep the sentence about sessions the tools do not list. End with one line offering the normal tidy run for block 3.
+
+A session helps this report when its last turn makes its state visible: a turn that ends with a question says it as its last sentence, and a session that is completely done is marked completed in the sidebar (`mark_completed`).
 
 Never archive the session you are running in, and never delete a session (`delete_session`).
