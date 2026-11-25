@@ -19,7 +19,7 @@ The user is away. Work the plan alone to the end. Every question you would have 
 
 ## 2. Decide instead of asking
 
-A question that would be a box or a prompt (also every question the user's own instructions ask for) is not asked. First look the answer up in the conversation and the project's own files; log a decision only when a real choice remains. Take your recommendation, build it as its own commit (stage only the files of this decision) so it can be reverted alone, and in the same moment append one entry to the log: number, question, options, choice, reason in one sentence, commit, how to undo. Taste is yours to decide here; the recommendation stands. A plain step that raised no question is not an entry: the task list shows it.
+A question that would be a box or a prompt (also every question the user's own instructions ask for) is not asked; an approval that the user's instructions or the app's permission rules require for an action (push, deleting, publishing, a permission prompt) is no such question and stays a skip under section 3. First look the answer up in the conversation and the project's own files; log a decision only when a real choice remains. Take your recommendation, build it as its own commit (stage only the files of this decision) so it can be reverted alone, and in the same moment append one entry to the log: number, question, options, choice, reason in one sentence, commit, how to undo. Taste is yours to decide here; the recommendation stands. A plain step that raised no question is not an entry: the task list shows it.
 
 Colour each entry when you write it: 🟢 easy to undo and nothing builds on it; 🟡 later steps build on it. Before you start a step, check the log: if it uses the result of a 🟢 entry, change that entry to 🟡 first. Before the report, check every 🟢 entry once more against the later steps.
 
@@ -27,7 +27,7 @@ Colour each entry when you write it: 🟢 easy to undo and nothing builds on it;
 
 Skip a step, and every step that depends on it, only when it is one of these:
 
-- Not reversible or reaching outside: deleting without a backup, publishing, push, deploy beyond what the project's own instructions already allow, messages, renaming something public, changes outside the project folder (other than the log and handoff files), migrations against remote or shared databases, credentials and access settings.
+- Not reversible or reaching outside: deleting without a backup, publishing, push, deploy unless the project's own instructions allow it without asking (then only after the full check is green, logged as a 🟡 entry with how to undo it), messages, renaming something public, changes outside the project folder (other than the log and handoff files), migrations against remote or shared databases, credentials and access settings.
 - Costs money.
 - Needs a more expensive model than the user's rules allow, or more agents or sessions at once than they allow (with no such rules: more than two).
 - Needs the user's eyes, ears or hands: signing in, a permission prompt, a refused command (never retried in another form).
