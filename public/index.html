@@ -282,6 +282,18 @@
             <li>
               <details>
               <summary class="skill-head">
+                <h4>/lanes</h4>
+                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Gives every agent session its own worktree</span>
+              </summary>
+              <p class="skill-desc">Agent sessions that change one git repository at the same time overwrite each other's work. <strong>This skill gives every agent session its own worktree and branch, keeps the main checkout clean and lands finished work there one branch at a time.</strong></p>
+              <p class="skill-desc">A bundled script moves the main branch only when the full check on the merged result is green. Uncommitted work of other sessions stays untouched.</p>
+              <p class="skill-desc">The script needs Windows PowerShell and git, and is set up only after your yes. Start it with <code>/lanes</code>. Unzip it into your skills folder.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
                 <h4>/fresh</h4>
                 <a class="download" href="agent-skills/fresh/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Hands your work over to a fresh session</span>
@@ -290,18 +302,6 @@
               <p class="skill-desc">It writes a summary of the work so far, recommends a model and effort for the next session and offers to start it. The summary builds on <a href="https://www.aihero.dev/" target="_blank" rel="noopener"><strong>Matt Pocock</strong></a>'s fantastic <a href="https://www.aihero.dev/skills-handoff" target="_blank" rel="noopener"><code>/handoff</code></a>, which writes one when you call it.</p>
               <p class="skill-desc">It also works the other way round. When you continue from a handoff file, or after a crash or stop, it first checks the real state and lists what differs.</p>
               <p class="skill-desc">Start it with <code>/fresh</code>. It also decides when it is time for a handoff. In Claude Code, an optional hook reminds it, set up only after your yes.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h4>/lanes</h4>
-                <a class="download" href="agent-skills/lanes.zip" download="lanes.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Gives every agent session its own worktree</span>
-              </summary>
-              <p class="skill-desc">Agent sessions that change one git repository at the same time overwrite each other's work. <strong>This skill gives every agent session its own worktree and branch, keeps the main checkout clean and lands finished work there one branch at a time.</strong></p>
-              <p class="skill-desc">A bundled script moves the main branch only when the full check on the merged result is green. Uncommitted work of other sessions stays untouched.</p>
-              <p class="skill-desc">The script needs Windows PowerShell and git, and is set up only after your yes. Start it with <code>/lanes</code>. Unzip it into your skills folder.</p>
               </details>
             </li>
             <li>
