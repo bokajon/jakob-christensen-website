@@ -1,3 +1,6 @@
 # Wrangler does not upload files that match these patterns.
 __pycache__
 *.pyc
+# Unveröffentlichte Entwürfe (Jakob, 2026-11-25): bleiben im Repo, gehen nicht live.
+/agent-rules
+/claude-code-course
