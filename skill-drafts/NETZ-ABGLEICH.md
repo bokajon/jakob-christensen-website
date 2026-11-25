@@ -1,6 +1,6 @@
 # Netz-Abgleich aller Skills und Ideen (2026-11-23)
 
-Rohbericht zweier Recherche-Agenten (Sonnet), Zusammenfassung und Nachprüfung in IDEEN.md, Abschnitt D. Teil 1 prüft die 6 fertigen Skills, Teil 2 die 13 Ideen plus proof.
+Rohbericht zweier Recherche-Agenten (Sonnet), Zusammenfassung und Nachprüfung in IDEEN.md, Abschnitt D. Teil 1 prüft die 6 fertigen Skills, Teil 2 die 13 Ideen plus proof; Teil 3 reroll, Teil 4 bis 7 nothing-lost, measure-ui, numbers-skeptic, now-and-then.
 
 ## Teil 1: Netz-Abgleich der 6 Skills (Stand 2026-11-23)
 
@@ -303,3 +303,136 @@ Namenskollision: kein Skill `reroll` gefunden. Der Name ist aber belegt mit eine
 Urteil: ähnlich, nicht gleich. Gefunden wurde nichts, das deine letzte Anfrage wörtlich an eine neue Session gibt, ohne die alte Antwort, mit `different`, Anzahl und Modellwahl. Die Fundstücke sind Review- und Zweitmeinungs-Skills (Code, anderes Modell) und beruhen auf demselben Gedanken (Kontext trennen). Namensrisiko: `buddy-reroll` ist ein anderer Skill, das Wort "reroll" ist aber vergeben und bei Suchen vermischt. Entscheidung über den Namen: Jakob.
 
 Anfragen: "reroll agent skill SKILL.md Claude Code"; "github reroll claude code skill fresh session second opinion without seeing previous answer"; "skills.sh reroll skill"; "claude code slash command /reroll regenerate answer new session"; "github reroll skill repository agent skills fresh session without anchoring blind rerun prompt"; "/reroll claude OR codex OR cursor skill npm OR github reroll prompt new chat".
+
+## Teil 4: Netz-Abgleich nothing-lost (Stand 2026-11-24)
+
+Methode: 6 Websuchen (standard), dazu zwei Seiten von einem Haiku-Agenten gelesen (tessl.io: HTTP 200, Mitte abgeschnitten; skillstore.io: HTTP 200, Mitte abgeschnitten) und eine nicht lesbar (skillsmp.com: HTTP 403). Eine Suche ist kein Beweis, dass es nichts gibt.
+
+Namenskollision: kein Skill `nothing-lost` und kein Befehl `/nothing-lost` gefunden (Suchen nach dem Namen mit "agent skill SKILL.md", "skills.sh", "/nothing-lost" und "nothing lost" ergaben keinen Treffer mit diesem Namen). Nur Namensanklänge anderer Art, nicht gelesen:
+- https://skillsmp.com/creators/search-atlas-group/amm-founding-circle/skills-durable-state (nur Suchergebnis): `durable state`, legt den Laufspeicher eines Agenten auf die Platte; in der Beschreibung steht der Satz "Nothing is lost". Anderer Job.
+- https://claudemarketplaces.com/skills/martian-engineering/lossless-claw/lossless-claw und https://skillsmp.com/ja/creators/godsboy/lossless-code/skills-lossless-code (nur Suchergebnis): `lossless-claw` / `lossless-code`, verlustfreie Kontextverwaltung (Gesprächsverlauf), kein Datei-Rewrite.
+- https://www.skills.sh/daymade/claude-code-skills/git-safety-net (nur Suchergebnis): `git-safety-net`, Audit-Skripte für Arbeit, die in Git verloren gehen könnte (Checkouts finden). Nicht gelesen, Ablauf unbekannt.
+
+Ähnliche Idee (nach einem Rewrite prüfen, dass nichts fehlt):
+- https://tessl.io/registry/skills/github/conorbronsdon/avoid-ai-writing/preservation-verifier (gelesen, Mitte abgeschnitten): `preservation-verifier`, vergleicht Original und Umschreibung auf geschützte Inhalte (Code, Frontmatter, Zitate, Tabellen, Links, Pfade, Zahlen, Überschriften), Ergebnis PASS, REVIEW oder FAIL. Ein Skript, das Zeile für Zeile vergleicht, war im sichtbaren Teil nicht zu sehen (die Seite sagt nur "deterministic check"). Kern anders: prüft Inhaltsklassen nach einem KI-Stil-Rewrite, nicht jede alte Zeile gegen einen Pool aus neuen Dateien.
+- https://skillstore.io/skills/doyajin174-safe-edit (gelesen, Mitte abgeschnitten): `safe-edit`, "backups, diffs, rollback notes, modular planning, and verification" bei Code-Änderungen; Qualitätswert auf der Seite "50 Poor". Zeilenweiser Verlustvergleich im sichtbaren Teil nicht zu sehen. Laut Suchergebnis (nicht selbst gelesen) legt ein Spiegel davon vor jeder Änderung ein Backup mit Zeitstempel unter `.backups/` an; dieser Teil ist bei nothing-lost bewusst anders (Git statt Backup-Ordner).
+- https://skills.sh/phar-dev/phardev.dot/safe-refactor und https://skills.sh/juliusbrussee/caveman/safe-refactor (nur Suchergebnis): `safe-refactor`, Tests und Lint vor und nach einer Code-Änderung. Code-Refactor, keine Textdateien.
+- (nur Suchergebnis, nicht geöffnet) WolfMarkDown (WolfMarkTools), `semantic-compressor` (claude-world/skills-optimizer), `Update Skills` (fubits1/ronin-skills, laut Suchergebnis mit Pflicht-Audit je Eintrag; die Seite war nicht lesbar, 403), `markdown-document-structurer` (ArabelaTso/Skills-4-SE), `operational-anchor-preservation`: alles Skills, die beim Kürzen oder Umbauen von Markdown etwas bewahren. Gelesen wurde keiner, Inhalt nur aus der Suchzusammenfassung.
+
+Urteil: ähnlich, nicht gleich. Gefunden wurde nichts, das ein mitgeliefertes Skript hat, das jede alte Zeile gegen einen Pool neuer Dateien prüft und dabei LOST (nichts Ähnliches), CHANGED (ähnliche Zeile, nächste gezeigt) und ALLOWED (vom Nutzer benannt) trennt. Das ist aber ein Befund aus Suchtreffern und zwei teilweise gelesenen Seiten, nicht aus allen Repositories. Die Fundstücke prüfen Inhaltsklassen (preservation-verifier) oder sichern Backups (safe-edit). Der Gedanke "nach dem Rewrite beweisen, dass nichts fehlt" ist nicht neu, ein allgemeiner Hinweis in den Suchergebnissen (Diff-Skript über Original und Neufassung) beschreibt dasselbe Prinzip. Namensrisiko: gering, der Name kam in keiner Suche als Skill vor. Entscheidung über den Namen: Jakob (er hat ihn am 2026-11-23 selbst gewählt).
+
+Anfragen: `"nothing-lost" agent skill SKILL.md`; `skills.sh "nothing-lost" Claude Code skill`; `agent skill check no content lost during large rewrite refactor documents line by line diff script`; `github claude code skill "content preservation" OR "lossless" rewrite restructure markdown verify no lines dropped`; `skills.sh safe-edit backup before refactor skill`; `"/nothing-lost" OR "nothing lost" claude code slash command rewrite check`.
+
+## Teil 5: Netz-Abgleich measure-ui (Stand 2026-11-24)
+
+Methode: 4 Websuchen (standard), danach 9 Seiten von einem Haiku-Agenten gelesen. Gelesen heißt hier: Seite abgerufen, Text teilweise gesehen. Seiten 1, 3, 6, 8, 9 waren abgeschnitten, 2 (403) und 4 (404) nicht abrufbar. "Nicht gesehen" heißt: im gelesenen Text nicht vorhanden, nicht: im Skill nicht vorhanden. Eine Suche ist kein Beweis, dass es nichts gibt. Format wie Teil 3 in `NETZ-ABGLEICH.md`.
+
+### Namenskollisionen
+
+`measure-ui`:
+- Kein Skill exakt `measure-ui` gefunden (Suche "measure-ui" agent skill SKILL.md).
+- Nächster Name: `ux-measure` im Repo erclx/canon (https://www.skillsdirectory.com/skills/erclx-ux-measure, nur Suchergebnis, Abruf 404). Laut Suchtext Trigger "measure the UI" oder "check Core Web Vitals", also eher Performance-Metriken. Nicht gelesen.
+- `measure` von ghaida/intent (https://www.skills.sh/ghaida/intent/measure, nur Suchergebnis): UX-Erfolgsmetriken, anderer Job.
+- `design-measure` von HKamkar/agentic-cms (https://www.skillsdirectory.com/skills/hkamkar-design-measure, gelesen, Mitte fehlt): macht aus einer Screenshot-Aussage Zahlen (Box, Computed Styles, Stacking) per eigenem Tool `pnpm kit probe`. Ähnliche Idee, projektgebunden.
+
+`ui-verify` (von zwei Reviewern vorgeschlagen): der Name ist vergeben, mehrfach, mit anderen Jobs.
+- mthines/agent-skills `ui-verify` (https://tessl.io/registry/skills/github/mthines/agent-skills/ui-verify, gelesen, Mitte fehlt): prüft eine Absichtsbeschreibung aus dem PR-Text auf der Preview, mit Beweisen, Screenshots und Aufnahmen im PR. Viewport, Zahlen, Umschalten: nicht gesehen.
+- raddue/crucible `ui-verify` (https://skills.sh/raddue/crucible/ui-verify, gelesen, bei "Show more" abgeschnitten): vergleicht Unity-UI mit einem Mockup, Delta-Bericht. Anderer Job.
+- iamcxa `ui-verify` im e2e-pipeline-Plugin (nur Suchergebnis, Abruf 403): laut Suchtext vergleicht es berechnete CSS-Werte bekannter Selektoren mit Soll-Tokens aus einer YAML-Datei. Nicht gelesen.
+- OneKeyHQ `1k-ui-verify` (https://tessl.io/registry/skills/github/OneKeyHQ/app-monorepo/1k-ui-verify, gelesen, Mitte fehlt): steuert die OneKey-Apps. Ähnlicher Name, anderer Job.
+- Außerdem `verify-ui` (jonmumm/skills, sauklaus: gelesen, abgeschnitten: verlangt einen echten Browser-Screenshot, bevor Erfolg gemeldet wird; https://www.skills.sh/jonmumm/skills/verify-ui) und `verify-ui` bei provectus (nur Suchergebnis).
+- Fazit: `ui-verify` wäre kein freier Name, mindestens vier Skills heißen so oder fast so. `measure-ui` ist frei, nur `ux-measure` und `design-measure` liegen nah am Wort.
+
+### Ähnliche Inhalte
+
+- https://claudskills.com/skills/autonomous-ui-inspection/SKILL.md (vollständig gelesen): Playwright-Screenshots plus Puppeteer-Metriken mit `getBoundingClientRect()` und scrollWidth/clientWidth. Viewport nur als Beispiel (1600x1200) empfohlen, nicht als erster Pflichtschritt. Vorher/Nachher-Screenshots für eine Interaktion. Mehrere Umschalt-Reihenfolgen, "nur der eigene Tab", Referenz wörtlich nehmen, Bericht mit "not checked": nicht gesehen. Das ist die nächste Entsprechung im Messteil.
+- https://raw.githubusercontent.com/makieali/claude-code-engineer/main/skills/frontend-verify/SKILL.md (vollständig gelesen): Screenshots bei 375, 768, 1440, Accessibility-Snapshot, Konsole, bis 3 Runden. Keine Maße als Zahlen, kein Umschalten.
+- https://skills.sh/hixuanxuan/browser-automation/visual-verify (nur Suchergebnis, in Teil 2 der Netz-Datei gelesen, hier nicht neu gelesen): Overlay-Boxen an `getBoundingClientRect`-Koordinaten, braucht lokales Chrome mit CDP Port 9222.
+- https://tessl.io/registry/skills/github/ColeMurray/background-agents/visual-verification (nur Suchergebnis): Vorher/Nachher-Screenshots, fester Viewport laut Suchtext.
+- shiplightai `verify` (https://skills.sh/shiplightai/agent-skills/verify, nur Suchergebnis): erst DOM prüfen, Screenshot nur wenn nötig.
+
+### Was die Fundstücke nicht haben (im gelesenen Text)
+
+Nicht gesehen in den gelesenen Seiten: Viewport als erster Pflichtschritt mit der Warnung "versteckte Ansicht meldet 0 x 0"; Umschalten zwischen Elementen in mehr als einer Reihenfolge (A dann B, B dann A, Wiederholung); "nur der selbst geöffnete Tab bleibt offen"; Stand-in für `requestAnimationFrame` muss `cancelAnimationFrame` beachten; Berichtstabelle mit "not checked" je ungeprüfter Messung; Referenz-Screenshot wörtlich als Vorgabe nehmen. Das ist keine Aussage, dass es das nirgends gibt: sechs der Seiten waren abgeschnitten oder nicht abrufbar.
+
+### Urteil
+
+Ähnlich, nicht gleich. Messen mit `getBoundingClientRect` und fester Viewport kommen anderswo vor (autonomous-ui-inspection, design-measure). Eigen sind die Reihenfolge-Prüfung beim Umschalten, die Ein-Tab-Regel und die "not checked"-Liste, soweit gelesen. Es ist kein Wort ohne Weiteres übernommen: keine Textüberschneidung wurde gesehen, aber auch nur zwei Texte komplett gelesen.
+
+🟠 Entscheidung für Jakob: Name `measure-ui` bleiben (frei, nur `ux-measure` und `design-measure` ähnlich) oder umbenennen. `ui-verify` ist laut Abgleich vergeben und kein Vorteil.
+
+Anfragen: `"measure-ui" agent skill SKILL.md`; `"ui-verify" agent skill SKILL.md Claude Code`; `skills.sh agent skill verify UI layout getBoundingClientRect viewport measure before after`; `github claude code skill "visual verification" browser measured numbers not screenshots layout`.
+
+## Teil 6: Netz-Abgleich numbers-skeptic, geprüft unter dem früheren Namen retest (Stand 2026-11-24)
+
+Hinweis: `retest` war der frühere Name dieses Skills. Jakob hat ihn am 2026-11-24 durch `numbers-skeptic` ersetzt (Ordner und Dateien umbenannt). Der Abgleich unten betrifft den alten Namen und bleibt so stehen; zu `numbers-skeptic` siehe Notizen, Abschnitt Name.
+
+Methode: 6 Websuchen (standard) mit "retest" plus agent skill, SKILL.md, skills.sh, Claude Code, /retest, Benchmark-Disziplin, verification-before-completion, Namensvarianten; 6 Seiten von Haiku-Agenten gelesen (2 vollständig, 3 in der Mitte abgeschnitten, 1 mit HTTP 404). Eine Suche ist kein Beweis, dass es nichts gibt.
+
+### Namenskollision: der Name ist mehrfach belegt, mit anderem Job
+- https://skills.rest/skill/retest (gelesen, vollständig): Skill `retest` von mindfortai/security-skills (auf der Seite als OFFICIAL markiert), "Validate security findings by executing targeted local smoke tests and comparing outcomes." Prüft, ob gemeldete Sicherheitslücken noch reproduzierbar sind. Beispielprompt: "Retest the vulnerability identified as ... in the latest code version." Gleicher Name, anderer Zweck (Sicherheits-Befunde nachprüfen, nicht Messwerte).
+- https://skills.cat/skills/thitic9203/ols-qa/retest-bug-workflow (gelesen, vollständig): `retest-bug-workflow`, testet einen Jira-Bug nach dem Fix des Entwicklers, Trigger "retest bug", "/retest-bug". Anderer Zweck (QA-Ablauf mit Jira).
+- https://www.skillsdirectory.com/skills/bromso-retest (nur Suchergebnis, Seite lieferte 404): `retest` aus bromso/metapowers, Inhalt nicht gesehen.
+- https://github.com/jpsim/retest (nur Suchergebnis): GitHub-Action, der PR-Kommentar `/retest` startet fehlgeschlagene Workflows neu. Kein Skill, aber `/retest` ist im CI-Alltag ein bekannter Befehl mit der Bedeutung "Test nochmal laufen lassen".
+- https://github.com/devlooped/dotnet-retest (nur Suchergebnis): dotnet-Tool gleichen Namens.
+- Folge: mindestens zwei Skills heißen `retest` oder fast so und meinen etwas anderes. Wer `/retest` tippt, erwartet "Test nochmal laufen lassen" oder "Fix nachprüfen", nicht "Messwert wiederholen und Streuung melden". Die Reviewer sagten, der Name klinge nach Planung; die Suche stützt das nicht, sie zeigt stattdessen: der Name klingt nach Bug-/Test-Wiederholung.
+
+### Nächster Inhalt
+- https://tessl.io/skills/github/obra/superpowers/verification-before-completion (gelesen, Mitte abgeschnitten): Beschreibung "Use when about to claim work is complete, fixed, or passing, before committing or creating PRs". Nach Suchergebnissen (nicht im Original gelesen): Regel "frische Belege aus dieser Nachricht", Befehl nennen, ausführen, Ausgabe lesen. Im sichtbaren Teil nichts zu Wiederholung, Streuung, Rechnerlast, Laufzeitwerten oder "unused"-Spuren; der abgeschnittene Teil ist nicht geprüft. Abgrenzung: dort geht es darum, dass überhaupt geprüft wurde, hier darum, wie eine Zahl gemessen wird.
+- https://www.skills.sh/caizongyuan/skills/check-benchmark (nur Suchergebnis): `check-benchmark` prüft, ob die Belege eine genannte Leistungsbehauptung tragen (Messaufbau, ob die Arbeit wirklich lief, Zählungen, Fehler, Zeitüberschreitungen, Uhr und Einheiten). Nah an unserem Skill, aber Review einer fremden Messung statt eigene Messdisziplin; Text nicht gelesen.
+- https://www.claudepluginhub.com/skills/arbazkhan971-godmode/bench (gelesen, Mitte abgeschnitten): `bench`, führt einen Messbefehl N-mal aus, rechnet Mittelwert, Median, Standardabweichung, cv; bei zu hoher Streuung bis zu 3 Wiederholungen des ganzen Blocks. Aufwärmen, Rechnerlast, Laufzeitwert, "unused"-Spur im sichtbaren Teil nicht gesehen.
+- https://www.claudepluginhub.com/skills/josephneumann-claude-corps/benchmark (gelesen, Mitte abgeschnitten): Benchmark gegen eine Basis-Version in temporärem Worktree. Laut Suchergebnis (nicht im Original bestätigt) Median und min/max pro Lauf, Warnung bei hoher Streuung.
+- https://raw.githubusercontent.com/Svendsys/agent-skills/master/skills/benchmark-skill/SKILL.md (nur Suchergebnis): misst, ob ein Skill etwas bringt (mit/ohne Skill). Anderes Thema.
+- Tool-Dokus und Benchmark-Skills sind meist auf Skill-Evals oder Leistungsvergleiche zweier Versionen ausgelegt. Nicht gefunden (sichtbarer Teil): ein Skill, der Wiederholung, Rechnerlast, Laufzeitwert aus der laufenden App, Größen/Anteile berechnen und "unused" nur nach Referenzspur zusammen verlangt. Das ist keine Aussage über die abgeschnittenen Mittelteile.
+
+### Urteil
+Ähnlich in Teilen, nicht gleich: Mehrfachläufe mit Median und Streuung kommen bei `bench` und `benchmark` vor, die Kombination mit "Größe, Anteil, unused messen statt schätzen" und "Wert aus der laufenden App" fand die Suche nicht. Der Name ist das Problem: `retest` ist für Sicherheits-Nachprüfung und Jira-Bug-Retest belegt, und `/retest` ist ein CI-Befehl.
+
+Namensvorschläge (nur Vorschläge, Jakob entscheidet; Umbenennen ist nicht gemacht):
+- `measure-twice`: schon vorher geprüft (NETZ-ABGLEICH.md Teil 1) und vergeben (mattshepphard/skills/measure-twice und agensi.io, anderer Zweck).
+- `bench-check`, `perf-verify`, `benchmark-check` (Namen der Reviewer): `bench-check` und `benchmark-check` gesucht, kein Skill gleichen Namens gefunden (eine Suche, nicht belegt; nächster Treffer `check-benchmark`, anders herum benannt). `perf-verify` nicht gesucht.
+- `measure-before-claim`, `remeasure`: `remeasure` in der Suche nicht gefunden, `measure-before-claim` nicht gesucht. Ob die Namen zum Inhalt passen: `bench-check` verengt auf Benchmarks, der Skill deckt aber auch Größe, Anteil und "unused" ab; `measure-before-claim` sagt das, ist aber lang.
+- Empfehlung damals: umbenennen (umgesetzt, neuer Name `numbers-skeptic`). `retest` hat zwei bekannte Gegenstücke mit anderem Zweck. Nach dieser Suche am wenigsten belegt und inhaltlich passend: `measure-before-claim` (nicht gesucht, vor der Entscheidung noch prüfen).
+
+Anfragen: "retest agent skill SKILL.md repeat measurement before claiming"; "skills.sh retest skill Claude Code"; "obra superpowers verification-before-completion SKILL.md"; "agent skill benchmark warm-up median variance repeat runs claude code skill performance measurement"; "github retest claude code skill OR slash command /retest"; "agent skill remeasure OR measure-claims OR claim-check OR bench-check SKILL.md skills.sh".
+
+## Teil 7: Netz-Abgleich now-and-then, zuvor project-state (Stand 2026-11-24)
+
+Methode: 5 Websuchen (standard): "project-state" agent skill SKILL.md; DECISIONS.md decision log STATE.md read first; skills.sh project state handoff STATE.md; Claude Code ADR append-only decisions log; Claude Code memory CLAUDE.md auto memory vs DECISIONS.md. Elf Seiten von zwei Haiku-Agenten gelesen (alle HTTP 200). Die skills.sh-Seiten zeigen nur den Anfang der SKILL.md ("Show more"), bei diesen sind die meisten Felder "nicht gesehen". Eine Suche ist kein Beweis, dass es nichts gibt.
+
+### Namenskollision
+
+- https://claudskills.com/skills/project-state/SKILL.md (vollständig gelesen, 7979 Zeichen): ein Skill mit genau dem Namen `project-state`. Beschreibung: "Use when implementing project state detection, designing STATE.md/TASKS.md templates, or configuring SQLite state store and MCP state protocol". Anderer Job: Zustandserkennung, STATE.md plus TASKS.md, SQLite-Speicher, MCP-Server, Shell-Werkzeuge (`hseos.config.yaml`, `.hseos/state/project.db`). Kein Entscheidungslog, keine Regel "append only", keine Regel für Widerspruch, kein Schritt am Sessionende gefunden. Ob die Seite zu einem gepflegten Registry-Skill gehört: nicht geprüft.
+- Weitere Seiten mit ähnlichem Namen, anderer Job: https://www.skills.sh/b-mendoza/agent-skills/analyzing-recent-project-state (nur Suchergebnis, Release-Prüfung laut Suchtext), https://skills.sh/doubleslashse/claude-marketplace/state-management (angelesen: Workflow-Zustand, `FLOW.md` plus eine `ITEM-XXX.md` je Aufgabe, kein Entscheidungslog).
+- Fazit Name: `project-state` ist belegt (mindestens eine Seite mit exakt dem Namen und anderem Inhalt). Gefunden in keiner Registry mit großen Installzahlen, aber nicht systematisch geprüft. Entscheidung über den Namen: Jakob.
+
+### Nächster Inhalt (zwei Dateien, Zustand plus Entscheidungen)
+
+- https://cdn.jsdelivr.net/gh/sh008/claude-lore@main/README.md (fast vollständig gelesen, 8718 Zeichen): Skill "Lore". Beschreibung: "The knowledge your codebase doesn't contain - decisions, dead ends, and state, recorded so the next session starts where the last one stopped." (Bindestrich von mir.) Dateien unter `docs/lore/`: `STATE.md` (etwa 150 Zeilen Limit), `ROADMAP.md`, `DECISIONS.md` (gewählt, warum, verworfen), `LEARNINGS.md`, `JOURNAL.md` (append-only Arbeitslog). Sessionstart: "The agent reads STATE.md and ROADMAP.md, greps LEARNINGS.md for whatever it's about to touch". Aufgabenende statt Sessionende: "not batched at session end". Widerspruch zur Nutzeranweisung: nicht gefunden; veraltete Einträge werden "corrected or deleted". Das ist der nächste Treffer: gleiche zwei Kernideen (STATE.md überschrieben, DECISIONS.md als Log, beim Start lesen), aber fünf Dateien (genau das, wovor die Reviewer warnten: Drift) und löschbare Einträge.
+- https://skills.sh/krishamaze/skills/project-memory (angelesen): Befehle `/memory`, `/update-memory`, `/save`, `/handoff`, `/continue`; Modus "Read 3 files + git log -> update what changed". Welche drei Dateien: nicht gesehen. Sicherheitsaudits auf der Seite: Snyk Fail, Agent Trust Hub Fail, Socket Warn (so angezeigt, nicht selbst geprüft).
+- https://tessl.io/registry/emerge/state-manager/skills (nur Registry-Seite, Skill-Text nicht gesehen): `.arch/state.json` und `.arch/decisions.md` laut Beschreibung, Architektur-Phasen. Rest nicht gesehen.
+- Handoff-Skills (nur Suchergebnis, Texte nicht gelesen): viele `handoff`-Skills auf skills.sh schreiben `HANDOFF.md` oder Dateien unter `plans/handoffs/` für die nächste Session. Anderer Job (Übergabe einer Session, nicht dauerhafte Entscheidungen).
+
+### Entscheidungslog-Skills (nur der Teil "Entscheidungen")
+
+- https://skills.sh/bonkey/skills/decision-log (angelesen, abgeschnitten): ADR-Dateien in `docs/decisions`, startet automatisch beim Verlassen des Plan-Modus; trägt sich in AGENTS.md, CLAUDE.md, GEMINI.md ein (Text dazu nicht gesehen). Laut Suchtext sollen Einträge nie geändert werden: im gelesenen Teil nicht bestätigt.
+- https://skills.sh/jonmumm/skills/adr-keeper (angelesen): ADRs in `docs/adrs/`, Namen `YYYY-MM-DD-kurz.md`, "never edit old decisions - supersede with new ones" (Bindestrich von mir). Gleiche Idee wie unsere Zeile `replaces <date> <topic>`, aber eine Datei je Entscheidung.
+- https://skills.sh/bjg4/decision-log-skill/decision-log (angelesen): Ordner `decisions/` mit einer Datei je Entscheidung plus append-only `_index.jsonl`; autonom: "Do NOT ask the user which decisions to log. Log all unlogged decisions found." Das ist das Gegenteil unserer Regel (nur final vom Nutzer genannte Entscheidungen, im Zweifel eine Frage).
+- https://www.skills.sh/denysdovhan/agents/agent-log (angelesen): Journal unter `.agents/log/YYYY-MM-DD-slug.md` mit Index, wird nur auf ausdrücklichen Wunsch angelegt ("do not create it, even when a plan is approved"). Ähnlich zu unserem "ohne Ja nichts anlegen".
+- https://skills.sh/theagentledger/agent-skills/decision-log (angelesen): Kontext, Alternativen, erwartetes Ergebnis, Konfidenz, geplanter Rückblick. Dateien nicht gesehen.
+- https://skillsmp.com/creators/thrawn01/claude-dotfiles/skills-adr-write (nur Suchergebnis): laut Suchtext "ADR is not a log book", Geschichte steht in der Versionskontrolle, kleine Änderungen direkt. Gegenposition zu append-only.
+- Tessl/ECC `architecture-decision-records` (nur Suchergebnis): fragt vor dem Anlegen von `docs/adr/`, schreibt erst nach Freigabe.
+
+### Eingebaute Gedächtnisfunktion (Überschneidung, die Reviewer nannten)
+
+- https://code.claude.com/docs/en/memory (gelesen, 55359 Zeichen, die ersten 39949 wörtlich, der Rest nur als Zusammenfassung des Agenten): Claude Code hat zwei Mechanismen. `CLAUDE.md` wird jede Session als Nutzernachricht geladen, Doku empfiehlt unter 200 Zeilen. Auto Memory: Notizen, die Claude selbst schreibt, pro Repository, nicht zwischen Rechnern geteilt, von `MEMORY.md` werden "up to the first 200 lines or 25KB" beim Start geladen. Ein `DECISIONS.md` oder Entscheidungslog wird im wörtlichen Teil nicht erwähnt.
+- Folgerung (eigene Überlegung, kein Fund): Auto Memory ist vom Agenten gewählt, geräte- und werkzeuggebunden, nicht im Projekt und nicht in git. Unser Log ist vom Nutzer bestätigt, liegt im Repo, gilt für jedes Werkzeug (Codex, Cursor). Das ist ein anderer Zweck, aber die Überschneidung bei "Korrekturen und Vorlieben merken" bleibt: nicht geprüft, wie Auto Memory sich bei einem Widerspruch zu einer DECISIONS.md-Zeile verhält.
+- Anderes Werkzeug (Codex `AGENTS.md`, Cursor Rules): nicht geprüft.
+
+### Urteil
+
+Ähnlich, nah an Lore und an den ADR-Log-Skills, aber nicht gleich. Wörtlich gleiche Sätze: keine gesehen. Bei uns gefunden und bei den gelesenen Seiten nicht: (1) genau zwei Dateien mit der Begründung "mehr Dateien driften"; (2) Regel "Nutzer sagt jetzt etwas anderes als ein Eintrag: Nutzer gilt, Widerspruch in einem Satz melden, fragen ob ein ersetzender Eintrag angehängt wird"; (3) nur final genannte Entscheidungen, nie vom Agenten erfundene, und "ohne Ja nichts anlegen"; (4) Prüfung der Zustandsangaben gegen den echten Zustand vor dem Weiterbauen; (5) Nichts-verloren-Prüfung beim Verschieben alter Einträge. Bei Lore und adr-keeper vorhanden und bei uns auch: Zustand überschrieben, Log nicht überschrieben, Start lesen. Bei skills.sh ist der Großteil der Seiten abgeschnitten, deshalb kann ein Punkt in dem ungesehenen Teil stehen.
+
+Offene Punkte für Jakob: Name `project-state` ist von einem anderen Skill (claudskills.com) mit anderem Job belegt; die Dateinamen `STATE.md` und `DECISIONS.md` sind bei Lore und `STATE.md` auch bei dem claudskills-Skill dieselben, was Verwechslung oder Konflikt im selben Projekt möglich macht (nicht getestet).
+
+Anfragen: siehe Methode.
