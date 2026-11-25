@@ -2,7 +2,7 @@
 
 Arbeitsliste, nicht veröffentlicht. Jede Idee stammt aus deinen eigenen Regeln oder Projekten. Ob es sie im Netz schon gibt, ist nicht geprüft: das kommt in Runde 1 von `tools/SKILL-CHECKLIST.md`. Die Zahl der Korrekturen ist gezählt an den Datumsangaben in deinen globalen Regeln (`~/.claude/CLAUDE.md`).
 
-## A. Entwurf fertig, wartet auf deine Tests
+## A. Entwurf fertig, inzwischen live (früher: wartet auf deine Tests)
 
 Ordner `skill-drafts/<name>/`, Notizen mit allen übernommenen Regeln und offenen Fragen in `skill-drafts/<name>.notes.md`. Alle: `check_skill.py` grün, keine Gedankenstriche.
 
