@@ -47,3 +47,9 @@ Claude Code headless, Sonnet, 11 runs, at most 2 at once, about 2.34 USD as repo
 ## Open points for Jakob
 - The four report colours (🟠 🔴 🟡 🟢) are Claude's proposal and not confirmed by him; the public text states them as fact.
 - The skill commits and integrates "as the project's Git rules say": in a project without such rules it only commits. The text does not forbid a push, but section 3 lists push as skipped.
+
+## Fixes for the three weak spots (2026-11-25, second session)
+- (a) Start time: step 1.3 now says to take start and later times from the system clock (a date command).
+- (b) Green that should be yellow: step 2 now says to check the log before each step and turn a green entry yellow when the step uses its result, and to re-check all green entries before the report.
+- (c) Plain steps: step 2 now says a step without a question is no log entry.
+- Retest: not run. Two full runs with the new text (`D:\Temp\gone-fishing-tests-2026-11-25-round2`) ended at once with API error 429 (session usage limit, reset 1:40 Vienna time). The blind agent comparison (blindfold, Sonnet) is therefore still open.
