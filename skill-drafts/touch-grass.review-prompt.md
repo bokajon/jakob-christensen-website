@@ -1,7 +1,7 @@
 I am about to publish the agent skill below under my own name on my personal website, as a free download. Review it like a strict senior reviewer before release. Open the sources listed here yourself and cite the exact file or page for every comparison or factual claim. If you cannot open a source, say so instead of answering from memory.
 
 Context
-- Skill: gone-fishing. What it does: "away mode". The user says they are leaving for a while; the agent then works through the existing plan alone to the end. It turns every question it would have asked into its own recommendation plus a log entry (each as its own commit, colour-coded by how much later work builds on it), skips only what must not be decided alone (irreversible or outside-reaching steps, costs money, needs the user's hands, another session's work), keeps going after failures (three different attempts, then a red log entry), and ends with a colour-coded report built from the log file: orange = skipped, I need you; red = failed; yellow = decided by me and other things build on it; green = decided by me and easy to undo.
+- Skill: touch-grass. What it does: "away mode". The user says they are leaving for a while; the agent then works through the existing plan alone to the end. It turns every question it would have asked into its own recommendation plus a log entry (each as its own commit, colour-coded by how much later work builds on it), skips only what must not be decided alone (irreversible or outside-reaching steps, costs money, needs the user's hands, another session's work), keeps going after failures (three different attempts, then a red log entry), and ends with a colour-coded report built from the log file: orange = skipped, I need you; red = failed; yellow = decided by me and other things build on it; green = decided by me and easy to undo.
 - It must work in: Claude Code (desktop app and CLI), Codex and Cursor where the agent can run shell commands and write files. Keep-awake, push notification and the fresh-session checkpoint depend on tools only some apps offer; the skill says to skip them when missing.
 - Origin: written by me from my own working habit (away work needs a decision log and a skip list, not silence). Part 1 is there to catch anything that slipped in from other people's skills anyway.
 - Decided by me. Do not argue these, but flag one if it makes the skill unsafe or broken: model-invoked (no disable-model-invocation); no bundled script; the name gone-fishing is kept; the four report colours and their order; "decide instead of asking" as the core rule; the skip list in section 3 as a closed list; the log file outside the repository.
@@ -30,13 +30,13 @@ Answer format: one table with the columns ID (P1, P2, ...), Part (1-5), Exact se
 
 ````markdown
 ---
-name: gone-fishing
+name: touch-grass
 license: MIT
-description: Away mode. The user leaves for a while and the session works through the existing plan alone to the end, answers every question with its own recommendation, skips what only the user can decide, and ends with a colour-coded report of what was decided for them and what waits. Use when the user says they are away or unreachable ("I'm away for a while", "I'll be gone", "afk", "gone fishing", "finish this without me", "work through the rest without me") or types /gone-fishing. Not for a single task the user is watching, and not when no plan or task list exists to work through.
+description: Away mode. The user leaves for a while and the session works through the existing plan alone to the end, answers every question with its own recommendation, skips what only the user can decide, and ends with a colour-coded report of what was decided for them and what waits. Use when the user says they are away or unreachable ("I'm away for a while", "I'll be gone", "afk", "touch grass", "gone fishing", "finish this without me", "work through the rest without me") or types /touch-grass. Not for a single task the user is watching, and not when no plan or task list exists to work through.
 compatibility: Works in any agent that can run shell commands and write files. Keep-awake, push notification and the fresh-session checkpoint use tools that only some apps offer (for example the Claude Code desktop app); where a tool is missing the skill says so and carries on.
 ---
 
-# Gone fishing
+# Touch grass
 
 The user is away. Work the plan alone to the end. Every question you would have asked becomes your recommendation plus a log entry; what only the user can decide is skipped; when they are back they see in one minute what was decided and what waits. Write messages to the user in the language they use with you, short.
 
@@ -44,7 +44,7 @@ The user is away. Work the plan alone to the end. Every question you would have 
 
 1. **Plan.** Write the steps from the conversation (task list, spec, brief) as a task list. If there is none, say so in one line and stop; invent nothing.
 2. **Keep the machine awake.** If a keep-awake tool exists (load it first if it is deferred), call it so the machine stays on until the session is idle; it may need the user's one-time approval, so it comes first. Where no such tool exists, say the machine is not kept awake.
-3. **Log file.** Create a log file in a temporary folder outside the repository, named `gone-fishing-<project>-<date>-<time>.md`, with a header (project, start time, the plan, the line "away mode on").
+3. **Log file.** Create a log file in a temporary folder outside the repository, named `touch-grass-<project>-<date>-<time>.md`, with a header (project, start time, the plan, the line "away mode on").
 4. **Announce** in at most ten lines: what comes up, and where you already expect something to wait for the user. Then start at once; do not wait for an answer.
 
 ## 2. Decide instead of asking

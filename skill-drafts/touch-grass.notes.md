@@ -1,4 +1,6 @@
-# gone-fishing - draft notes
+# touch-grass - draft notes
+
+Renamed from gone-fishing to touch-grass on 2026-11-25 (Jakob: "ok touch-grass"). Older lines below still say gone-fishing; the private skill `~/.claude/skills/gone-fishing` is not renamed yet. "gone fishing" stays a trigger phrase.
 
 ## Sources read
 - Private skill `~/.claude/skills/gone-fishing/SKILL.md` (Jakob's own, built and tested privately 2026-11-25, name chosen by Jakob from 20 proposals). FAKTEN.md for name search and test numbers. `tools/SKILL-CHECKLIST.md`.
