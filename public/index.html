@@ -132,7 +132,7 @@
           <h2>Jakob's Agent Skills</h2>
           <p class="desc">Agent skills I created from my own workflow and improved with every project. Some of them run through almost everything I do with AI. If one fits how you work, take it and adapt it.</p>
           <p class="install">Installation: download a skill, drag it into your AI's chat and write "Install this skill."</p>
-          <h3 class="skill-group">Sessions</h3>
+          <h3 class="skill-group">Handler</h3>
           <ul class="skills">
             <li>
               <details>
@@ -184,7 +184,7 @@
               </details>
             </li>
           </ul>
-          <h3 class="skill-group">Results</h3>
+          <h3 class="skill-group">Fixer</h3>
           <ul class="skills">
             <li>
               <details>
@@ -223,7 +223,7 @@
               </details>
             </li>
           </ul>
-          <h3 class="skill-group">Housekeeping</h3>
+          <h3 class="skill-group">Cleaner</h3>
           <ul class="skills">
             <li>
               <details>
@@ -273,8 +273,20 @@
               <p class="skill-desc">Start it with <code>/tidy-worktrees</code>, or ask which worktrees would be removed. It needs git 2.31 or newer.</p>
               </details>
             </li>
+            <li>
+              <details>
+              <summary class="skill-head">
+                <h4>/fingerprints</h4>
+                <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Checks a folder for private traces before you share it</span>
+              </summary>
+              <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a skill, repository, project or site before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong></p>
+              <p class="skill-desc">It changes nothing unless you ask for fixes. It does not read the git history and is not a full secret scanner.</p>
+              <p class="skill-desc">It needs Python 3. Start it with <code>/fingerprints</code>, or ask whether a folder is safe to share. Unzip it into your skills folder.</p>
+              </details>
+            </li>
           </ul>
-          <h3 class="skill-group">Review</h3>
+          <h3 class="skill-group">Detective</h3>
           <ul class="skills">
             <li>
               <details>
@@ -323,18 +335,6 @@
               <p class="skill-desc">For timings it checks the machine's load, warms up, repeats the run, and gives the median and the spread. A result counts as reproduced only after a second, separate series, and a difference smaller than the noise counts as no difference. Values come from the running app and never from a test fixture. Before it calls code unused, it searches code, tests, config, scripts and docs for it.</p>
               <p class="skill-desc">It needs a shell. It changes no system settings, does not repeat commands that deploy, send or call a paid or shared service, and does not review other people's reports. Careful measuring takes longer than guessing.</p>
               <p class="skill-desc">Start it with <code>/numbers-skeptic</code>, or ask whether something really got faster, smaller or is unused.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h4>/fingerprints</h4>
-                <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Checks a folder for private traces before you share it</span>
-              </summary>
-              <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a skill, repository, project or site before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong></p>
-              <p class="skill-desc">It changes nothing unless you ask for fixes. It does not read the git history and is not a full secret scanner.</p>
-              <p class="skill-desc">It needs Python 3. Start it with <code>/fingerprints</code>, or ask whether a folder is safe to share. Unzip it into your skills folder.</p>
               </details>
             </li>
             <li>
