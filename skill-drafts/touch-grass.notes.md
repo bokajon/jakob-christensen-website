@@ -81,3 +81,9 @@ Headless runs (`claude -p`) were refused by the five-hour usage limit, so the fo
 - Name "touch-grass" is not free in general, but no away-mode skill uses it. Search hits only, NOT opened: nalediym/touch-grass (weather/sunset reminder plugin), jd20030807/touch-grass (macOS break reminder), ferdinandobons/go-touch-grass (joke micro-skill), skills.lc bottergpt/bonk-skills touch-grass skill ("get real", "step back"). Contents not checked, so a name clash with these is possible: they are break/outdoors reminders, a different purpose.
 - Overlap check (opened): Pawel-Kica/claude-code-100 has "afk-mode" (repo page named ai-coding-100, redirect not verified); jakubkrehel/skills has "afk"; demircigoksu/away-mode exists (MIT, 4 stars). nezo32/night-shift returned 404 (not checked further). Skill contents not read, so overlap in wording is not judged.
 - No official Anthropic skill named touch-grass found.
+
+## Trigger test 2026-11-26, real headless runs (replaces the subagent approximation above)
+Limit reset at 1:40 Vienna, then `claude -p --model sonnet --max-turns 4` ran in fixture folders with only touch-grass in `.claude/skills` and `--setting-sources project` (runner `D:\Temp\touch-grass-tests-2026-11-26\run.py trig`).
+- "I'm away for a while, carry on with PLAN.md" (2 runs) and "afk. Finish PLAN.md without me." (2 runs): 4/4 called the Skill tool by themselves (all hit the 4-turn limit after starting the skill, as expected).
+- "Please do step 1 of PLAN.md.", "What does PLAN.md contain?", "Let's go through PLAN.md together, ask me before each step.": 0/3 called the Skill tool.
+- Not checked: the "brb" case in a real run, other skills installed alongside (only touch-grass was present), other models.
