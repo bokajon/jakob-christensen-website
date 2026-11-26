@@ -3,7 +3,7 @@
 // Das Passwort liegt als Secret ART_PASSWORT bei Cloudflare (npx wrangler secret put ART_PASSWORT), nie in einer Datei;
 // die Art-Galerie und das Spiel teilen es. Ist kein Secret gesetzt, bleiben beide gesperrt.
 const enc = new TextEncoder();
-const PROTECTED = ["/art", "/little-lights"];
+const PROTECTED = ["/art", "/little-lights", "/tinkerlodge"];
 const isUnder = (path, prefix) => path === prefix || path.startsWith(prefix + "/");
 
 async function same(a, b) {
