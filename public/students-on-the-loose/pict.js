@@ -19,6 +19,7 @@
   +".egg-pict .pt-incarow{display:flex;flex-direction:column;gap:6px}\n"
   +".egg-pict .pt-incarow .pt-incad{align-self:center;padding:4px 12px!important}\n"
   +".egg-pict .pt-colsw{padding:3px 8px!important;font-size:.66rem;border-radius:999px!important}\n"
+  +".egg-pict .pt-proj{margin:0;display:flex;flex-wrap:wrap;gap:6px}\n"
   +".egg-pict .pt-colsw[aria-pressed=true]{background:#f2c14e!important;color:#1b1f2a!important;border-color:#f2c14e!important}\n"
   +".egg-pict .pt-gal{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:260px;overflow:auto}\n"
   +".egg-pict .pt-gi{display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:8px}\n"
@@ -144,7 +145,7 @@
   function tick(){ if(E.tick) E.tick(900,.045); }
   function toast(t){ var el=q(".pt-tip"); if(!el) return; el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(function(){ el.hidden=true; },3200); }
   /* every write to browser storage goes through here: a full or blocked store shows one notice per page load, then the error goes on to the caller as before */
-  var lsWarned=false; function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){ if(!lsWarned&&q(".pt-tip")){ lsWarned=true; toast("Could not save: browser storage is full or blocked. Use Export to keep your work."); } throw e; } }
+  var lsWarned=false; function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){ if(!lsWarned&&q(".pt-tip")){ lsWarned=true; setTimeout(function(){ toast("Could not save: browser storage is full or blocked. Use Export to keep your work."); },0); } throw e; } }
   function saveSet(){ try{ lsSet("sbh-pict-set",JSON.stringify({size:size,col:col,tool:tool,shape:shape,pick:pick,col3:colOn})); }catch(e){} }
   function saveDraw(){ try{ lsSet("sbh-pict",cv.toDataURL("image/png")); }catch(e){} }
   function ICON(n){ return {draw:'<path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13 7l3 3"/>',erase:'<path d="M4 15l8-8 6 6-5 5H8z"/><path d="M10 18h10"/>',shape:'<rect x="3" y="4" width="8" height="8" rx="1"/><circle cx="17" cy="8" r="4"/><path d="M3 19h18"/>',
@@ -161,7 +162,7 @@
       +'<div class="pt-side"><section class="pt-box"><h3>Color</h3><div class="pt-sw">'+SW.map(function(c){ return '<button type="button" data-c="'+c+'" style="--c:'+c+'" aria-label="'+c+'"></button>'; }).join("")+'<label class="pt-pick" title="Any color"><input type="color" value="'+col+'" aria-label="Any color"></label></div></section>'
       +'<section class="pt-box"><h3>Size</h3><label class="pt-size"><input type="range" min="1" max="60" value="'+size+'" aria-label="Brush size"><output>'+size+'</output></label><p class="pt-note">For drawing, erasing and the shapes. [ and ] change it too.</p></section>'
       +'<section class="pt-box"><div class="pt-wbh"><h3>Would become</h3><button type="button" class="pt-colsw" aria-pressed="false" title="Match Colors: the suggestions also consider the colors you used">Match Colors</button></div><div class="pt-wb"><p class="pt-note">Draw something: the 2D objects that look like it appear here.</p></div><button type="button" class="pt-place" data-tip="Takes your drawing to the Handbook: move the mouse and click to place it. You can also press &quot;Drag to Handbook&quot; and drag it there yourself.">Place Object</button><button type="button" class="pt-grip" title="Press here and drag your drawing onto a line in the Handbook">'+svg("grip")+' Drag to Handbook</button><span class="pt-incarow"><button type="button" class="pt-inca" title="Opens the best match in Inca as a 3D model">'+svg("cube")+' Open in Inca</button><button type="button" class="pt-colsw pt-incad" aria-pressed="false" title="Your drawing: open the drawing itself in Inca, one cube per pixel, instead of the 2D object it would become">Your drawing</button></span></section>'
-      +'<section class="pt-box pt-galbox"><h3>Gallery</h3><ul class="pt-gal" aria-label="Saved drawings"></ul></section></div></div>'
+      +'<section class="pt-box pt-galbox"><h3>Gallery</h3><ul class="pt-gal" aria-label="Saved drawings"></ul><p class="pt-proj"><button type="button" class="pt-colsw pt-pexp" title="Save the drawing, the gallery and the settings as one .json file">Export project</button><button type="button" class="pt-colsw pt-pimp" title="Load a project .json file: it replaces the drawing and the gallery">Import project</button></p><input type="file" class="pt-pfile" accept=".json,application/json" hidden></section></div></div>'
       +'<p class="pt-fine">Pict. Not to be confused with the Picts.</p></div>';
     document.body.appendChild(wrap); cv=q(".pt-cv"); ov=q(".pt-ov"); g=cv.getContext("2d",{willReadFrequently:true}); og=ov.getContext("2d");
     try{ var d=localStorage.getItem("sbh-pict"); if(d){ var im=new Image(); im.onload=function(){ g.drawImage(im,0,0); wouldBecome(); }; im.src=d; } }catch(e){}
@@ -226,11 +227,32 @@
   function galSave(){ if(blank()){ toast("Nothing to save yet: draw something first."); return; } var n=1; gallery.forEach(function(x){ var m=/^Drawing (\d+)$/.exec(x.name); if(m) n=Math.max(n,+m[1]+1); });
     var it={id:Date.now(),name:"Drawing "+n,at:new Date().toISOString().slice(0,10),thumb:thumbOf(),png:cv.toDataURL("image/png")}; gallery.unshift(it); if(gallery.length>40) gallery.length=40;
     if(!galStore()){ gallery.shift(); toast("The gallery is full: delete a drawing there first."); return; } paintGal(); toast("Saved as "+it.name+" in the gallery."); }
+  /* project file: one .json with the drawing, the gallery and Pict's settings (the PNG button stays as it is) */
+  var PVER=1, isImg=function(u){ return typeof u==="string"&&/^data:image\/(png|jpeg);base64,/.test(u); };
+  function projBuild(){ var set=null; try{ set=localStorage.getItem("sbh-pict-set"); }catch(e){} if(set==null) set=JSON.stringify({size:size,col:col,tool:tool,shape:shape,pick:pick,col3:colOn});
+    return JSON.stringify({app:"pict-project",version:PVER,exported:new Date().toISOString(),keys:{"sbh-pict":cv.toDataURL("image/png"),"sbh-pict-gallery":JSON.stringify(gallery),"sbh-pict-set":set}}); }
+  function projExport(){ try{ var a=document.createElement("a"), u=URL.createObjectURL(new Blob([projBuild()],{type:"application/json"})); a.href=u; a.download="pict-project.json"; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); URL.revokeObjectURL(u); },1500); toast("Exported the project as pict-project.json."); }catch(e){ toast("The project could not be exported."); } }
+  function projCheck(text){ var d; try{ d=JSON.parse(text); }catch(e){ return "That is not a Pict project file: it could not be read."; }
+    if(!d||typeof d!=="object"||d.app!=="pict-project"||!d.keys||typeof d.keys!=="object") return "That is not a Pict project file.";
+    if(typeof d.version!=="number"||d.version<1) return "That project file has no valid version.";
+    if(d.version>PVER) return "That project file comes from a newer version of Pict.";
+    var K=d.keys, ks=Object.keys(K); for(var i=0;i<ks.length;i++){ if(["sbh-pict","sbh-pict-gallery","sbh-pict-set"].indexOf(ks[i])<0||typeof K[ks[i]]!=="string") return "That project file holds data Pict does not know."; }
+    if(!isImg(K["sbh-pict"])) return "That project file holds no drawing.";
+    var ga, st; try{ ga=K["sbh-pict-gallery"]==null?[]:JSON.parse(K["sbh-pict-gallery"]); st=K["sbh-pict-set"]==null?{}:JSON.parse(K["sbh-pict-set"]); }catch(e){ return "That project file is damaged: the gallery or settings cannot be read."; }
+    if(!Array.isArray(ga)||!ga.every(function(it){ return it&&typeof it.name==="string"&&typeof it.at==="string"&&isImg(it.thumb)&&isImg(it.png)&&isFinite(+it.id); })) return "That project file is damaged: the gallery is not valid.";
+    if(!st||typeof st!=="object") return "That project file is damaged: the settings are not valid.";
+    return {K:K,gallery:ga}; }
+  function projImport(text){ var d=projCheck(text); if(typeof d==="string"){ toast(d); return; }
+    var im=new Image(); im.onerror=function(){ toast("That project file holds a drawing Pict cannot read. Nothing was changed."); };
+    im.onload=function(){ if(!wrap) return; push(); g.clearRect(0,0,W,H); g.drawImage(im,0,0,W,H); pick=null; gallery=d.gallery; var ok=galStore(); try{ if(d.K["sbh-pict-set"]!=null) lsSet("sbh-pict-set",d.K["sbh-pict-set"]); }catch(e){ ok=false; } saveDraw(); paintGal(); wouldBecome(true); toast(ok?"Project imported. Undo brings back the drawing that was there. Settings apply the next time Pict opens.":"Project imported, but this browser could not keep all of it. Export it again to keep your work."); };
+    im.src=d.K["sbh-pict"]; }
+  function projFile(f){ if(f.size>60*1024*1024){ toast("That file is too large to be a Pict project."); return; } f.text().then(projImport,function(){ toast("That file could not be read."); }); }
   function galOpen(it){ var im=new Image(); im.onload=function(){ push(); g.clearRect(0,0,W,H); g.drawImage(im,0,0,W,H); pick=null; saveSet(); saveDraw(); wouldBecome(true); toast("Opened "+it.name+". Undo brings back what was there."); }; im.src=it.png; }
   function paintGal(){ var ul=q(".pt-gal"); if(!ul) return; ul.innerHTML=gallery.length?gallery.map(function(it){ return '<li class="pt-gi" data-id="'+it.id+'"><button type="button" class="pt-gopen" title="Open '+it.name.replace(/"/g,"&quot;")+'"><img alt="" src="'+it.thumb+'"></button><span class="pt-gtxt"><button type="button" class="pt-gname" title="Double-click to rename">'+it.name.replace(/</g,"&lt;")+'</button><small>'+it.at+'</small></span><button type="button" class="pt-gx" aria-label="Delete '+it.name.replace(/"/g,"&quot;")+'" title="Delete">\u00d7</button></li>'; }).join(""):'<li class="pt-gempty">Nothing saved yet. Save keeps the drawing you have now.</li>'; }
   function galEvents(){ var ul=q(".pt-gal"); var find=function(e){ var li=e.target.closest(".pt-gi"); return li?gallery.filter(function(x){ return x.id===+li.getAttribute("data-id"); })[0]:null; };
     ul.addEventListener("click",function(e){ var it=find(e); if(!it) return; if(e.target.closest(".pt-gx")){ gallery.splice(gallery.indexOf(it),1); galStore(); paintGal(); toast(it.name+" deleted."); } else if(e.target.closest(".pt-gopen")) galOpen(it); });
     ul.addEventListener("dblclick",function(e){ if(!e.target.closest(".pt-gname")) return; var it=find(e); if(!it) return; var n=prompt("Name",it.name); if(n&&n.trim()){ it.name=n.trim().slice(0,40); galStore(); paintGal(); } });
+    var pf=q(".pt-pfile"); q(".pt-pexp").addEventListener("click",projExport); q(".pt-pimp").addEventListener("click",function(){ pf.value=""; pf.click(); }); pf.addEventListener("change",function(){ var f=pf.files&&pf.files[0]; if(f) projFile(f); });
     q(".pt-save").addEventListener("click",galSave); q(".pt-dl").addEventListener("click",function(){ if(blank()){ toast("Nothing to download yet: draw something first."); return; } var a=document.createElement("a"); a.download="pict-drawing.png"; a.href=cv.toDataURL("image/png"); document.body.appendChild(a); a.click(); a.remove(); toast("Downloaded as pict-drawing.png."); }); paintGal(); }
   /* Would become (Jakob, 18.10.2026): the first picture is what the drawing becomes (itself, as the pixel version it lands as, or your choice), then the two best look-alikes;
      a click on any of them opens a picker like Inca's: "Your drawing", the 30 best look-alikes, or any object by name */
