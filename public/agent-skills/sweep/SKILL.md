@@ -1,7 +1,7 @@
 ---
 name: sweep
 license: MIT
-description: Frees disk space on Windows drives (C: and others). Use with /sweep or when the user asks for space ("C is full", "free up disk space", "find duplicate files", "what is eating my drive"). Cleans rebuildable caches after one yes, reports the biggest folders of a drive, and finds duplicates, archives next to their extracted folder and big files in folders the user names, removed only by number after a second yes.
+description: Frees disk space on Windows drives (C: and others). Use with /sweep or when the user asks for space ("C is full", "free up disk space", "find duplicate files", "what is eating my drive"). Cleans rebuildable caches after one yes, shows the biggest folders of every drive, and finds duplicates, archives next to their extracted folder and big files in folders the user names, removed only by number after a second yes.
 metadata:
   author: "Jakob Christensen"
   source: "https://jakobchristensen.com"
@@ -20,8 +20,8 @@ Two kinds of work, two kinds of yes:
 
 1. Run the dry run (changes nothing) in the background and keep its full output:
    `powershell -NoProfile -ExecutionPolicy Bypass -File "<skill folder>\scripts\sweep.ps1"`
-   The table part takes seconds. Until `places.json` exists, and with `-Discover`, the script also searches all fixed drives for cache-like folders (up to about 3 minutes, then it says INCOMPLETE). Add `-Full` only when the user asks about worktrees, logs or AppData\Local.
-2. Show the user the table (item, size, deletable size, action), the SHOW ONLY lines and the free space of every drive, each with the number the script printed. Name every `SHOW ONLY (not on the Windows drive)` row as untouched and say why. Add this safety block:
+   The table part takes seconds; the biggest-folders report afterwards takes up to 90 s per fixed drive (`-TopSec` changes it, `-TopN` the number of rows). Until `places.json` exists, and with `-Discover`, the script also searches all fixed drives for cache-like folders (up to about 3 minutes, then it says INCOMPLETE). Add `-Full` only when the user asks about worktrees, logs or AppData\Local.
+2. Show the user the table (item, size, deletable size, action), the SHOW ONLY lines, the free space of every drive and the BIGGEST FOLDERS lists, each with the number the script printed. The folder lists are a report only: nothing is offered for deletion from them. Say what a big folder is only when its name makes it clear (Users, Windows, Program Files), otherwise "content not checked". Rows marked `>=` or an INCOMPLETE line mean the time ran out: say so, never present them as totals. The biggest candidates for the user files steps below are named there, so ask whether to search one of them with `-Root` and `-Find`. Name every `SHOW ONLY (not on the Windows drive)` row as untouched and say why. Add this safety block:
    - Deleted: only caches and temp files that programs rebuild on their own. No documents, projects, downloads or settings.
    - Worst case: the next start of a game or app is slower once; a crash dump is gone.
    - Brakes: nothing younger than the row's minimum age (1 hour, some 1 day), files in use stay.
@@ -47,11 +47,6 @@ Two kinds of work, two kinds of yes:
 4. Ask which numbers to remove (a box or a list with the sizes). The user may name numbers, ranges, "all" (duplicates and verified archives only) or "all except 3,7". Removal is permanent, there is no recycle bin; say so in the question.
 5. After the answer run `... sweep.ps1 -Remove "1,3,5-8"` (or `-Remove all -Except "3,7"`) first as a dry run, then once more with `-Delete`. The script re-checks each file right before removal (still there, same size and time, kept copy or extracted folder still there, inside a scan folder, not on the keep list) and skips what changed. Report removed, skipped and the free space before and after.
 6. Protect things for good with `... sweep.ps1 -Keep "<file or folder>"`: it is never offered and never removed.
-
-## Biggest folders (where is the space?)
-
-The table run only knows rebuildable cache rows and does not rank folders. When the user asks where the space went, or the table frees little, run the report for one drive (changes nothing, never deletes):
-`... sweep.ps1 -Top <drive letter>` in the background (`-TopN` rows, default 15; `-BudgetSec`, default 900; a drive with 1 TB or more used may need more). It lists the biggest folders directly under the drive root and, inside the 8 biggest, their 5 biggest subfolders. Show the lists with the sizes as printed. Rows marked `>=` or an INCOMPLETE line mean the budget ran out: say so, never present them as totals. Do not offer to delete from this list. Say what a big folder probably is only when its name makes it clear (Users, Windows, Program Files), otherwise "content not checked". A folder the user wants cleaned goes through `-Root` and `-Find`, or the user decides by hand.
 
 ## Recycle bin
 

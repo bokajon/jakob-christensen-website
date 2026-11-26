@@ -11,14 +11,14 @@
 #   -Keep <path>     protect a file or folder: never offered, never removed (written to ..\places.json)
 #   -Root <path>     add a folder to scan with -Find (written to ..\places.json, nothing is scanned or deleted)
 #                    One path per flag and per run: with powershell -File a list of paths arrives as one string.
+#   (every dry run also lists the biggest folders of each fixed drive, report only: -TopN rows (default 12),
+#    -TopSec seconds per drive (default 90); rows marked '>=' are lower bounds when the time ran out)
 #   -Find            scan the -Root folders for duplicates, archives next to a same-named folder and big files;
 #                    numbered list goes to ..\candidates.json. Options: -MinMB (default 50), -LargeMB (default 500),
 #                    -BudgetSec (default 900)
 #   -Remove <ids>    remove numbered candidates: "1,3,5-8" or "all" (all = duplicates and verified archives that do not
 #                    look like part of an installed program; big files and unverified ones only by number).
 #                    -Except "3,7" takes numbers out of "all". Dry run unless -Delete.
-#   -Top <X>         report only: the biggest folders of drive X (two levels, top 5 inside each of the 8 biggest).
-#                    Options: -TopN (default 15), -BudgetSec (default 900). Changes nothing.
 #   -EmptyBin <X>    empty the recycle bin of drive X (permanent). Dry run unless -Delete.
 #   -Delete          do it: clean the table rows / remove the numbers / empty the bin
 # Rules: only files older than the row's minimum age, locked files stay, reparse points are skipped,
@@ -28,8 +28,8 @@
 param(
     [switch]$Delete, [switch]$Full, [switch]$Discover, [switch]$Find,
     [string[]]$Accept = @(), [string[]]$Ignore = @(),
-    [string]$Keep = '', [string]$Root = '', [string]$Remove = '', [string]$Except = '', [string]$EmptyBin = '', [string]$Top = '',
-    [int]$MinMB = 50, [int]$LargeMB = 500, [int]$BudgetSec = 900, [int]$TopN = 15
+    [string]$Keep = '', [string]$Root = '', [string]$Remove = '', [string]$Except = '', [string]$EmptyBin = '',
+    [int]$MinMB = 50, [int]$LargeMB = 500, [int]$BudgetSec = 900, [int]$TopN = 12, [int]$TopSec = 90
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
@@ -238,11 +238,9 @@ if ($EmptyBin) {
     return
 }
 
-# ---- -Top: biggest folders of one drive, report only ----
-if ($Top) {
-    $L = $Top.Trim().TrimEnd(':', '\').ToUpper()
-    if ($L.Length -ne 1 -or $fixedDrives -notcontains $L) { "REFUSED (not a fixed drive letter): $Top"; return }
-    $deadline = [DateTime]::UtcNow.AddSeconds($BudgetSec).Ticks
+# ---- biggest folders of a drive (report only, part of every dry run) ----
+function Show-BigFolders([string]$L, [int]$Sec) {
+    $deadline = [DateTime]::UtcNow.AddSeconds($Sec).Ticks
     $skipNames = @('$RECYCLE.BIN', 'System Volume Information')
     $report = @(); $loose = 0L; $anyIncomplete = $false
     $swTop = [Diagnostics.Stopwatch]::StartNew()
@@ -261,7 +259,6 @@ if ($Top) {
         }
         if (-not $complete) { $anyIncomplete = $true }
         $report += [pscustomobject]@{ Path = $t.FullName; Bytes = $sum; Complete = $complete; Kids = $kids }
-        "[$($report.Count)] $($t.FullName): $(Fmt $sum) ($([int]$swTop.Elapsed.TotalSeconds)s)"
     }
     $sorted = @($report | Sort-Object Bytes -Descending)
     ''
@@ -279,11 +276,10 @@ if ($Top) {
         }
     }
     if ($loose -gt 0) { "Files directly in $L`:\: $(Fmt $loose)" }
-    if ($anyIncomplete) { "INCOMPLETE: the time budget ($BudgetSec s) ran out, rows marked '>=' are lower bounds and folders not reached count 0. Raise -BudgetSec for a full picture." }
+    if ($anyIncomplete) { "INCOMPLETE: the time budget ($Sec s) ran out, rows marked '>=' are lower bounds and folders not reached count 0. Raise -TopSec for a full picture." }
     "Not counted: reparse points (links, junctions), $($skipNames -join ', '). Run time: $([int]$swTop.Elapsed.TotalSeconds) s"
-    'REPORT ONLY: nothing was changed.'
-    return
 }
+
 
 # ---- -Find ----
 if ($Find) {
@@ -596,6 +592,10 @@ $dm = Measure-Dir $dl 0
 foreach ($L in $fixedDrives) {
     $bm = Measure-Dir "$L`:\`$RECYCLE.BIN" 0
     if ($bm.Total -gt 0) { "SHOW ONLY  recycle bin of $L`: $(Fmt $bm.Total) (empty it with -EmptyBin $L, only after the user says yes)" }
+}
+
+if (-not $Delete) {
+    foreach ($L in $fixedDrives) { ''; Show-BigFolders $L $TopSec }
 }
 
 if ($Full) {
