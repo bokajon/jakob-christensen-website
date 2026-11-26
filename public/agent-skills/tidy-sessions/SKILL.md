@@ -3,6 +3,10 @@ name: tidy-sessions
 license: MIT
 description: Archive every finished or superseded session in the Claude desktop app's session list so the sidebar stays short. Use only when the user asks to tidy up, clean up or archive their Claude Code sessions in the desktop app (not code, files or git), or asks which sessions would be archived or which are waiting for them. Not for deleting sessions and not for the running session. To remove landed git worktrees and branches without the desktop app, use the tidy-worktrees skill.
 compatibility: Claude desktop app (Code tab) only. Needs its session tools list_sessions, list_events, get_session and archive_session, and git.
+metadata:
+  author: "Jakob Christensen"
+  copyright: "(c) 2026 Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Tidy sessions

@@ -31,6 +31,14 @@ TOOL_ONLY = [
     "AskUserQuestion", "TaskCreate", "TodoWrite", "mcp__", "Skill tool", "SendMessage",
     "disable-model-invocation", "user-invocable", "$ARGUMENTS", "CLAUDE_",
 ]
+# Exact lines that carry the author's name on purpose (compared after stripping whitespace).
+# They are skipped for the PRIVATE_WORDS scan only.
+ALLOWED_NAME_LINES = {
+    'author: "Jakob Christensen"',
+    'copyright: "(c) 2026 Jakob Christensen"',
+    'source: "https://jakobchristensen.com"',
+    "Copyright (c) 2026 Jakob Christensen",
+}
 GERMAN_HINTS = [" und ", " der ", " die ", " das ", " nicht ", " ist ", " mit ", " für "]
 
 PATTERNS = {
@@ -106,8 +114,11 @@ def check(folder):
             hints.append(f"{rel}: binary file, check by hand")
             continue
         lower = content.lower()
+        name_scan = "\n".join(
+            ln for ln in content.split("\n") if ln.strip() not in ALLOWED_NAME_LINES
+        ).lower()
         for word in PRIVATE_WORDS:
-            if word in lower:
+            if word in name_scan:
                 problems.append(f"{rel}: private word '{word}'")
         for doc in PRIVATE_DOCS:
             if doc in content:

@@ -3,6 +3,10 @@ name: measure-ui
 license: MIT
 description: Checks the layout and behavior of a web page in a real browser with measured numbers instead of judging by eye. Sets the viewport first, reports element sizes and positions as numbers, switches between items in more than one order, and keeps one tab open for before and after comparisons. Use it after a visual, CSS or interaction change to a page, when the user reports alignment, spacing, overflow, responsive or mobile problems or says something looks off, asks whether a layout works, or before declaring a UI change done or a page correct. It uses DOM numbers, not screenshots alone. Not for unit tests (they do no layout), backend-only or API changes, code review without a rendered page, or an environment without browser access.
 compatibility: Needs an agent tool that can open a page in a real browser. Full use needs JavaScript execution in the page; without it the screenshot-only fallback in step 0 applies.
+metadata:
+  author: "Jakob Christensen"
+  copyright: "(c) 2026 Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Measure UI

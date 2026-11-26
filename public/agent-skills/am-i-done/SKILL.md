@@ -3,6 +3,10 @@ name: am-i-done
 license: MIT
 description: Checks whether the whole task is finished before the user closes a chat - this conversation, every session it started, the session that started it, other parts of the same /fresh series, and the git and deploy state - and answers with a green "done, you can close this chat", an orange "nothing open found, but not everything checked" or a red "not yet" plus the list of open points. Use with /am-i-done, or when the user asks whether the whole task is finished or the chat can be closed ("am I done with this whole task?", "can I close this chat?", "anything left?", "bin ich fertig?", "kann ich den Chat schließen?"). Not for a single build, test, commit or deploy ("did the build finish?"), not for a project-wide backlog ("what is still open in this project?"), not for action requests ("wrap this up", "commit and push"), not for archiving sessions (that is tidy-sessions), not for handing unfinished work to a new session (that is fresh), and it does not fix the open points it finds.
 compatibility: The full check needs the Claude desktop app (Code tab) session tools list_sessions, list_events, get_session, search_session_transcripts and mark_completed, plus git. Without them it checks only this conversation, git and the notes files, and says that other sessions were not checked.
+metadata:
+  author: "Jakob Christensen"
+  copyright: "(c) 2026 Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Am I done

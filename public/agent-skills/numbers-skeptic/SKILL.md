@@ -3,6 +3,10 @@ name: numbers-skeptic
 license: MIT
 compatibility: Needs a shell to run the measurement commands.
 description: Measures performance, timing, size, share, ranking and unused-code claims about software itself, with a warm-up, repeated runs, median and spread, a machine-load check and runtime values taken from the running app and not from test fixtures. Use when about to report or confirm that something is faster, slower, smaller, under a time limit, the largest, a given share of a folder or bundle, a frame rate, a load time, or unused or dead code. For a single fixed fact that can be read directly (a line count, one file's size) one command is enough and no repetition applies. It does not review other people's claims or reports.
+metadata:
+  author: "Jakob Christensen"
+  copyright: "(c) 2026 Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Numbers skeptic

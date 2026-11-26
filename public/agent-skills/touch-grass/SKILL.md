@@ -3,6 +3,10 @@ name: touch-grass
 license: MIT
 description: Away mode. The user leaves for a longer while and the session works through the existing plan alone to the end, answers every question with its own recommendation, skips what only the user can decide, and ends with a colour-coded report of what was decided for them and what waits. Use when the user says they are away or unreachable ("I'm away for a while", "I'll be gone for a while", "afk for a while", "touch grass", "gone fishing", "finish this without me", "work through the rest without me") or types /touch-grass. Not for brief pauses ("brb", "back in a minute"), not for a single task the user is watching, and not when no plan or task list exists to work through.
 compatibility: Needs an agent that can run shell commands, read the system clock and write files outside the repository; uses git where the project is a git repository. Keep-awake, push notification and the fresh-session checkpoint use tools that only some apps offer (for example the Claude Code desktop app); where a tool is missing the skill says so and carries on.
+metadata:
+  author: "Jakob Christensen"
+  copyright: "(c) 2026 Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Touch grass

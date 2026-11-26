@@ -3,6 +3,10 @@ name: reroll
 license: MIT
 description: Rerolls the last answer blind by handing the user's own request word for word to a brand-new session that has never seen the rejected answer. Use with /reroll, or when the user says "reroll", "ask a fresh chat" or "try again without seeing your answer", or wants an unanchored second attempt at an answer they disliked (ideas, brainstorm, tips, a plan). Not for fixing a factual error in the answer (just fix it) and not for continuing work.
 compatibility: Starts a separate session through the Claude Code desktop app's start_session tool. In any other tool it copies the prompt to the clipboard (shell) or prints it, and the user pastes it into a new chat.
+metadata:
+  author: "Jakob Christensen"
+  copyright: "(c) 2026 Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Reroll
