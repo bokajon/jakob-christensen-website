@@ -5,7 +5,6 @@ description: Guards a large rewrite of text or data files against silent loss: c
 compatibility: Needs git and Python 3. The script uses only the standard library.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

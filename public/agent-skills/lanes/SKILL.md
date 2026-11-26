@@ -5,7 +5,6 @@ description: How several agent sessions work on one git repository at the same t
 compatibility: The integration script needs Windows PowerShell 5.1 or newer and git (2.31 or newer, because the script uses `git rev-parse --path-format=absolute`). The guard hook is an optional Claude Code PreToolUse hook and needs Node.js. No macOS or Linux version of the script is bundled.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

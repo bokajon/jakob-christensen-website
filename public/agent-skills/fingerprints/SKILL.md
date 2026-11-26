@@ -5,7 +5,6 @@ description: Checks a folder before it is shared or published, most often a skil
 compatibility: Needs Python 3 and nothing else. The script uses only the standard library.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

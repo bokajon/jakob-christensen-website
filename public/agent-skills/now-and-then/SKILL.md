@@ -4,7 +4,6 @@ license: MIT
 description: Maintains a project's decision log (DECISIONS.md, append only, each line dated with its source) and a short STATE.md for the current state and open points. Use when the user states something that should outlive the task (a name, an assignment, a project rule, a choice between options, or a correction of something the agent did or assumed), when a project has these files, when a session that changed the state ends, and when the user asks to set the files up.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

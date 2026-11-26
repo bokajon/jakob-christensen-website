@@ -5,7 +5,6 @@ description: Remove local git worktrees and branches whose work has safely lande
 compatibility: Needs git (2.31 or newer, because the steps read the `prunable` field of `git worktree list --porcelain`) and nothing else. Works in any tool that can run shell commands.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

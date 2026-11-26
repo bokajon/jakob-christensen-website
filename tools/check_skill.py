@@ -35,7 +35,6 @@ TOOL_ONLY = [
 # They are skipped for the PRIVATE_WORDS scan only.
 ALLOWED_NAME_LINES = {
     'author: "Jakob Christensen"',
-    'copyright: "(c) 2026 Jakob Christensen"',
     'source: "https://jakobchristensen.com"',
     "Copyright (c) 2026 Jakob Christensen",
 }

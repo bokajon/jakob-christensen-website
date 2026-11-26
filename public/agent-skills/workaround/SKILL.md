@@ -4,7 +4,6 @@ license: MIT
 description: Find another working route when the direct one is blocked by something outside your control (a tool fails or is missing, an API or feature is unavailable, a bug you cannot fix directly). Use when the user asks for a workaround or to get around a blocker, or when the direct route has failed for such a reason. Not for ordinary errors you can simply debug, and never for getting around a permission, an approval or a security check.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

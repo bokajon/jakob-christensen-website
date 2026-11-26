@@ -5,7 +5,6 @@ description: Checks the layout and behavior of a web page in a real browser with
 compatibility: Needs an agent tool that can open a page in a real browser. Full use needs JavaScript execution in the page; without it the screenshot-only fallback in step 0 applies.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

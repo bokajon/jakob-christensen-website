@@ -5,7 +5,6 @@ description: Seals a finished chat session so it is easy to spot in the session 
 compatibility: Renaming and completion marking need the Claude desktop app session tools set_session_title and mark_completed (plus get_session for the current title, and list_events to read another session). On agents without these tools the skill only writes the closing report, says in one line that the title and the completion state were not changed (naming which of the two were unavailable), and cannot seal other sessions.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

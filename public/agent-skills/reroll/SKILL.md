@@ -5,7 +5,6 @@ description: Rerolls the last answer blind by handing the user's own request wor
 compatibility: Starts a separate session through the Claude Code desktop app's start_session tool. In any other tool it copies the prompt to the clipboard (shell) or prints it, and the user pastes it into a new chat.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

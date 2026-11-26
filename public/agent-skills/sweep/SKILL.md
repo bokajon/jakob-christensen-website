@@ -4,7 +4,6 @@ license: MIT
 description: Frees disk space on Windows drives (C: and others). Use with /sweep or when the user asks for space ("C is full", "free up disk space", "find duplicate files", "what is eating my drive"). Cleans rebuildable caches after one yes, and finds duplicates, archives next to their extracted folder and big files in folders the user names, removed only by number after a second yes.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

@@ -5,7 +5,6 @@ description: Checks whether the whole task is finished before the user closes a 
 compatibility: The full check needs the Claude desktop app (Code tab) session tools list_sessions, list_events, get_session, search_session_transcripts and mark_completed, plus git. Without them it checks only this conversation, git and the notes files, and says that other sessions were not checked.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 

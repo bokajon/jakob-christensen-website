@@ -5,7 +5,6 @@ description: Away mode. The user leaves for a longer while and the session works
 compatibility: Needs an agent that can run shell commands, read the system clock and write files outside the repository; uses git where the project is a git repository. Keep-awake, push notification and the fresh-session checkpoint use tools that only some apps offer (for example the Claude Code desktop app); where a tool is missing the skill says so and carries on.
 metadata:
   author: "Jakob Christensen"
-  copyright: "(c) 2026 Jakob Christensen"
   source: "https://jakobchristensen.com"
 ---
 
