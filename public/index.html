@@ -476,6 +476,18 @@
             <li>
               <details>
               <summary class="skill-head">
+                <h4>/fingerprints</h4>
+                <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
+                <span class="skill-sum">Checks a folder for names, paths and keys before you share it</span>
+              </summary>
+              <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a skill, repository, project or site before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong></p>
+              <p class="skill-desc">It changes nothing unless you ask for fixes. It does not read the git history and is not a full secret scanner.</p>
+              <p class="skill-desc">It needs Python 3. Start it with <code>/fingerprints</code>, or ask whether a folder is safe to share. Unzip it into your skills folder.</p>
+              </details>
+            </li>
+            <li>
+              <details>
+              <summary class="skill-head">
                 <h4>/numbers-skeptic</h4>
                 <a class="download" href="agent-skills/numbers-skeptic/SKILL.md" download="SKILL.md" aria-label="Download MD" title="Download MD"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">MD</span></a>
                 <span class="skill-sum">Makes your agent measure claims like faster, smaller or unused</span>
@@ -532,18 +544,6 @@
               <p class="skill-desc">Big rewrites lose words and numbers without anyone noticing. <strong>This skill makes the old state recoverable in git first, moves text word for word, and then has a script check that every old line still exists in the new files.</strong></p>
               <p class="skill-desc">It lists every line found nowhere and marks lines that changed on purpose. Line order and counts are not checked.</p>
               <p class="skill-desc">It is meant for about 5 or more files, or 100 or more lines, and needs Python 3 and git. Start it with <code>/nothing-lost</code>, or say that nothing may get lost in a rewrite. Unzip it into your skills folder.</p>
-              </details>
-            </li>
-            <li>
-              <details>
-              <summary class="skill-head">
-                <h4>/fingerprints</h4>
-                <a class="download" href="agent-skills/fingerprints.zip" download="fingerprints.zip" aria-label="Download ZIP" title="Download ZIP"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg><span class="ext">ZIP</span></a>
-                <span class="skill-sum">Checks a folder for names, paths and keys before you share it</span>
-              </summary>
-              <p class="skill-desc">A folder you share can carry your name, a home folder path or a key without you noticing. <strong>This skill checks a skill, repository, project or site before you share it and lists what to fix: private words you give it, absolute and home paths, email addresses, keys and tokens.</strong></p>
-              <p class="skill-desc">It changes nothing unless you ask for fixes. It does not read the git history and is not a full secret scanner.</p>
-              <p class="skill-desc">It needs Python 3. Start it with <code>/fingerprints</code>, or ask whether a folder is safe to share. Unzip it into your skills folder.</p>
               </details>
             </li>
           </ul>
