@@ -50,7 +50,7 @@ You are done only when every item is done, skipped or failed. A step whose comma
 
 1. Run the project's full check once and write its result into the log.
 2. Send a notification where a notification tool exists.
-3. Start with the plain steps done, from the task list in one line, then build the report of decisions from the log file only, never from memory, in this order, one numbered line per entry, colour first, each with its logged details (🟡 and 🟢: question, choice, reason, commit), so "undo number 3" works without a question:
+3. If the `sealed` skill is installed, seal the session once the report is final and nothing waits for the user (otherwise put `✓ ` at the start of the session title). Start with the plain steps done, from the task list in one line, then build the report of decisions from the log file only, never from memory, in this order, one numbered line per entry, colour first, each with its logged details (🟡 and 🟢: question, choice, reason, commit), so "undo number 3" works without a question:
    - 🟠 skipped, I need you (decision or action, with link or exact command)
    - 🔴 failed (what was tried)
    - 🟡 decided by me, other things build on it (look at these first, changing costs rework)

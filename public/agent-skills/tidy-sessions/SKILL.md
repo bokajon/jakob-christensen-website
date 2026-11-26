@@ -13,6 +13,7 @@ Goal: archive every session whose work is **settled**, and keep the rest. The us
 
 A session is **settled** when nothing will happen in it any more and no question to the user is open. That means one of these:
 - It ended with a final report in which no sentence asks the user something and no step is named as still to do that is the user's or the session's own committed work. **Soft points do not keep a session**: an optional idea the report says was left unbuilt, a "try it yourself" or "I did not check this in the browser" note, a follow-up suggestion, a taste or look remark without a direct question. Rescue each soft point first (step 4a), then the session is settled.
+- Its title starts with `✓` (the user's or the session's own mark for "finished"). This counts as one more sign, never as proof: the other checks in this list still apply.
 - It handed off to a successor session that is in the list and has taken over the remaining work (it names this session or its task).
 - A result it named as pending has since landed (verified in step 3).
 - A session with a later `lastActivityAt` names this session by title or ID, or names its exact task, and states that it finished or replaced that work (obsolete). A similar topic alone does not count.
