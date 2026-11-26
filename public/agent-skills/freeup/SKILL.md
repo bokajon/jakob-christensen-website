@@ -10,7 +10,7 @@ Frees disk space on Windows. `scripts/freeup.ps1` (Windows PowerShell 5.1) measu
 
 Two kinds of work, two kinds of yes:
 
-- **Junk** (caches, temp files that programs rebuild): the table run. Built-in rows are on C:; a few rebuildable leftovers in `<drive>\Temp` of other drives are included. One yes deletes the rows marked DELETE.
+- **Junk** (caches, temp files that programs rebuild): the table run. Built-in rows are on the Windows drive (usually C:); a few rebuildable leftovers in `<drive>\Temp` of other drives are included. One yes deletes the rows marked DELETE.
 - **User files** (duplicates, archives next to an extracted folder, big files): only in folders the user named with `-Root`. The script writes a numbered list, the user picks numbers, and only those are removed.
 
 ## Steps: junk
@@ -18,7 +18,7 @@ Two kinds of work, two kinds of yes:
 1. Run the dry run (changes nothing) in the background and keep its full output:
    `powershell -NoProfile -ExecutionPolicy Bypass -File "<skill folder>\scripts\freeup.ps1"`
    The table part takes seconds. Until `places.json` exists, and with `-Discover`, the script also searches all fixed drives for cache-like folders (up to about 3 minutes, then it says INCOMPLETE). Add `-Full` only when the user asks about worktrees, logs or AppData\Local.
-2. Show the user the table (item, size, deletable size, action), the SHOW ONLY lines and the free space of every drive, each with the number the script printed. Name every `SHOW ONLY (not on C:)` row as untouched and say why. Add this safety block:
+2. Show the user the table (item, size, deletable size, action), the SHOW ONLY lines and the free space of every drive, each with the number the script printed. Name every `SHOW ONLY (not on the Windows drive)` row as untouched and say why. Add this safety block:
    - Deleted: only caches and temp files that programs rebuild on their own. No documents, projects, downloads or settings.
    - Worst case: the next start of a game or app is slower once; a crash dump is gone.
    - Brakes: nothing younger than the row's minimum age (1 hour, some 1 day), files in use stay.

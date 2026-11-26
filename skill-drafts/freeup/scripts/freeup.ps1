@@ -160,6 +160,7 @@ function Clean-Dir([string]$Path, [double]$MinAgeHours, [string[]]$SkipUnder = @
     [pscustomobject]@{ Freed = $freed; Kept = $kept }
 }
 
+$sysLetter = $env:SystemDrive.Substring(0, 1).ToUpper()   # the Windows drive, usually C
 $fixedDrives = @(Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3' | ForEach-Object { $_.DeviceID.Substring(0, 1).ToUpper() })
 function Show-Free([string]$label) {
     foreach ($l in $fixedDrives) {
@@ -502,7 +503,7 @@ foreach ($L in $fixedDrives) {
 foreach ($p in $cfg.accepted) {   # accepted places (any drive) unless under a built-in row
     if (-not $p) { continue }
     $covered = $false
-    foreach ($r0 in $rows) { foreach ($rp in $r0.Paths) { if ($rp -and (Under $p $rp) -and ([IO.Path]::GetPathRoot($rp)).StartsWith('C', [StringComparison]::OrdinalIgnoreCase) -and -not $r0.AnyDrive) { $covered = $true } } }
+    foreach ($r0 in $rows) { foreach ($rp in $r0.Paths) { if ($rp -and (Under $p $rp) -and ([IO.Path]::GetPathRoot($rp)).StartsWith($sysLetter, [StringComparison]::OrdinalIgnoreCase) -and -not $r0.AnyDrive) { $covered = $true } } }
     if ($covered) { continue }   # already inside a deletable built-in row
     $rows += New-Row "Accepted ($p)" @($p) 24 @() $true
 }
@@ -515,12 +516,12 @@ $existing = @($rows | Where-Object { ($_.Paths | Where-Object { Test-Path -Liter
 foreach ($r in $existing) {
     $i++
     $paths = @($r.Paths | Where-Object { Test-Path -LiteralPath $_ })
-    $onC = ([IO.Path]::GetPathRoot($paths[0])).StartsWith('C', [StringComparison]::OrdinalIgnoreCase)
+    $onC = ([IO.Path]::GetPathRoot($paths[0])).StartsWith($sysLetter, [StringComparison]::OrdinalIgnoreCase)
     $tot = 0L; $old = 0L
     foreach ($pp in $paths) { $m = Measure-Dir $pp $r.Age $r.Skip; $tot += $m.Total; $old += $m.Old }
     Write-Host ("[{0}/{1}] {2}: {3} ({4:N0}s)" -f $i, $existing.Count, $r.Name, (Fmt $tot), $sw.Elapsed.TotalSeconds)
     if (-not $onC -and -not $r.AnyDrive) {
-        $result += [pscustomobject]@{ Item = $r.Name; Where = $paths[0]; MinAge = "$($r.Age) h"; Total = Fmt $tot; Deletable = '-'; Action = 'SHOW ONLY (not on C:)'; Freed = '' }
+        $result += [pscustomobject]@{ Item = $r.Name; Where = $paths[0]; MinAge = "$($r.Age) h"; Total = Fmt $tot; Deletable = '-'; Action = 'SHOW ONLY (not on the Windows drive)'; Freed = '' }
         continue
     }
     $action = 'DELETE'
@@ -550,7 +551,7 @@ foreach ($L in $fixedDrives) {
 
 if ($Full) {
     # worktrees = folders whose .git is a FILE; searched in the root and \Projects of every fixed drive except C:
-    $others = @($fixedDrives | Where-Object { $_ -ne 'C' } | ForEach-Object { "$_`:\" })
+    $others = @($fixedDrives | Where-Object { $_ -ne $sysLetter } | ForEach-Object { "$_`:\" })
     $wt = @()
     foreach ($base in ($others + ($others | ForEach-Object { $_ + 'Projects' }))) {
         if (-not (Test-Path $base)) { continue }
