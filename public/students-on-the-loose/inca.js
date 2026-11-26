@@ -717,6 +717,8 @@
    WebGL with a depth buffer; full-screen canvases that let every click through except on the models. Camera: turntable switch, view cube, Alt + mouse like Maya, F frames the selection. */
 (function(){ var E=window.sbhEgg; if(!E) return;
   var root=document.documentElement, cnt=0, last=0, KEY="sbh-cube", FRAMES=120, FPS=24;
+  /* every write to browser storage goes through here: a full or blocked store shows one notice per page load, then the error goes on to the caller as before */
+  var lsWarned=false; function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){ if(!lsWarned&&wrap){ lsWarned=true; toast("Could not save: browser storage is full or blocked. Use Export to keep your work."); } throw e; } }
   E.cubeIsOpen=function(){ return !!wrap; };   /* the empty-space test and the five-click trigger live in the page loader (18.10.2026) */
   function empty(e){ return E.emptySpot?E.emptySpot(e):false; }   /* the page's test, for onDown */
 
@@ -976,7 +978,7 @@
         if(!h){ toast("Drop it on an object."); return; } var o=S.objs[h.o]; if(!o) return; if(S.mode==="face"&&h.t==="face") assignMat(id,o,h.i); else assignMat(id,o); paintAll(); };
       addEventListener("pointermove",mv,true); addEventListener("pointerup",up,true); });
   }
-  function setMatsOpen(v){ if(!v&&pops.mats) popBack("mats",true); matsOpen=v; try{ localStorage.setItem("sbh-cube-mats",v?"1":"0"); }catch(e){} paintMats(); placeAll(); snd(v?560:420); }
+  function setMatsOpen(v){ if(!v&&pops.mats) popBack("mats",true); matsOpen=v; try{ lsSet("sbh-cube-mats",v?"1":"0"); }catch(e){} paintMats(); placeAll(); snd(v?560:420); }
   /* ---- import and export (Jakob, 18.10.2026): OBJ (a .zip with .mtl and the textures as PNG), FBX (ASCII 7.4), USD (.usda, with the hierarchy and the keys);
      import: OBJ (with its .mtl and images, picked together), USD (.usda) and FBX (three.js's reader, loaded only when needed) ---- */
   /* the name and the logo: what Inca is, on hover, focus or click (Jakob, 18.10.2026) */
@@ -1197,7 +1199,7 @@
   function wmSnap(){ var out={}; WM.forEach(function(d){ var pn=wmPanel(d[0]), st=lay[d[0]]||{}, o={mode:pn&&pn.classList.contains("wm-pop")?"pop":pn&&pn.classList.contains("wm-float")?"float":"dock"};
       if(st.x!=null){ o.x=st.x; o.y=st.y; o.w=st.w; o.h=st.h; } var p=pops[d[0]]; if(p&&p.win&&!p.win.closed){ try{ st.px=p.win.screenX; st.py=p.win.screenY; st.pw=p.win.innerWidth; st.ph=p.win.innerHeight; }catch(e){} }
       if(st.px!=null){ o.px=st.px; o.py=st.py; o.pw=st.pw; o.ph=st.ph; } out[d[0]]=o; }); return out; }
-  function wmSave(){ try{ localStorage.setItem("sbh-cube-layout",JSON.stringify(wmSnap())); snd(660); toast("Layout saved: Inca opens like this next time."); }catch(e){ toast("The layout could not be saved in this browser."); } }
+  function wmSave(){ try{ lsSet("sbh-cube-layout",JSON.stringify(wmSnap())); snd(660); toast("Layout saved: Inca opens like this next time."); }catch(e){ toast("The layout could not be saved in this browser."); } }
   function wmLoad(){ var L=null; try{ L=JSON.parse(localStorage.getItem("sbh-cube-layout")||"null"); }catch(e){} if(!L) return; var popped=[];
     Object.keys(L).forEach(function(k){ var o=L[k], pn=wmPanel(k); if(!pn) return; lay[k]={mode:o.mode==="pop"?"dock":o.mode,x:o.x,y:o.y,w:o.w,h:o.h,px:o.px,py:o.py,pw:o.pw,ph:o.ph};
       if(o.mode==="float"&&o.x!=null){ pn.classList.add("wm-float"); wmSet(pn,o.x,o.y,o.w,o.h||pn.getBoundingClientRect().height); wmBtns(pn); }
@@ -1366,13 +1368,13 @@
   function placeSel(){ if(!sel()||carry){ toast("Select an object to place."); return; } if(!E.props||!E.props.ready){ if(E.props) E.props.load(); toast("One moment: the objects are still loading."); return; }
     E.props.freePoint(80,function(pt){ if(!pt){ toast("No free spot in the Handbook right now: remove something there first."); return; } var ev={clientX:pt.x,clientY:pt.y}; startCarry(ev); if(!carry) return; carry.click=true; drawGhost(); moveCarry(ev); }); }   /* in the hand at a free spot: it follows the mouse, a click places it (18.10.2026) */
   function cancelCarry(){ var c=carry; if(!c) return; carry=null; root.classList.remove("egg-carrying"); if(E.props.dropHint) E.props.dropHint(); c.g.remove(); c.ln.remove(); c.objs.forEach(function(o){ o.vis=true; }); toast("Canceled: still in the scene."); paintAll(); paintSil(true); }   /* refreshed now, even with the pointer still on the window */
-  function setSilView(v){ silView=v; try{ localStorage.setItem("sbh-cube-silview",v); }catch(e){} snd(600); toast({front:"Matching from the front.",side:"Matching from the side.",top:"Matching from the top.",camera:"Matching from your camera: the view you have now is what counts."}[v]); paintSil(true); }
-  function setSilOpen(v){ silOpen=v; try{ localStorage.setItem("sbh-cube-silw",v?"1":"0"); }catch(e){} paintSil(true); placeAll(); }
+  function setSilView(v){ silView=v; try{ lsSet("sbh-cube-silview",v); }catch(e){} snd(600); toast({front:"Matching from the front.",side:"Matching from the side.",top:"Matching from the top.",camera:"Matching from your camera: the view you have now is what counts."}[v]); paintSil(true); }
+  function setSilOpen(v){ silOpen=v; try{ lsSet("sbh-cube-silw",v?"1":"0"); }catch(e){} paintSil(true); placeAll(); }
   function makeTest(){ mark(); genSeed=(Date.now()&0xffff)+Math.floor(Math.random()*1e6); var g=genShape(genSet,genSeed), o=obj(uniqueName("pTest1"),g.V,g.F), k=S.objs.length; o.T.t=[2.8*Math.ceil(k/2)*(k%2?1:-1),0,0]; worldV(o); S.objs.push(o);
     if(S.mode!=="object") setMode("object"); osel=[o.id]; S.sel=o.id; hover=null; snd(620); toast(o.name+": "+g.F.length+" faces. Shake it while dragging to bring it into the Handbook."); paintAll(); }
   function genPanel(v){ var p=q(".cube-gen"), bt=q(".cb-gen"); if(v==null) v=p.hidden; p.hidden=!v; bt.setAttribute("aria-expanded",v?"true":"false"); if(!v) return; var r=bt.getBoundingClientRect(); p.style.left=Math.round(Math.max(8,Math.min(innerWidth-p.offsetWidth-8,r.left-p.offsetWidth/2+r.width/2)))+"px"; p.style.top=Math.round(r.bottom+8)+"px"; }
   function genEvents(){ var p=q(".cube-gen"); wrap.appendChild(p); q(".cb-gen").addEventListener("click",function(e){ e.stopPropagation(); genPanel(); });
-    [].forEach.call(p.querySelectorAll("input[type=range]"),function(inp){ inp.value=Math.round(genSet[inp.getAttribute("data-g")]*100); inp.addEventListener("input",function(){ genSet[inp.getAttribute("data-g")]=inp.value/100; try{ localStorage.setItem("sbh-cube-gen",JSON.stringify(genSet)); }catch(x){} }); });
+    [].forEach.call(p.querySelectorAll("input[type=range]"),function(inp){ inp.value=Math.round(genSet[inp.getAttribute("data-g")]*100); inp.addEventListener("input",function(){ genSet[inp.getAttribute("data-g")]=inp.value/100; try{ lsSet("sbh-cube-gen",JSON.stringify(genSet)); }catch(x){} }); });
     p.querySelector(".gen-go").addEventListener("click",makeTest);
     wrap.addEventListener("pointerdown",function(e){ if(!p.hidden&&!e.target.closest(".cube-gen,.cb-gen")) genPanel(false); },true); }
   function push(arr,c,col){ arr.push(c[0],c[1],c[2],col[0],col[1],col[2],col[3]); }
@@ -1459,7 +1461,7 @@
   function pageMuted(){ return root.classList.contains("quiet")||root.classList.contains("mute"); }
   function paintSound(){ var want=!!wrap&&!sndOn; if(root.classList.contains("inca-mute")!==want) root.classList.toggle("inca-mute",want);   /* Inca's switch off: the whole handbook is silent while Inca is open (Jakob, 19.10.2026); the page's audio() and its sound engine watch this class */
     if(!wrap) return; var b=q(".cb-snd"); if(!b) return;   /* Inca closed: nothing to show */ var on=sndOn&&!pageMuted(); b.setAttribute("aria-pressed",on?"true":"false"); btnText(b,on?"Sounds: on":pageMuted()?"Sounds: off (the page is muted)":"Sounds: off"); b.classList.toggle("off",!on); }
-  function setSound(v,init){ sndOn=v; if(!init) try{ localStorage.setItem("sbh-cube-sound",v?"1":"0"); }catch(e){} paintSound(); if(v&&!init&&E.tick) E.tick(900,.045); }
+  function setSound(v,init){ sndOn=v; if(!init) try{ lsSet("sbh-cube-sound",v?"1":"0"); }catch(e){} paintSound(); if(v&&!init&&E.tick) E.tick(900,.045); }
   new MutationObserver(paintSound).observe(root,{attributes:true,attributeFilter:["class"]});   /* the page's Mute silences Inca too, and the switch shows it (18.10.2026) */
   function snd(fq){ if(!sndOn||Date.now()<sndQuiet||Date.now()>sndUI) return; sndUI=0; if(E.tick) E.tick(Math.max(480,Math.min(1250,(fq||600)*1.55)),.05); }
   function pressSnd(e){ if(e.button!==0) return; var b=e.target.closest&&e.target.closest("button,select,[role=button],.ol-it,.mt-sw,.gs-ch"); if(!b||b.disabled||b.getAttribute("aria-disabled")==="true") return; if(b.classList.contains("cb-snd")) return; if(sndOn&&E.tick) E.tick(900,.045); sndQuiet=Date.now()+650; }
@@ -1519,7 +1521,7 @@
   /* ---- manipulator space, plane handles, the extrude handle (Jakob, 18.10.2026) ----
      World, Local (the object's own axes) or Component (the selected parts' normal), like Maya; squares between two axes move or scale in that plane */
   var gspace="world"; try{ gspace=localStorage.getItem("sbh-cube-space")||"world"; }catch(e){}
-  function setSpace(v){ gspace=v; try{ localStorage.setItem("sbh-cube-space",v); }catch(e){} if(wrap) [].forEach.call(qa(".ch-space button"),function(b){ b.setAttribute("aria-pressed",b.getAttribute("data-sp")===v?"true":"false"); }); }
+  function setSpace(v){ gspace=v; try{ lsSet("sbh-cube-space",v); }catch(e){} if(wrap) [].forEach.call(qa(".ch-space button"),function(b){ b.setAttribute("aria-pressed",b.getAttribute("data-sp")===v?"true":"false"); }); }
   function colsOf(M){ return ["x","y","z"].reduce(function(acc,a,i){ var v=[M[0][i],M[1][i],M[2][i]], l=Math.hypot(v[0],v[1],v[2])||1; acc[a]=[v[0]/l,v[1]/l,v[2]/l]; return acc; },{}); }
   function compAxes(){ var n=[0,0,0], ids={}; Object.keys(csel).forEach(function(k){ var it=csel[k], o=objById(it.id); if(!o) return; ids[it.id]=1;
       var add=function(fi){ var fn=faceN(o.V,o.F[fi]); n[0]+=fn[0]; n[1]+=fn[1]; n[2]+=fn[2]; };
@@ -1539,7 +1541,7 @@
   function inQuad(p,q){ var s=0; for(var i=0;i<4;i++){ var a=q[i], b=q[(i+1)%4], c=(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]); if(c!==0){ if(s===0) s=c>0?1:-1; else if((c>0?1:-1)!==s) return false; } } return true; }
   /* ---- Keep faces together (on by default, like Maya): neighboring selected faces extrude as one block; off, every face on its own ---- */
   var keepTog=true; try{ keepTog=localStorage.getItem("sbh-cube-keep")!=="0"; }catch(e){}
-  function setKeep(v){ keepTog=v; try{ localStorage.setItem("sbh-cube-keep",v?"1":"0"); }catch(e){} var b=wrap&&q(".cb-keep"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); btnText(b,v?"Keep Faces together: on":"Keep Faces together: off"); } }
+  function setKeep(v){ keepTog=v; try{ lsSet("sbh-cube-keep",v?"1":"0"); }catch(e){} var b=wrap&&q(".cb-keep"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); btnText(b,v?"Keep Faces together: on":"Keep Faces together: off"); } }
   function regionExtrude(o,fis){ var set={}, nv={}, cnt={}; fis.forEach(function(fi){ set[fi]=1; });
     fis.forEach(function(fi){ var fc=o.F[fi]; fc.forEach(function(k,j){ var m=fc[(j+1)%fc.length], key=Math.min(k,m)+"_"+Math.max(k,m); cnt[key]=(cnt[key]||0)+1; }); });
     fis.forEach(function(fi){ o.F[fi].forEach(function(k){ if(nv[k]==null){ o.V.push(o.V[k].slice()); nv[k]=o.V.length-1; } }); });
@@ -1558,10 +1560,10 @@
     if(!m) return null; return {C:[c[0]/m,c[1]/m,c[2]/m],N:Math.hypot(n[0],n[1],n[2])>1e-9?norm(n):faces[0].n,faces:faces}; }
   /* show or hide the grid (Jakob, 18.10.2026; on by default, like Maya) */
   var showGrid=false; try{ showGrid=localStorage.getItem("sbh-cube-grid2")==="1"; }catch(e){}   /* off by default (Jakob, 18.10.2026: too intrusive) */
-  function setGrid(v){ showGrid=v; try{ localStorage.setItem("sbh-cube-grid2",v?"1":"0"); }catch(e){} var bt=wrap&&q(".cb-grid"); if(bt){ bt.setAttribute("aria-pressed",v?"true":"false"); btnText(bt,v?"Grid: on":"Grid: off"); bt.title=(v?"Grid: on":"Grid: off")+" (G)"; } }
+  function setGrid(v){ showGrid=v; try{ lsSet("sbh-cube-grid2",v?"1":"0"); }catch(e){} var bt=wrap&&q(".cb-grid"); if(bt){ bt.setAttribute("aria-pressed",v?"true":"false"); btnText(bt,v?"Grid: on":"Grid: off"); bt.title=(v?"Grid: on":"Grid: off")+" (G)"; } }
   /* the manipulator's size, + and - like Maya (Jakob, 18.10.2026) */
   var gzSize=1; try{ gzSize=Math.max(.5,Math.min(2.5,+localStorage.getItem("sbh-cube-gizmo")||1)); }catch(e){}
-  function sizeGizmo(d){ gzSize=Math.max(.5,Math.min(2.5,Math.round(gzSize*(d>0?1.15:1/1.15)*100)/100)); try{ localStorage.setItem("sbh-cube-gizmo",gzSize); }catch(e){} snd(d>0?620:480); toast("Manipulator size "+Math.round(gzSize*100)+" %."); }
+  function sizeGizmo(d){ gzSize=Math.max(.5,Math.min(2.5,Math.round(gzSize*(d>0?1.15:1/1.15)*100)/100)); try{ lsSet("sbh-cube-gizmo",gzSize); }catch(e){} snd(d>0?620:480); toast("Manipulator size "+Math.round(gzSize*100)+" %."); }
   /* pickwalk, like Maya: up to the parent, down to the first child, left and right to the neighbors */
   function pickwalk(dir){ var o=sel(); if(S.mode!=="object"||!o) return false; var t=null;
     if(dir==="up") t=parentOf(o); else if(dir==="down") t=kids(o)[0]||null; else { var sib=o.par!=null&&objById(o.par)?kids(objById(o.par)):S.objs.filter(function(x){ return x.par==null||!objById(x.par); }), i=sib.indexOf(o); t=sib[i+(dir==="right"?1:-1)]||null; }
@@ -1974,7 +1976,7 @@
     if(p.indexOf("a:")===0){ var it=MM_LIST.filter(function(x){ return x!=="-"&&x[0]===p.slice(2); })[0], bb=it&&it[2]&&q(it[2]); if(bb&&!bb.disabled){ var MM_DO={ext:extrudeSel,merge:function(){ mergeVerts(false); },mergec:function(){ mergeVerts(true); },dup:duplicate,comb:combineSel,sepa:separateSel,cpiv:centerPivot}; if(MM_DO[it[0]]) MM_DO[it[0]](); } return; }   /* the same action as its button in the bar, called directly (a click would be swallowed after the drag) */
     if(p!==S.mode) setMode(p); }
   var inkCol=[.85,.87,.9,1];
-  function setShade(m,quiet){ dmode=m; try{ localStorage.setItem("sbh-cube-shade",m); }catch(e){} inkCol=inkRGB(); hover=null;
+  function setShade(m,quiet){ dmode=m; try{ lsSet("sbh-cube-shade",m); }catch(e){} inkCol=inkRGB(); hover=null;
     if(wrap) [].forEach.call(qa(".cb-shade button"),function(b){ b.setAttribute("aria-pressed",b.getAttribute("data-s")===m?"true":"false"); });
     if(!quiet){ snd(m==="wire"?360:m==="flat"?440:m==="lit"?600:520); toast(m==="wire"?"Wireframe (4)":m==="flat"?"Unshaded (5)":m==="lit"?"Lit (7): lights fixed in the scene":"Shaded (6)"); } }
   function setMode(m){ var was=S.mode; S.mode=m; hover=null;
@@ -2069,7 +2071,7 @@
     return (2*t3-3*t2+1)*A.v+(t3-2*t2+t)*h*ma+(-2*t3+3*t2)*B.v+(t3-t2)*h*mb; }
   function poseAt(o,fr){ if(!o.K) return; CH.forEach(function(c){ var v=evalCh(o,c,fr); if(v!=null) chSet(o,c,v); }); }
   function setKeyAt(o,fr,only){ o.K=o.K||{}; (only||CH).forEach(function(c){ var K=o.K[c]=o.K[c]||{}, old=K[fr]; K[fr]={v:chGet(o,c),t:old?old.t:curTan,m:null}; }); }
-  function setAuto(v){ autoKey=v; try{ localStorage.setItem("sbh-cube-autokey",v?"1":"0"); }catch(e){} var b=wrap&&wrap.querySelector(".tl-auto"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); b.title=v?"Auto Key is on: changes to keyed objects set a key":"Auto Key is off"; } }
+  function setAuto(v){ autoKey=v; try{ lsSet("sbh-cube-autokey",v?"1":"0"); }catch(e){} var b=wrap&&wrap.querySelector(".tl-auto"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); b.title=v?"Auto Key is on: changes to keyed objects set a key":"Auto Key is off"; } }
   function autoKeyFor(o){ if(!autoKey||!hasKeys(o)) return; var ch=CH.filter(function(c){ if(!chFrames(o,c).length) return false; var v=evalCh(o,c,S.frame); return v==null||Math.abs(v-chGet(o,c))>1e-7; }); if(ch.length){ setKeyAt(o,S.frame,ch); gdirty=true; paintAll(); } }   /* keyed attributes that changed get a key, like Maya */
   function targets(){ var ids=S.mode==="object"?osel.slice():Object.keys(selVerts()).map(Number); if(!ids.length&&S.sel) ids=[S.sel]; return ids.map(objById).filter(Boolean); }
   function setKey(){ var ts=targets(); if(!ts.length){ toast("Nothing selected."); return; } mark(); ts.forEach(function(o){ setKeyAt(o,S.frame); }); gdirty=true; snd(620); toast("Key set for "+(ts.length===1?ts[0].name:ts.length+" objects")+" at frame "+S.frame+": Translate, Rotate and Scale."); paintAll(); }
@@ -2243,7 +2245,7 @@
   /* the slope a key's tangent shows: a dragged one, the auto slope, or for a linear key the straight line to the next key */
   /* ---- camera extras ---- */
   var turn=true, nav=null, ng=null, navDrag=null, snapA=null, navHover=null;
-  function setTurn(v,init){ turn=v; if(!init) try{ localStorage.setItem("sbh-cube-turn2",v?"1":"0"); }catch(e){}   /* remembered only when chosen; the old key was written on every opening (18.10.2026) */ var b=wrap&&wrap.querySelector(".cb-turn"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); btnText(b,v?"Turntable: on":"Turntable: off"); } }
+  function setTurn(v,init){ turn=v; if(!init) try{ lsSet("sbh-cube-turn2",v?"1":"0"); }catch(e){}   /* remembered only when chosen; the old key was written on every opening (18.10.2026) */ var b=wrap&&wrap.querySelector(".cb-turn"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); btnText(b,v?"Turntable: on":"Turntable: off"); } }
   var NAVF=[{n:"FRONT",f:[4,5,6,7],ry:0,rx:0},{n:"BACK",f:[1,0,3,2],ry:Math.PI,rx:0},{n:"RIGHT",f:[5,1,2,6],ry:-Math.PI/2,rx:0},{n:"LEFT",f:[0,4,7,3],ry:Math.PI/2,rx:0},{n:"TOP",f:[7,6,2,3],ry:null,rx:Math.PI/2},{n:"BOTTOM",f:[0,1,5,4],ry:null,rx:-Math.PI/2}];
   var NV=[[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
   function navFaces(){ var Sz=nav.width, k=Sz*.21, P=NV.map(function(v){ var c=rot(v), w=5.2-c[2]; return [Sz/2+k*4.2*c[0]/w, Sz/2-k*4.2*c[1]/w, c]; });
@@ -2279,17 +2281,17 @@
   function doUndo(){ if(!undo.length){ toast("Nothing to undo."); return; } redo.push(snapU()); load(undo.pop()); selSync(); hover=null; snd(300); paintAll(); }
   function doRedo(){ if(!redo.length){ toast(undo.length?"Nothing to redo.":"Redo what? Nothing has been undone yet."); return; } undo.push(snapU()); load(redo.pop()); selSync(); hover=null; snd(360); paintAll(); }
   var savedAt=null;
-  function doSave(quiet){ try{ var j=snap(); localStorage.setItem(KEY,j); savedAt=j; if(!quiet) toast("Saved. It will be here next time."); }catch(e){ if(!quiet) toast("Could not save in this browser."); } if(!quiet) snd(660); paintBar(); }
+  function doSave(quiet){ try{ var j=snap(); lsSet(KEY,j); savedAt=j; if(!quiet) toast("Saved. It will be here next time."); }catch(e){ if(!quiet) toast("Could not save in this browser."); } if(!quiet) snd(660); paintBar(); }
   /* autosave (Jakob, 18.10.2026; on by default): a change is saved about a second after it, never in the middle of a drag; the switch is remembered */
   var autoSave=true, autoDirty=false, autoT=0; try{ autoSave=localStorage.getItem("sbh-cube-autosave")!=="0"; }catch(e){}
-  function setAutoSave(v){ autoSave=v; try{ localStorage.setItem("sbh-cube-autosave",v?"1":"0"); }catch(e){} var bt=wrap&&q(".cb-asave"); if(bt){ bt.setAttribute("aria-pressed",v?"true":"false"); btnText(bt,v?"Autosave: on":"Autosave: off"); } if(v) autoDirty=true; }
+  function setAutoSave(v){ autoSave=v; try{ lsSet("sbh-cube-autosave",v?"1":"0"); }catch(e){} var bt=wrap&&q(".cb-asave"); if(bt){ bt.setAttribute("aria-pressed",v?"true":"false"); btnText(bt,v?"Autosave: on":"Autosave: off"); } if(v) autoDirty=true; }
   function autoTick(t){ if(!autoSave||!autoDirty||t-autoT<1000||gzDrag||drag||box||carry||camDrag||(typeof paintS!=="undefined"&&paintS)||(typeof atDrag!=="undefined"&&atDrag)) return; autoDirty=false; if(snap()!==savedAt) doSave(true); }
   function doReset(){ mark(); S=fresh(); hover=null; snd(260); toast("Back to one cube."); paintAll(); }
 
   /* ---- the gallery: objects and scenes kept in this browser, with a thumbnail (Jakob, 17.10.2026) ---- */
   var GKEY="sbh-cube-gallery", gallery=[];
   function gLoad(){ try{ gallery=JSON.parse(localStorage.getItem(GKEY)||"[]")||[]; }catch(e){ gallery=[]; } }
-  function gStore(){ try{ localStorage.setItem(GKEY,JSON.stringify(gallery)); return true; }catch(e){ toast("The gallery is full for this browser. Delete something first."); return false; } }
+  function gStore(){ try{ lsSet(GKEY,JSON.stringify(gallery)); return true; }catch(e){ toast("The gallery is full for this browser. Delete something first."); return false; } }
   function thumb(objs){ /* a small picture of these objects, cut out of the drawn frame around their screen bounds */
     var lo=[1e9,1e9], hi=[-1e9,-1e9]; objs.forEach(function(o){ camO(o).forEach(function(c){ var p=scr(c); lo[0]=Math.min(lo[0],p[0]); lo[1]=Math.min(lo[1],p[1]); hi[0]=Math.max(hi[0],p[0]); hi[1]=Math.max(hi[1],p[1]); }); });
     var w=hi[0]-lo[0], h=hi[1]-lo[1], sz=Math.max(w,h)*1.25+24*R, cx=(lo[0]+hi[0])/2, cy=(lo[1]+hi[1])/2, t=document.createElement("canvas"); t.width=t.height=128; var g=t.getContext("2d");
@@ -2484,7 +2486,7 @@
   function twinInit(){ Object.keys(TWIN).forEach(function(sel){ var b=q(sel); if(b) twinSet(b,sel===".cb-bare"?!!bare:!!noNames,TWIN[sel]); }); }
   function btnText(b,t){ var s=b.querySelector(".bt"); if(s) s.textContent=t; else b.textContent=t; b.title=t; }
   var iconUI=true; try{ iconUI=localStorage.getItem("sbh-cube-ui")!=="text"; }catch(e){}   /* icon buttons unless text buttons were chosen (18.10.2026) */
-  function setIconUI(v){ iconUI=v; clearTimeout(fitT); fitT=setTimeout(fitBars,60);   /* icons or text change every width: fit the bars again */ try{ localStorage.setItem("sbh-cube-ui",v?"icons":"text"); }catch(e){} if(!wrap) return; wrap.classList.toggle("icons",v); var b=q(".cb-ui"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); btnText(b,v?"Text UI":"Icon UI"); }
+  function setIconUI(v){ iconUI=v; clearTimeout(fitT); fitT=setTimeout(fitBars,60);   /* icons or text change every width: fit the bars again */ try{ lsSet("sbh-cube-ui",v?"icons":"text"); }catch(e){} if(!wrap) return; wrap.classList.toggle("icons",v); var b=q(".cb-ui"); if(b){ b.setAttribute("aria-pressed",v?"true":"false"); btnText(b,v?"Text UI":"Icon UI"); }
     placeAll(); if(geOpen) setGraph(true); }
   /* ---- the tutorial (Jakob, 17.10.2026): five steps with a small looping animation each; "Tutorial" in the title bar; arrows, Esc ---- */
   var CUBE='<polygon points="150,45 185,62 150,79 115,62" class="tf-top"/><polygon points="115,62 150,79 150,118 115,101" class="tf-l"/><polygon points="150,79 185,62 185,101 150,118" class="tf-r"/>';
@@ -2780,7 +2782,7 @@
   /* minimize (Jakob, 17.10.2026): the windows fold up to their title bar; remembered in sbh-cube-min */
   var minState={}; try{ minState=JSON.parse(localStorage.getItem("sbh-cube-min")||"null"); }catch(e){ minState=null; }
   if(!minState) minState=innerHeight<860?{gal:true,mats:true}:{};   /* short screens, first visit: Gallery and Materials start folded, so Outliner, Channel Box and Silhouette (Place Object) have room (Jakob, 19.10.2026) */
-  function minSet(pn,v){ var k=pn.getAttribute("data-pn"), bt=pn._minBtn||pn.querySelector(".pn-min"), nm=k==="nav"?"view cube":k==="tl"?"Timeline":pn.getAttribute("aria-label"); pn.classList.toggle("min",v); minState[k]=v; try{ localStorage.setItem("sbh-cube-min",JSON.stringify(minState)); }catch(e){}
+  function minSet(pn,v){ var k=pn.getAttribute("data-pn"), bt=pn._minBtn||pn.querySelector(".pn-min"), nm=k==="nav"?"view cube":k==="tl"?"Timeline":pn.getAttribute("aria-label"); pn.classList.toggle("min",v); minState[k]=v; try{ lsSet("sbh-cube-min",JSON.stringify(minState)); }catch(e){}
     bt.textContent=v?"+":"\u2013"; bt.setAttribute("aria-expanded",v?"false":"true"); bt.setAttribute("aria-label",(v?"Expand ":"Minimize ")+nm); bt.title=v?"Expand":"Minimize"; if(k==="ge"&&!v&&geOpen) setGraph(true); placeAll(); }
   function minButtons(){ [[".cube-ol","ol"],[".cube-attr","attr"],[".cube-gal","gal"],[".cube-ge","ge"],[".cube-mats","mats"],[".cube-silw","sil"],[".cube-tl","tl"],[".cube-nav","nav"]].forEach(function(d){ var pn=q(d[0]); if(!pn) return; pn.setAttribute("data-pn",d[1]);   /* Materials, Silhouette, Timeline and the view cube too (18.10.2026) */
       var bt=document.createElement("button"); bt.type="button"; bt.className="pn-min"; var host=d[1]==="ge"?pn.querySelector(".ge-top"):pn;
@@ -2788,7 +2790,7 @@
       bt.addEventListener("click",function(){ minSet(pn,!pn.classList.contains("min")); snd(pn.classList.contains("min")?420:560); }); minSet(pn,!!minState[d[1]]); }); }
   /* the hotkeys window (Jakob, 18.10.2026): sections fold, a search shows only what matches */
   function keySec(sec,shut){ sec.classList.toggle("shut",shut); sec.querySelector(".ck-head").setAttribute("aria-expanded",shut?"false":"true"); }
-  function keysSave(){ var kp=q(".cube-keys"), shut=[].filter.call(kp.querySelectorAll(".ck-sec"),function(x){ return x.classList.contains("shut"); }).map(function(x){ return x.getAttribute("data-sec"); }); try{ localStorage.setItem("sbh-cube-keyscol",JSON.stringify(shut)); }catch(e){} var all=kp.querySelector(".ck-all"); if(all) all.textContent=shut.length===KEYS.length?"Expand all":"Collapse all"; }
+  function keysSave(){ var kp=q(".cube-keys"), shut=[].filter.call(kp.querySelectorAll(".ck-sec"),function(x){ return x.classList.contains("shut"); }).map(function(x){ return x.getAttribute("data-sec"); }); try{ lsSet("sbh-cube-keyscol",JSON.stringify(shut)); }catch(e){} var all=kp.querySelector(".ck-all"); if(all) all.textContent=shut.length===KEYS.length?"Expand all":"Collapse all"; }
   function keysFilter(v){ var kp=q(".cube-keys"); v=String(v||"").trim().toLowerCase().replace(/\s*\+\s*/g," + "); kp.classList.toggle("searching",!!v); var hits=0;
     [].forEach.call(kp.querySelectorAll(".ck-sec"),function(sec){ var n=0; [].forEach.call(sec.querySelectorAll(".ck-row"),function(r){ var ok=!v||r.getAttribute("data-q").indexOf(v)>=0; r.hidden=!ok; if(ok) n++; }); sec.hidden=!n; hits+=n; });
     kp.querySelector(".ck-none").hidden=!!hits; }
@@ -2922,7 +2924,7 @@
     [].forEach.call(qa(".ch-space button"),function(bt){ bt.addEventListener("click",function(){ setSpace(bt.getAttribute("data-sp")); snd(520); toast({world:"World space: the scene’s axes.",gimbal:"Gimbal space: each rotate ring changes only its own channel.",local:"Object space: the object’s own axes.",comp:"Component space: along the selected parts’ normal."}[gspace]); }); }); setSpace(gspace); q(".cb-asave").addEventListener("click",function(){ setAutoSave(!autoSave); snd(autoSave?600:420); toast(autoSave?"Autosave is on: changes are saved by themselves.":"Autosave is off: save with Ctrl+S."); }); setAutoSave(autoSave); q(".cb-all").addEventListener("click",selectAll); q(".cb-ugrp").addEventListener("click",ungroupSel); q(".cb-par").addEventListener("click",parentSel); q(".cb-upar").addEventListener("click",unparentSel); q(".cb-ext").addEventListener("click",extrudeSel); q(".cb-del").addEventListener("click",removeSel); q(".cb-turn").addEventListener("click",function(){ setTurn(!turn); });
     [].forEach.call(qa(".cb-mode button"),function(b){ b.addEventListener("click",function(){ setMode(b.getAttribute("data-m")); }); });
     [].forEach.call(qa(".ch-prims button"),function(b){ b.addEventListener("click",function(){ add(b.getAttribute("data-p")); }); });
-    olEvents(); matsEvents(); ioEvents(); aboutEvents(); genEvents(); libEvents(); [].forEach.call(qa(".cube-sheetbar button"),function(b){ b.addEventListener("click",function(){ sheet(b.getAttribute("data-sh")); }); }); q(".cb-2d").addEventListener("click",function(){ close(true); if(E.pict) E.pict.open(); }); q(".cb-sil").addEventListener("click",function(){ setSilOpen(!silOpen); }); q(".cube-silw .sw-sug").addEventListener("click",function(e){ if(e.target.closest(".sw-it")) silPick(true); }); q(".cube-silw .sw-place").addEventListener("click",placeSel); var csw=q(".sw-colsw"); if(csw){ csw.setAttribute("aria-pressed",colMatch?"true":"false"); csw.addEventListener("click",function(){ colMatch=!colMatch; try{ localStorage.setItem("sbh-cube-colmatch",colMatch?"1":"0"); }catch(e){} csw.setAttribute("aria-pressed",colMatch?"true":"false"); toast(colMatch?"Match Colors: on. The suggestions also look at the object\u2019s colors.":"Match Colors: off. Only the shape counts."); silSig=""; paintSil(true); }); }
+    olEvents(); matsEvents(); ioEvents(); aboutEvents(); genEvents(); libEvents(); [].forEach.call(qa(".cube-sheetbar button"),function(b){ b.addEventListener("click",function(){ sheet(b.getAttribute("data-sh")); }); }); q(".cb-2d").addEventListener("click",function(){ close(true); if(E.pict) E.pict.open(); }); q(".cb-sil").addEventListener("click",function(){ setSilOpen(!silOpen); }); q(".cube-silw .sw-sug").addEventListener("click",function(e){ if(e.target.closest(".sw-it")) silPick(true); }); q(".cube-silw .sw-place").addEventListener("click",placeSel); var csw=q(".sw-colsw"); if(csw){ csw.setAttribute("aria-pressed",colMatch?"true":"false"); csw.addEventListener("click",function(){ colMatch=!colMatch; try{ lsSet("sbh-cube-colmatch",colMatch?"1":"0"); }catch(e){} csw.setAttribute("aria-pressed",colMatch?"true":"false"); toast(colMatch?"Match Colors: on. The suggestions also look at the object\u2019s colors.":"Match Colors: off. Only the shape counts."); silSig=""; paintSil(true); }); }
     [].forEach.call(qa(".sw-view button"),function(b){ b.addEventListener("click",function(){ setSilView(b.getAttribute("data-v")); }); }); silT=setInterval(function(){ if(!wrap){ clearInterval(silT); return; } if(carry||gzDrag||drag||atDrag) return; paintSil(); },330); setTimeout(function(){ paintSil(true); },400); [].forEach.call(qa(".ch-models button"),function(bt){ bt.addEventListener("click",function(){ addModel(bt.getAttribute("data-mo")); }); }); wrap.addEventListener("pointerdown",pressSnd,true); q(".cb-lsave").addEventListener("click",wmSave); q(".cb-lload").addEventListener("click",wmLoadNow); q(".cb-lreset").addEventListener("click",wmReset); q(".cb-mats").addEventListener("click",function(){ setMatsOpen(!matsOpen); });
     q(".ol-list").addEventListener("dblclick",function(e){ var li=e.target.closest(".ol-it"); if(!li||!e.target.closest(".ol-name")) return; var o=S.objs.filter(function(x){ return x.id===+li.getAttribute("data-id"); })[0]; if(o&&olRenamedAt&&performance.now()-olRenamedAt<800) return; olRename(o); });
 
