@@ -585,7 +585,7 @@
   +".egg-cube .tl-auto,.egg-cube .tl-auto[aria-pressed=\"true\"]{color:var(--ink-mute);background:none!important;border-color:transparent!important;box-shadow:none!important;font-size:.72rem;opacity:.8}\n"
   +".egg-cube .tl-auto:hover{opacity:1;color:var(--ink)}\n"
   +".egg-cube .tl-auto[aria-pressed=\"true\"]::before{background:color-mix(in srgb,#e2574c 75%,transparent);border-color:transparent}\n"
-  +".egg-cube.icons .tl-auto{width:28px!important;height:28px!important}\n"
+  +".egg-cube.icons .tl-auto{width:28px!important;height:28px!important}\n"+"@media (max-width:520px){.egg-cube .pn-min,.egg-cube .wm-pop,.egg-cube.icons .tl-auto{min-width:32px;min-height:32px;width:32px!important;height:32px!important}}\n"
   +".egg-cube.icons .tl-auto::before{width:9px!important;height:9px!important}\n"
   +".egg-cube .tl-wrap{position:relative;flex:1;height:44px;min-width:120px}\n"
   +".egg-cube .tl-track{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none}\n"
