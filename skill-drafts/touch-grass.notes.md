@@ -93,3 +93,6 @@ Applied: afk and "I'll be gone" need "for a while" in the description; keep-awak
 Not applied (Jakob decided in the grill 2026-11-26, not re-opened): Copilot 1 and Gemini 2 (deploy only where the project allows it without asking, after green check); Copilot 3 (questions from the user's own instructions are not asked; approvals stay skips).
 Not applied: Copilot 6/7 (confirmation before start; the skill already starts only with a plan), Copilot 10 beyond the handoff line.
 Retest of the trigger after the description change: not run ("afk. Finish PLAN.md without me." has no "for a while" now, its result may change).
+
+## Deploy opt-in (2026-11-26, Jakob: "super" to the proposal)
+Section 3: deploy moved to its own bullet. It runs in away mode only if the project's instructions name it as allowed while the user is away, and only with a green check, the undo command in the log and a live check after the deploy; else skip. Website repo CLAUDE.md got the matching sentence. Answers Copilot 1 and Gemini 2 (grammar of the old bracket, "allowed when watched").
