@@ -37,7 +37,7 @@ Read its last messages first (`list_events`). If you cannot inspect that session
 
 ## If work continues after sealing
 
-If the user keeps working in a case-closed session, leave the `✓` alone unless asked, and write no new `Done.` until the new work is finished too.
+The check mark says "finished now", and a skill that archives ticked sessions may act on it while the user is still writing. So when the user comes back and gives new work in a session whose title starts with `✓`, take the mark off first: `get_session` with `session_id: "self"`, then `set_session_title` with the same title minus the `✓` and its space, before anything else. A pure side question about the finished work does not count as new work. Write no new `Done.` until the new work is finished too, then seal again with the steps above.
 
 ## Works with
 
