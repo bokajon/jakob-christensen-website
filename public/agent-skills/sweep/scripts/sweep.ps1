@@ -17,6 +17,8 @@
 #   -Remove <ids>    remove numbered candidates: "1,3,5-8" or "all" (all = duplicates and verified archives that do not
 #                    look like part of an installed program; big files and unverified ones only by number).
 #                    -Except "3,7" takes numbers out of "all". Dry run unless -Delete.
+#   -Top <X>         report only: the biggest folders of drive X (two levels, top 5 inside each of the 8 biggest).
+#                    Options: -TopN (default 15), -BudgetSec (default 900). Changes nothing.
 #   -EmptyBin <X>    empty the recycle bin of drive X (permanent). Dry run unless -Delete.
 #   -Delete          do it: clean the table rows / remove the numbers / empty the bin
 # Rules: only files older than the row's minimum age, locked files stay, reparse points are skipped,
@@ -26,8 +28,8 @@
 param(
     [switch]$Delete, [switch]$Full, [switch]$Discover, [switch]$Find,
     [string[]]$Accept = @(), [string[]]$Ignore = @(),
-    [string]$Keep = '', [string]$Root = '', [string]$Remove = '', [string]$Except = '', [string]$EmptyBin = '',
-    [int]$MinMB = 50, [int]$LargeMB = 500, [int]$BudgetSec = 900
+    [string]$Keep = '', [string]$Root = '', [string]$Remove = '', [string]$Except = '', [string]$EmptyBin = '', [string]$Top = '',
+    [int]$MinMB = 50, [int]$LargeMB = 500, [int]$BudgetSec = 900, [int]$TopN = 15
 )
 
 $ErrorActionPreference = 'SilentlyContinue'
@@ -233,6 +235,53 @@ if ($EmptyBin) {
     Clear-RecycleBin -DriveLetter $L -Force -ErrorAction SilentlyContinue
     $after = Measure-Dir $bin 0
     "Left in the bin: $(Fmt $after.Total). $L`: free $(Fmt $before) -> $(Fmt (Get-PSDrive $L).Free)"
+    return
+}
+
+# ---- -Top: biggest folders of one drive, report only ----
+if ($Top) {
+    $L = $Top.Trim().TrimEnd(':', '\').ToUpper()
+    if ($L.Length -ne 1 -or $fixedDrives -notcontains $L) { "REFUSED (not a fixed drive letter): $Top"; return }
+    $deadline = [DateTime]::UtcNow.AddSeconds($BudgetSec).Ticks
+    $skipNames = @('$RECYCLE.BIN', 'System Volume Information')
+    $report = @(); $loose = 0L; $anyIncomplete = $false
+    $swTop = [Diagnostics.Stopwatch]::StartNew()
+    foreach ($t in @(Get-ChildItem -LiteralPath "$L`:\" -Force -ErrorAction SilentlyContinue)) {
+        if ($t.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+        if (-not $t.PSIsContainer) { $loose += $t.Length; continue }
+        if ($skipNames -contains $t.Name) { continue }
+        $sum = 0L; $complete = $true; $kids = @()
+        foreach ($c in @(Get-ChildItem -LiteralPath $t.FullName -Force -ErrorAction SilentlyContinue)) {
+            if ($c.Attributes -band [IO.FileAttributes]::ReparsePoint) { continue }
+            if (-not $c.PSIsContainer) { $sum += $c.Length; continue }
+            $left = [int][Math]::Max(1, ($deadline - [DateTime]::UtcNow.Ticks) / 1e7)
+            $m = Measure-Dir $c.FullName 0 @() $left
+            if (-not $m.Complete) { $complete = $false }
+            $sum += $m.Total; $kids += [pscustomobject]@{ Path = $c.FullName; Bytes = $m.Total; Complete = $m.Complete }
+        }
+        if (-not $complete) { $anyIncomplete = $true }
+        $report += [pscustomobject]@{ Path = $t.FullName; Bytes = $sum; Complete = $complete; Kids = $kids }
+        "[$($report.Count)] $($t.FullName): $(Fmt $sum) ($([int]$swTop.Elapsed.TotalSeconds)s)"
+    }
+    $sorted = @($report | Sort-Object Bytes -Descending)
+    ''
+    "BIGGEST FOLDERS on $L`: (folders directly under $L`:\, sizes of what the script could read)"
+    $i = 0
+    foreach ($r in ($sorted | Select-Object -First $TopN)) {
+        $i++
+        $pre = ''; if (-not $r.Complete) { $pre = '>= ' }
+        '{0,2}. {1,12}  {2}' -f $i, ($pre + (Fmt $r.Bytes)), $r.Path
+        if ($i -le 8) {
+            foreach ($k in ($r.Kids | Sort-Object Bytes -Descending | Select-Object -First 5)) {
+                $kp = ''; if (-not $k.Complete) { $kp = '>= ' }
+                '      {0,12}  {1}' -f ($kp + (Fmt $k.Bytes)), $k.Path
+            }
+        }
+    }
+    if ($loose -gt 0) { "Files directly in $L`:\: $(Fmt $loose)" }
+    if ($anyIncomplete) { "INCOMPLETE: the time budget ($BudgetSec s) ran out, rows marked '>=' are lower bounds and folders not reached count 0. Raise -BudgetSec for a full picture." }
+    "Not counted: reparse points (links, junctions), $($skipNames -join ', '). Run time: $([int]$swTop.Elapsed.TotalSeconds) s"
+    'REPORT ONLY: nothing was changed.'
     return
 }
 
