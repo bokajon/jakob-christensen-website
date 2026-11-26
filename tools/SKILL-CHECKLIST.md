@@ -313,3 +313,7 @@ Released by Jakob on 2026-11-26 ("veröffentlichen"); the skill was called done 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
 - Claimed Matt's descriptions never contain a "not for" part. `wizard` has one. Fixed by section 1.2.
 - Said four of Jakob's skills were hidden in the desktop app. It was five. Count from the list, never from memory.
+
+## 8r. attic release (2026-11-26)
+
+Released by Jakob on 2026-11-26 ("Veröffentlichen"), single SKILL.md, group Cleaners, placed after case-closed. Checks: two external reviews (Gemini, Copilot) worked in, a real run on the author's own session list (archived ticked sessions, kept parents of unticked sub-sessions, unpinned and archived pinned ticked ones, restored one sub-session with unarchive_session). No headless run tests, no Codex, no Cursor. Not checked: whether unarchive restores the pin.

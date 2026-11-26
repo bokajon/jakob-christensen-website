@@ -14,6 +14,7 @@
 - [/reroll](https://jakobchristensen.com/skills/reroll/): Asks again in a new chat that never saw the first answer
 - [/unrobot](https://jakobchristensen.com/skills/unrobot/): Makes a text read as if a person wrote it
 - [/case-closed](https://jakobchristensen.com/skills/case-closed/): Puts a check mark on finished sessions in Claude Code Desktop
+- [/attic](https://jakobchristensen.com/skills/attic/): Archives every session with a check mark in its title in Claude Code Desktop
 - [/tidy-sessions](https://jakobchristensen.com/skills/tidy-sessions/): Archives finished sessions in Claude Code Desktop, keeps the rest
 - [/tidy-worktrees](https://jakobchristensen.com/skills/tidy-worktrees/): Removes worktrees and branches that have landed, keeps the rest
 - [/strays](https://jakobchristensen.com/skills/strays/): Finds commits you never pushed, and pushes them after your OK
