@@ -303,6 +303,10 @@ Released 2026-11-24 as single SKILL.md files, groups Sessions and Proof. Details
 
 Full run n = 2 and trigger runs (round 1: 4/4 self-start, 0/3 false start; round 2: 8/8 self-start, 0/5 false start, also with 30 other skills installed), all headless with Sonnet in Claude Code. Details, method and what was not tested: skill-drafts/touch-grass.notes.md.
 
+## 8h. Test numbers of the am-i-done release (2026-11-26)
+
+Released by Jakob on 2026-11-26 ("veröffentlichen"); the skill was called done until 2026-11-26. Two external review rounds (Gemini, Copilot) were triaged and worked in. No run tests were done: not a run with real side sessions, not the stale default branch case, not a shared checkout, not Codex or Cursor. Final SKILL.md 13,929 characters, description 990.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
