@@ -4813,7 +4813,7 @@ html.rm .egg-crt-msg{animation:none}
 /* Inca and Pict load only when someone opens them (their code is in inca.js and pict.js); the two buttons open them */
 (function(){
   var E=window.sbhEgg; if(!E) return; var root=document.documentElement;
-  var LZ_VER={inca:"e798ec64eb",pict:"9104c471d1"};   /* written by tools/lazy_stamp.py: a new version is always fetched */
+  var LZ_VER={inca:"93b5f16209",pict:"f148227777"};   /* written by tools/lazy_stamp.py: a new version is always fetched */
   var st={inca:null,pict:null}, waits={inca:[],pict:[]};
   function load(name,cb){ if(st[name]==="ready"){ if(cb) cb(); return; } if(cb) waits[name].push(cb); if(st[name]==="loading") return; st[name]="loading";
     var done=function(){ st[name]="ready"; var w=waits[name]; waits[name]=[]; w.forEach(function(f){ try{ f(); }catch(err){ setTimeout(function(){ throw err; }); } }); };

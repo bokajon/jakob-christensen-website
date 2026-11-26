@@ -138,16 +138,18 @@
    undo and redo, "Would become" like Inca's Silhouette window, and a grip to drag the drawing into the Handbook, where it lands as a 2D object of its own.
    Built as a module (E.pict: open, close, toggle, fromCode) so it can move inside Inca later. */
 (function(){
+  /* every browser-storage key Pict uses, in one place (the project file .json uses these names, so they never change) */
+  var SK={main:"sbh-pict",gallery:"sbh-pict-gallery",hello:"sbh-pict-hello",set:"sbh-pict-set"};
   var E=window.sbhEgg; if(!E) return; var root=document.documentElement, wrap=null, cv, ov, g, og, W=720, H=450, tool="draw", shape="line", size=8, col="#f2c14e", undo=[], redo=[], stroke=null, carry=null, wbT=0, wbSig="";
   var SW=["#f2c14e","#e2574c","#4a8fe7","#5bb46a","#f4f1ea","#1b1f2a","#a86a34","#9aa3b2"];
-  try{ var st=JSON.parse(localStorage.getItem("sbh-pict-set")||"null"); if(st){ size=st.size||size; col=st.col||col; tool=st.tool||tool; shape=st.shape||shape; pick=st.pick||null; } }catch(e){}
+  try{ var st=JSON.parse(localStorage.getItem(SK.set)||"null"); if(st){ size=st.size||size; col=st.col||col; tool=st.tool||tool; shape=st.shape||shape; pick=st.pick||null; } }catch(e){}
   function q(s){ return wrap?wrap.querySelector(s):null; } function qa(s){ return wrap?[].slice.call(wrap.querySelectorAll(s)):[]; }
   function tick(){ if(E.tick) E.tick(900,.045); }
   function toast(t){ var el=q(".pt-tip"); if(!el) return; el.textContent=t; el.hidden=false; clearTimeout(toast.t); toast.t=setTimeout(function(){ el.hidden=true; },3200); }
   /* every write to browser storage goes through here: a full or blocked store shows one notice per page load, then the error goes on to the caller as before */
   var lsWarned=false; function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){ if(!lsWarned&&q(".pt-tip")){ lsWarned=true; setTimeout(function(){ toast("Could not save: browser storage is full or blocked. Use Export to keep your work."); },0); } throw e; } }
-  function saveSet(){ try{ lsSet("sbh-pict-set",JSON.stringify({size:size,col:col,tool:tool,shape:shape,pick:pick,col3:colOn})); }catch(e){} }
-  function saveDraw(){ try{ lsSet("sbh-pict",cv.toDataURL("image/png")); }catch(e){} }
+  function saveSet(){ try{ lsSet(SK.set,JSON.stringify({size:size,col:col,tool:tool,shape:shape,pick:pick,col3:colOn})); }catch(e){} }
+  function saveDraw(){ try{ lsSet(SK.main,cv.toDataURL("image/png")); }catch(e){} }
   function ICON(n){ return {draw:'<path d="M4 20l4-1 10-10-3-3L5 16z"/><path d="M13 7l3 3"/>',erase:'<path d="M4 15l8-8 6 6-5 5H8z"/><path d="M10 18h10"/>',shape:'<rect x="3" y="4" width="8" height="8" rx="1"/><circle cx="17" cy="8" r="4"/><path d="M3 19h18"/>',
       bucket:'<path d="M5 11l7-7 7 7-7 7z"/><path d="M19 13c1.3 2 2 3.2 2 4.2a2 2 0 0 1-4 0c0-1 .7-2.2 2-4.2z"/>',undo:'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',redo:'<path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/>',clear:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
       grip:'<path d="M8 11V5a1.5 1.5 0 0 1 3 0v5M11 10V4a1.5 1.5 0 0 1 3 0v6M14 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M8 11v3l-3-2a1.4 1.4 0 0 0-2 2l4 5c1.5 2 3 2.5 5 2.5h2c3 0 5-2 5-5v-5"/>',cube:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',save:'<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/>',pick:'<path d="M14.5 4.5l5 5M12 7l5 5-8.5 8.5H4v-4.5z"/><path d="M16 3a2.1 2.1 0 0 1 3 3l-2 2-3-3z"/>',dl:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14"/>'}[n]||""; }
@@ -165,7 +167,7 @@
       +'<section class="pt-box pt-galbox"><h3>Gallery</h3><ul class="pt-gal" aria-label="Saved drawings"></ul><p class="pt-proj"><button type="button" class="pt-colsw pt-pexp" title="Save the drawing, the gallery and the settings as one .json file">Export project</button><button type="button" class="pt-colsw pt-pimp" title="Load a project .json file: it replaces the drawing and the gallery">Import project</button></p><input type="file" class="pt-pfile" accept=".json,application/json" hidden></section></div></div>'
       +'<p class="pt-fine">Pict. Not to be confused with the Picts.</p></div>';
     document.body.appendChild(wrap); cv=q(".pt-cv"); ov=q(".pt-ov"); g=cv.getContext("2d",{willReadFrequently:true}); og=ov.getContext("2d");
-    try{ var d=localStorage.getItem("sbh-pict"); if(d){ var im=new Image(); im.onload=function(){ g.drawImage(im,0,0); wouldBecome(); }; im.src=d; } }catch(e){}
+    try{ var d=localStorage.getItem(SK.main); if(d){ var im=new Image(); im.onload=function(){ g.drawImage(im,0,0); wouldBecome(); }; im.src=d; } }catch(e){}
     qa(".pt-tools button").forEach(function(b){ b.addEventListener("click",function(){ setTool(b.getAttribute("data-t")); }); });
     qa(".pt-shapes button").forEach(function(b){ b.addEventListener("click",function(){ shape=b.getAttribute("data-s"); paintUI(); saveSet(); }); });
     qa(".pt-sw button").forEach(function(b){ b.addEventListener("click",function(){ setCol(b.getAttribute("data-c")); }); }); q(".pt-pick input").addEventListener("input",function(){ setCol(this.value); });
@@ -221,31 +223,31 @@
     for(var y2=y0;y2<=y1;y2++) for(var x2=x0;x2<=x1;x2++) if(d[(y2*W+x2)*4+3]>40) M[Math.min(gh-1,Math.round((y2-y0)*sc))*gw+Math.min(gw-1,Math.round((x2-x0)*sc))]=1; return {M:M,w:gw,h:gh,ring:false}; }
   /* the gallery (Jakob, 18.10.2026), like Inca's: Save keeps the drawing with a thumbnail, a name and the date; Open loads it (undo brings back what was there),
      a double-click on the name renames it, the x deletes it; up to 40, in this browser */
-  var gallery=[]; try{ gallery=JSON.parse(localStorage.getItem("sbh-pict-gallery")||"[]")||[]; }catch(e){ gallery=[]; }
-  function galStore(){ try{ lsSet("sbh-pict-gallery",JSON.stringify(gallery)); return true; }catch(e){ return false; } }
+  var gallery=[]; try{ gallery=JSON.parse(localStorage.getItem(SK.gallery)||"[]")||[]; }catch(e){ gallery=[]; }
+  function galStore(){ try{ lsSet(SK.gallery,JSON.stringify(gallery)); return true; }catch(e){ return false; } }
   function thumbOf(){ var t=document.createElement("canvas"); t.width=144; t.height=90; var tg=t.getContext("2d"); tg.fillStyle="#fff"; tg.fillRect(0,0,144,90); tg.drawImage(cv,0,0,144,90); return t.toDataURL("image/jpeg",.8); }
   function galSave(){ if(blank()){ toast("Nothing to save yet: draw something first."); return; } var n=1; gallery.forEach(function(x){ var m=/^Drawing (\d+)$/.exec(x.name); if(m) n=Math.max(n,+m[1]+1); });
     var it={id:Date.now(),name:"Drawing "+n,at:new Date().toISOString().slice(0,10),thumb:thumbOf(),png:cv.toDataURL("image/png")}; gallery.unshift(it); if(gallery.length>40) gallery.length=40;
     if(!galStore()){ gallery.shift(); toast("The gallery is full: delete a drawing there first."); return; } paintGal(); toast("Saved as "+it.name+" in the gallery."); }
   /* project file: one .json with the drawing, the gallery and Pict's settings (the PNG button stays as it is) */
   var PVER=1, isImg=function(u){ return typeof u==="string"&&/^data:image\/(png|jpeg);base64,/.test(u); };
-  function projBuild(){ var set=null; try{ set=localStorage.getItem("sbh-pict-set"); }catch(e){} if(set==null) set=JSON.stringify({size:size,col:col,tool:tool,shape:shape,pick:pick,col3:colOn});
-    return JSON.stringify({app:"pict-project",version:PVER,exported:new Date().toISOString(),keys:{"sbh-pict":cv.toDataURL("image/png"),"sbh-pict-gallery":JSON.stringify(gallery),"sbh-pict-set":set}}); }
+  function projBuild(){ var set=null; try{ set=localStorage.getItem(SK.set); }catch(e){} if(set==null) set=JSON.stringify({size:size,col:col,tool:tool,shape:shape,pick:pick,col3:colOn});
+    return JSON.stringify({app:"pict-project",version:PVER,exported:new Date().toISOString(),keys:{[SK.main]:cv.toDataURL("image/png"),[SK.gallery]:JSON.stringify(gallery),[SK.set]:set}}); }
   function projExport(){ try{ var a=document.createElement("a"), u=URL.createObjectURL(new Blob([projBuild()],{type:"application/json"})); a.href=u; a.download="pict-project.json"; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); URL.revokeObjectURL(u); },1500); toast("Exported the project as pict-project.json."); }catch(e){ toast("The project could not be exported."); } }
   function projCheck(text){ var d; try{ d=JSON.parse(text); }catch(e){ return "That is not a Pict project file: it could not be read."; }
     if(!d||typeof d!=="object"||d.app!=="pict-project"||!d.keys||typeof d.keys!=="object") return "That is not a Pict project file.";
     if(typeof d.version!=="number"||d.version<1) return "That project file has no valid version.";
     if(d.version>PVER) return "That project file comes from a newer version of Pict.";
-    var K=d.keys, ks=Object.keys(K); for(var i=0;i<ks.length;i++){ if(["sbh-pict","sbh-pict-gallery","sbh-pict-set"].indexOf(ks[i])<0||typeof K[ks[i]]!=="string") return "That project file holds data Pict does not know."; }
-    if(!isImg(K["sbh-pict"])) return "That project file holds no drawing.";
-    var ga, st; try{ ga=K["sbh-pict-gallery"]==null?[]:JSON.parse(K["sbh-pict-gallery"]); st=K["sbh-pict-set"]==null?{}:JSON.parse(K["sbh-pict-set"]); }catch(e){ return "That project file is damaged: the gallery or settings cannot be read."; }
+    var K=d.keys, ks=Object.keys(K); for(var i=0;i<ks.length;i++){ if([SK.main,SK.gallery,SK.set].indexOf(ks[i])<0||typeof K[ks[i]]!=="string") return "That project file holds data Pict does not know."; }
+    if(!isImg(K[SK.main])) return "That project file holds no drawing.";
+    var ga, st; try{ ga=K[SK.gallery]==null?[]:JSON.parse(K[SK.gallery]); st=K[SK.set]==null?{}:JSON.parse(K[SK.set]); }catch(e){ return "That project file is damaged: the gallery or settings cannot be read."; }
     if(!Array.isArray(ga)||!ga.every(function(it){ return it&&typeof it.name==="string"&&typeof it.at==="string"&&isImg(it.thumb)&&isImg(it.png)&&isFinite(+it.id); })) return "That project file is damaged: the gallery is not valid.";
     if(!st||typeof st!=="object") return "That project file is damaged: the settings are not valid.";
     return {K:K,gallery:ga}; }
   function projImport(text){ var d=projCheck(text); if(typeof d==="string"){ toast(d); return; }
     var im=new Image(); im.onerror=function(){ toast("That project file holds a drawing Pict cannot read. Nothing was changed."); };
-    im.onload=function(){ if(!wrap) return; push(); g.clearRect(0,0,W,H); g.drawImage(im,0,0,W,H); pick=null; gallery=d.gallery; var ok=galStore(); try{ if(d.K["sbh-pict-set"]!=null) lsSet("sbh-pict-set",d.K["sbh-pict-set"]); }catch(e){ ok=false; } saveDraw(); paintGal(); wouldBecome(true); toast(ok?"Project imported. Undo brings back the drawing that was there. Settings apply the next time Pict opens.":"Project imported, but this browser could not keep all of it. Export it again to keep your work."); };
-    im.src=d.K["sbh-pict"]; }
+    im.onload=function(){ if(!wrap) return; push(); g.clearRect(0,0,W,H); g.drawImage(im,0,0,W,H); pick=null; gallery=d.gallery; var ok=galStore(); try{ if(d.K[SK.set]!=null) lsSet(SK.set,d.K[SK.set]); }catch(e){ ok=false; } saveDraw(); paintGal(); wouldBecome(true); toast(ok?"Project imported. Undo brings back the drawing that was there. Settings apply the next time Pict opens.":"Project imported, but this browser could not keep all of it. Export it again to keep your work."); };
+    im.src=d.K[SK.main]; }
   function projFile(f){ if(f.size>60*1024*1024){ toast("That file is too large to be a Pict project."); return; } f.text().then(projImport,function(){ toast("That file could not be read."); }); }
   function galOpen(it){ var im=new Image(); im.onload=function(){ push(); g.clearRect(0,0,W,H); g.drawImage(im,0,0,W,H); pick=null; saveSet(); saveDraw(); wouldBecome(true); toast("Opened "+it.name+". Undo brings back what was there."); }; im.src=it.png; }
   function paintGal(){ var ul=q(".pt-gal"); if(!ul) return; ul.innerHTML=gallery.length?gallery.map(function(it){ return '<li class="pt-gi" data-id="'+it.id+'"><button type="button" class="pt-gopen" title="Open '+it.name.replace(/"/g,"&quot;")+'"><img alt="" src="'+it.thumb+'"></button><span class="pt-gtxt"><button type="button" class="pt-gname" title="Double-click to rename">'+it.name.replace(/</g,"&lt;")+'</button><small>'+it.at+'</small></span><button type="button" class="pt-gx" aria-label="Delete '+it.name.replace(/"/g,"&quot;")+'" title="Delete">\u00d7</button></li>'; }).join(""):'<li class="pt-gempty">Nothing saved yet. Save keeps the drawing you have now.</li>'; }
@@ -256,7 +258,7 @@
     q(".pt-save").addEventListener("click",galSave); q(".pt-dl").addEventListener("click",function(){ if(blank()){ toast("Nothing to download yet: draw something first."); return; } var a=document.createElement("a"); a.download="pict-drawing.png"; a.href=cv.toDataURL("image/png"); document.body.appendChild(a); a.click(); a.remove(); toast("Downloaded as pict-drawing.png."); }); paintGal(); }
   /* Would become (Jakob, 18.10.2026): the first picture is what the drawing becomes (itself, as the pixel version it lands as, or your choice), then the two best look-alikes;
      a click on any of them opens a picker like Inca's: "Your drawing", the 30 best look-alikes, or any object by name */
-  var pick=null, wbRank=[], colOn=true; try{ var st2=JSON.parse(localStorage.getItem("sbh-pict-set")||"null"); if(st2&&typeof st2.col3==="boolean") colOn=st2.col3; }catch(e){}
+  var pick=null, wbRank=[], colOn=true; try{ var st2=JSON.parse(localStorage.getItem(SK.set)||"null"); if(st2&&typeof st2.col3==="boolean") colOn=st2.col3; }catch(e){}
   /* the drawing's colors as shares of the color families (the same as the objects'), from every other pixel */
   function drawHist(){ var d=g.getImageData(0,0,W,H).data, Hh=new Array(51).fill(0), n=0; for(var i=0;i<d.length;i+=8){ if(d[i+3]<=40) continue; Hh[E.props.colBin(d[i],d[i+1],d[i+2])]++; n++; } if(n) for(var j=0;j<51;j++) Hh[j]/=n; return Hh; }
   /* the ranking for Would become, the chooser and Q/E: by shape; with Match colors on, the 60 best shapes reordered by shape and color together */
@@ -316,12 +318,12 @@
   function eggTop(){ if(!wrap) return; var hd=q(".pt-head"); if(!hd) return; root.classList.add("egg-app-open"); root.style.setProperty("--egg-top",Math.round(hd.getBoundingClientRect().bottom+10)+"px"); }   /* an egg pop-up appears below Pict's title bar */
   /* the first time: Pict is in very, very early alpha (Jakob, 18.10.2026) */
   var helloSeen=false;   /* also remembered here, so a browser that does not keep localStorage shows the note once per page load, not at every opening; an egg reset loads Pict fresh, so it comes back then (19.10.2026) */
-  function hello(force){ if(!force){ if(helloSeen) return; try{ if(localStorage.getItem("sbh-pict-hello")) return; }catch(e){} } var st=q(".pt-stage"); if(!st||st.querySelector(".pt-hello")) return; helloSeen=true;   /* force: the WIP pill shows it again (Jakob, 19.10.2026) */ var c=document.createElement("div"); c.className="pt-hello"; c.setAttribute("role","dialog"); c.setAttribute("aria-label","Pict");
+  function hello(force){ if(!force){ if(helloSeen) return; try{ if(localStorage.getItem(SK.hello)) return; }catch(e){} } var st=q(".pt-stage"); if(!st||st.querySelector(".pt-hello")) return; helloSeen=true;   /* force: the WIP pill shows it again (Jakob, 19.10.2026) */ var c=document.createElement("div"); c.className="pt-hello"; c.setAttribute("role","dialog"); c.setAttribute("aria-label","Pict");
     c.innerHTML='<p class="pt-hh">Pict is in very, very early alpha.</p><p>It can draw, erase, fill and turn drawings into 2D objects. Layers, text and everything else are not implemented yet.</p><p>If something breaks, call it a happy accident.</p><p class="pt-hc">If you have ideas for this tool, contact <a class="mail" href="mailto:jakob.christensen@fh-salzburg.ac.at">Jakob Christensen</a></p><button type="button" class="pt-hok">Draw anyway</button>';   /* the contact line like Inca's card (Jakob, 20.10.2026) */
-    st.appendChild(c); if(window.sbhMailCopy) window.sbhMailCopy(c); try{ lsSet("sbh-pict-hello","1"); }catch(e){}   /* counted as seen the moment it shows: only the first opening of Pict (Jakob, 19.10.2026) */ var ok=c.querySelector(".pt-hok"); ok.disabled=true; ok.addEventListener("click",function(){ try{ lsSet("sbh-pict-hello","1"); }catch(e){} c.remove(); });
+    st.appendChild(c); if(window.sbhMailCopy) window.sbhMailCopy(c); try{ lsSet(SK.hello,"1"); }catch(e){}   /* counted as seen the moment it shows: only the first opening of Pict (Jakob, 19.10.2026) */ var ok=c.querySelector(".pt-hok"); ok.disabled=true; ok.addEventListener("click",function(){ try{ lsSet(SK.hello,"1"); }catch(e){} c.remove(); });
     setTimeout(function(){ ok.disabled=false; ok.classList.add("on"); ok.focus({preventScroll:true}); },force?50:3000); }
   document.addEventListener("click",function(e){ var wp=e.target&&e.target.closest&&e.target.closest(".egg-pict .pt-wip"); if(wp) hello(true); });   /* a click on WIP: the alpha note again, its button right away */   /* the button after three seconds, fading in slowly, so the note gets read (18.10.2026; 3 s and the slow fade since 19.10.2026, Jakob) */
-  document.addEventListener("sbh-eggs",function(e){ var f=(e.detail&&e.detail.found)||[]; if(f.indexOf("pict")<0) try{ localStorage.removeItem("sbh-pict-hello"); }catch(x){} });
+  document.addEventListener("sbh-eggs",function(e){ var f=(e.detail&&e.detail.found)||[]; if(f.indexOf("pict")<0) try{ localStorage.removeItem(SK.hello); }catch(x){} });
   function open(){ if(wrap) return; if(document.querySelector(".egg-cube")&&E.cubeClose) E.cubeClose(true); build(); hello(); eggTop(); requestAnimationFrame(function(){ wrap.classList.add("in"); eggTop(); }); window.addEventListener("resize",eggTop); }
   function close(){ if(!wrap) return; if(carry){ carry.sn=null; endCarry({}); } window.removeEventListener("pointerup",up); window.removeEventListener("pointercancel",up); window.removeEventListener("keydown",key,true); var w=wrap; wrap=null; w.classList.remove("in"); setTimeout(function(){ w.remove(); },300); window.removeEventListener("resize",eggTop); root.classList.remove("egg-app-open"); root.style.removeProperty("--egg-top"); }
   /* a drawing shaken back from Who to Ask: its pixels, enlarged, in the middle */

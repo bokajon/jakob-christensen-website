@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en" data-theme="dark" style="color-scheme:dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pict</title>
+<style>html,body{margin:0;height:100%;background:#0f1117;color:#f4f1ea;font-family:system-ui,sans-serif}</style>
+</head>
+<body>
+<!-- Pict on its own, without the handbook. Pict needs a small host object (window.sbhEgg); the handbook supplies the full one, this page supplies the minimum. Without the object library Pict still draws, saves, exports and imports; the object-matching features (Would Become, Place Object) stay out. -->
+<script>window.sbhEgg={tick:function(){},found:function(){},muted:function(){return false;},calm:function(){return false;}};</script>
+<script src="pict.js"></script>
+<script>window.sbhEgg.pict.open();</script>
+</body>
+</html>
