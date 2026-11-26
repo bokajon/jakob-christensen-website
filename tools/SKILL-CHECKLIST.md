@@ -299,6 +299,10 @@ Released 2026-11-24 as single SKILL.md files, groups Sessions and Proof. Details
 - numbers-skeptic: first round 2 runs with and 2 without the skill, 12 to 14 timing runs with the skill against 1 to 4 without. Second round (new fixture, 2 runs each) showed no benefit, because the skill was missing from the skill list (a colon followed by a space in the description broke the frontmatter). After the fix 3 of 4 phrasings started it, n = 1 each. Retest after the reviews were worked in: started in 8 of 8 runs (4 phrasings, one fixture, no baseline).
 - Not tested: Codex, Cursor, an AGENTS.md project, a monorepo, the undo rule (now-and-then); the `/numbers-skeptic` start by name, other models, a measurement that takes minutes per run (numbers-skeptic).
 
+## 8p. Test numbers of the touch-grass skill (2026-11-26)
+
+Full run n = 2 and trigger runs (round 1: 4/4 self-start, 0/3 false start; round 2: 8/8 self-start, 0/5 false start, also with 30 other skills installed), all headless with Sonnet in Claude Code. Details, method and what was not tested: skill-drafts/touch-grass.notes.md.
+
 ## 9. Mistakes from 2026-11-22 this list is meant to prevent
 
 - Recommended making `workaround` user-invoked from Jakob's adapted copy of `writing-for-agents`, without knowing that the desktop app hides user-invoked skills. Fixed by sections 1.2 and 2.3.
