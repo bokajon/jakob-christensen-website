@@ -27,7 +27,8 @@ Colour each entry when you write it: 🟢 easy to undo and nothing builds on it;
 
 Skip a step, and every step that depends on it, only when it is one of these:
 
-- Not reversible or reaching outside: deleting data that is not in a git commit or another restorable backup, deleting anything remote, publishing, push, deploy unless the project's own instructions allow it without asking (then only after the full check is green, logged as a 🟡 entry with how to undo it), messages, renaming something public, changes outside the project folder (other than the log and handoff files), migrations against remote or shared databases, credentials and access settings.
+- Not reversible or reaching outside: deleting data that is not in a git commit or another restorable backup, deleting anything remote, publishing, push, messages, renaming something public, changes outside the project folder (other than the log and handoff files), migrations against remote or shared databases, credentials and access settings.
+- Deploy, unless the project's own instructions name it as allowed while the user is away (a line such as "also when the user is away" or "also in touch-grass"; a plain "deploy without asking" is not enough). Even then only if all three hold: the full check is green, the log holds the exact command that undoes the deploy, and a check after the deploy confirms the live result (the project's own way, for example comparing a file's hash; none known: skip). Log it as a 🟡 entry with how to undo it.
 - Costs money.
 - Needs a more expensive model than the user's rules allow, or more agents or sessions at once than they allow (with no such rules: more than two).
 - Needs the user's eyes, ears or hands: signing in, a step known to need a permission prompt, a refused command (never retried in another form).

@@ -14,4 +14,4 @@ Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root, created only
 
 ## Deploy
 
-Small changes to the site (CSS, text, one page) that land on `main` are deployed at once after integration with `npx wrangler deploy`, without asking. Save the log to `D:\Temp`. Larger changes wait for Jakob's word.
+Small changes to the site (CSS, text, one page) that land on `main` are deployed at once after integration with `npx wrangler deploy`, without asking. Save the log to `D:\Temp`. Larger changes wait for Jakob's word. This also holds when Jakob is away (touch-grass): after a green check, with the undo command (previous version redeploy) in the log and the live file's SHA-256 compared with the repo file; push and publishing stay skipped.
