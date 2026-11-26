@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>/now-and-then - agent skill for Claude Code | Jakob Christensen</title>
+  <meta name="description" content="Remembers decisions and open points, so every session knows them. A free agent skill for Claude Code and other AI agents by Jakob Christensen.">
+  <link rel="canonical" href="https://jakobchristensen.com/skills/now-and-then/">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121110">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://jakobchristensen.com/skills/now-and-then/">
+  <meta property="og:title" content="/now-and-then - agent skill for Claude Code | Jakob Christensen">
+  <meta property="og:description" content="Remembers decisions and open points, so every session knows them. A free agent skill for Claude Code and other AI agents by Jakob Christensen.">
+  <meta property="og:image" content="https://jakobchristensen.com/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"/now-and-then","description":"Remembers decisions and open points, so every session knows them","url":"https://jakobchristensen.com/skills/now-and-then/","codeRepository":"https://jakobchristensen.com/agent-skills/now-and-then/SKILL.md","programmingLanguage":"Markdown","license":"https://opensource.org/license/mit","author":{"@type":"Person","name":"Jakob Christensen","url":"https://jakobchristensen.com/"}}</script>
+  <style>
+    :root { color-scheme: dark; --bg:#121110; --fg:#f0eeec; --muted:#a29d98; --border:#2e2b29; --accent:#f2c14e; --surface:#1c1a19; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; line-height:1.6; }
+    main { max-width: 42rem; margin:0 auto; padding: 3rem 1rem 2rem; }
+    a { color: var(--accent); }
+    .crumb { color: var(--muted); font-size: .9rem; margin:0 0 1.5rem; }
+    h1 { font-size: clamp(1.8rem, 6vw, 2.4rem); margin:0 0 .25rem; letter-spacing:-.02em; }
+    h2 { font-size: 1.1rem; margin: 2rem 0 .5rem; }
+    .sum { color: var(--muted); font-size:1.1rem; margin:0 0 1.5rem; }
+    .dl { display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin: 1.5rem 0; }
+    .btn { display:inline-flex; gap:.5rem; align-items:center; padding:.5rem .9rem; border:1px solid var(--border); border-radius:.6rem; background:var(--surface); text-decoration:none; }
+    .btn:hover { border-color: var(--accent); }
+    .more { padding-left: 1.1rem; color: var(--muted); }
+    .more a { color: var(--fg); }
+    code { background: var(--surface); padding: .1rem .35rem; border-radius:.3rem; }
+    footer { max-width:42rem; margin:0 auto; padding: 1rem 1rem 3rem; color: var(--muted); font-size:.9rem; }
+
+  </style>
+</head>
+<body>
+  <main>
+    <p class="crumb"><a href="/">Jakob Christensen</a> / Agent Skills</p>
+    <h1>/now-and-then</h1>
+    <p class="sum">Remembers decisions and open points, so every session knows them</p>
+    <p>Agents forget what you settled last week, so you explain the same name or rule again in every session. <strong>This skill records what you decide about a project in a dated log (DECISIONS.md) and keeps the current state and open points in a short second file (STATE.md), so every session starts from both.</strong></p>
+    <p>It writes a decision down the moment you state it. When you ask for something that contradicts an earlier decision, it stops and asks whether the decision changes. If your message already names the replacement, it records the change and goes ahead. Old entries stay readable, and both files are created or committed only with your yes. It never stores keys or personal data, and an entry never counts as permission to commit, deploy or delete.</p>
+    <p>Start it with <code>/now-and-then</code> and say yes to the line it offers for your CLAUDE.md or AGENTS.md. Without that line it rarely starts on its own.</p>
+    <p class="dl">
+      <a class="btn" href="/agent-skills/now-and-then/SKILL.md" download><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg> Download SKILL.md</a>
+      <a href="/agent-skills/now-and-then/SKILL.md">Read SKILL.md</a>
+    </p>
+    <h2>When the agent uses it</h2>
+    <p>Maintains a project's decision log (DECISIONS.md, append only, each line dated with its source) and a short STATE.md for the current state and open points. Use when the user states something that should outlive the task (a name, an assignment, a project rule, a choice between options, or a correction of something the agent did or assumed), when a project has these files, when a session that changed the state ends, and when the user asks to set the files up.</p>
+    <h2>Install</h2>
+    <p>Download the skill, drag it into your AI's chat and write "Install this skill."</p>
+    <h2>More skills</h2>
+    <ul class="more">
+      <li><a href="/skills/cheap-agents/">/cheap-agents</a> - Decides if a helper agent is worth it, and which model is good enough</li>
+      <li><a href="/skills/lanes/">/lanes</a> - Keeps agent sessions from overwriting each other's work in one repo</li>
+      <li><a href="/skills/fresh/">/fresh</a> - Spots when a session gets too long and hands the work to a fresh one</li>
+      <li><a href="/skills/touch-grass/">/touch-grass</a> - Works through your plan alone while you are away, then reports back</li>
+      <li><a href="/skills/am-i-done/">/am-i-done</a> - Checks whether the whole task is finished before you close the chat</li>
+      <li><a href="/skills/workaround/">/workaround</a> - Finds another route when the direct one is blocked</li>
+      <li><a href="/skills/reroll/">/reroll</a> - Asks again in a new chat that never saw the first answer</li>
+      <li><a href="/skills/unrobot/">/unrobot</a> - Makes a text read as if a person wrote it</li>
+      <li><a href="/skills/case-closed/">/case-closed</a> - Puts a check mark on finished sessions in Claude Code Desktop</li>
+      <li><a href="/skills/tidy-sessions/">/tidy-sessions</a> - Archives finished sessions in Claude Code Desktop, keeps the rest</li>
+      <li><a href="/skills/tidy-worktrees/">/tidy-worktrees</a> - Removes worktrees and branches that have landed, keeps the rest</li>
+      <li><a href="/skills/strays/">/strays</a> - Finds commits you never pushed, and pushes them after your OK</li>
+      <li><a href="/skills/sweep/">/sweep</a> - Frees disk space on Windows drives, deletes only what you approve</li>
+      <li><a href="/skills/fingerprints/">/fingerprints</a> - Checks a folder for names, paths and keys before you share it</li>
+      <li><a href="/skills/lie-detector/">/lie-detector</a> - Makes your agent measure claims like faster, smaller or unused</li>
+      <li><a href="/skills/measure-ui/">/measure-ui</a> - Checks a web page with measured numbers instead of by eye</li>
+      <li><a href="/skills/media-review/">/media-review</a> - Checks generated images, audio and video against your brief</li>
+      <li><a href="/skills/blindfold/">/blindfold</a> - Blind test: is the changed prompt really better?</li>
+      <li><a href="/skills/nothing-lost/">/nothing-lost</a> - Backs up before a big rewrite, then checks that no line got lost</li>
+    </ul>
+  </main>
+  <footer>&copy; 2026 Jakob Christensen &middot; <a href="/">jakobchristensen.com</a></footer>
+</body>
+</html>
