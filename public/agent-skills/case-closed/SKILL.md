@@ -1,5 +1,5 @@
 ---
-name: sealed
+name: case-closed
 license: MIT
 description: Seals a finished chat session so it is easy to spot in the session list - puts a check mark at the very start of the session title, marks the session completed, and ends the last message with a short bullet report and the word "Done." as its own paragraph. Use when the user asks to mark a session as finished, done, sealed or ticked off, or says wrap up, finish or sign off for the session, or when another skill says to seal the session; the skill still checks every condition below itself before it seals. Not for a session that still has open work, pending operations, unresolved failures or open questions, not for archiving or deleting sessions, and not for deciding whether the work is finished (that is a separate check).
 compatibility: Renaming and completion marking need the Claude desktop app session tools set_session_title and mark_completed (plus get_session for the current title, and list_events to read another session). On agents without these tools the skill only writes the closing report, says in one line that the title and the completion state were not changed (naming which of the two were unavailable), and cannot seal other sessions.
@@ -9,7 +9,7 @@ metadata:
   source: "https://jakobchristensen.com"
 ---
 
-# Sealed
+# Case closed
 
 Goal: a finished session says so where the user looks first, the title in the session list. The check mark goes at the start, because titles get cut off at the end in a narrow sidebar.
 
@@ -38,7 +38,7 @@ Read its last messages first (`list_events`). If you cannot inspect that session
 
 ## If work continues after sealing
 
-If the user keeps working in a sealed session, leave the `✓` alone unless asked, and write no new `Done.` until the new work is finished too.
+If the user keeps working in a case-closed session, leave the `✓` alone unless asked, and write no new `Done.` until the new work is finished too.
 
 ## Works with
 

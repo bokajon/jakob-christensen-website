@@ -1,4 +1,4 @@
-# freeup.ps1 - find and remove disk-space junk on Windows. Windows PowerShell 5.1.
+# sweep.ps1 - find and remove disk-space junk on Windows. Windows PowerShell 5.1.
 # Without -Delete nothing is changed. Two kinds of work:
 #  1. Rebuildable junk (caches, temp files): the table rows. Deleted after one yes.
 #  2. User files (duplicates, archives next to their extracted folder, big files): found with -Find in folders
