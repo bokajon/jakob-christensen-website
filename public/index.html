@@ -179,6 +179,8 @@
     .group-head::-webkit-details-marker { display: none; }
     .group-head:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .skill-group { margin: 0; font-size: 0.78rem; font-weight: 650; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg); transition: color 0.15s; }
+    .group-icon { width: 20px; height: 20px; flex: none; color: var(--accent); }
+    .skill-group { display: inline-flex; align-items: center; gap: 0.65rem; }
     .group-head:hover .skill-group { color: var(--accent); }
     .group-meta { display: inline-flex; align-items: center; gap: 0.75rem; }
     .group-count { font-size: 0.78rem; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; color: var(--muted); }
@@ -273,7 +275,7 @@
           <p class="install">Installation: download a skill, drag it into your AI's chat and write "Install this skill."</p>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group">Handlers</h3>
+            <h3 class="skill-group"><svg class="group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="11" width="3" height="6" rx="1.5"/><rect x="18.5" y="11" width="3" height="6" rx="1.5"/><path d="M20 17c0 2-2 3-5 3"/><circle cx="13.5" cy="20" r="1.5"/></svg><span>Handlers</span></h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -355,7 +357,7 @@
           </details>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group">Fixers</h3>
+            <h3 class="skill-group"><svg class="group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20a2.4 2.4 0 0 1 0-3.4l7.2-7.2a2.4 2.4 0 0 1 3.4 3.4l-7.2 7.2A2.4 2.4 0 0 1 4 20Z"/><path d="m14 10 3-3 3-2c1.5-1 1-2.5-.5-2.5"/><circle cx="5.8" cy="18.2" r=".5"/></svg><span>Fixers</span></h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -399,7 +401,7 @@
           </details>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group">Cleaners</h3>
+            <h3 class="skill-group"><svg class="group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 11V3.5a1.5 1.5 0 0 1 3 0V11M7 14l-2 7h14l-2-7M7 14l.6-2a1.5 1.5 0 0 1 1.4-1h6a1.5 1.5 0 0 1 1.4 1l.6 2H7ZM9 21l.7-3M12 21v-3M15 21l-.7-3"/></svg><span>Cleaners</span></h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
@@ -467,7 +469,7 @@
           </details>
           <details class="group">
           <summary class="group-head">
-            <h3 class="skill-group">Detectives</h3>
+            <h3 class="skill-group"><svg class="group-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M15 15l5.5 5.5a1.5 1.5 0 0 0 2-2L17 13M6 9a4 4 0 0 1 4-4"/></svg><span>Detectives</span></h3>
             <span class="group-meta"><span class="group-count"></span><span class="group-sign" aria-hidden="true"></span></span>
           </summary>
           <ul class="skills">
