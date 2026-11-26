@@ -87,3 +87,9 @@ Limit reset at 1:40 Vienna, then `claude -p --model sonnet --max-turns 4` ran in
 - "I'm away for a while, carry on with PLAN.md" (2 runs) and "afk. Finish PLAN.md without me." (2 runs): 4/4 called the Skill tool by themselves (all hit the 4-turn limit after starting the skill, as expected).
 - "Please do step 1 of PLAN.md.", "What does PLAN.md contain?", "Let's go through PLAN.md together, ask me before each step.": 0/3 called the Skill tool.
 - Not checked: the "brb" case in a real run, other skills installed alongside (only touch-grass was present), other models.
+
+## Review round 2 (2026-11-26: Copilot, Gemini)
+Applied: afk and "I'll be gone" need "for a while" in the description; keep-awake "comes first" fixed; secrets also never in agent briefs or commits (.env not staged); non-git fallback for the commit; delete rule reworded (not in git or other backup, anything remote); permission prompt only a skip where known in advance; catch-all "decide yourself" limited to local, no requirement/security/cost/outside change; "commit locally and integrate as the project's Git rules say, never a push or PR"; handoff carries the skip-list line; report starts with plain steps done and lists details per colour; step 6.5 author note replaced by "say where it stopped".
+Not applied (Jakob decided in the grill 2026-11-26, not re-opened): Copilot 1 and Gemini 2 (deploy only where the project allows it without asking, after green check); Copilot 3 (questions from the user's own instructions are not asked; approvals stay skips).
+Not applied: Copilot 6/7 (confirmation before start; the skill already starts only with a plan), Copilot 10 beyond the handoff line.
+Retest of the trigger after the description change: not run ("afk. Finish PLAN.md without me." has no "for a while" now, its result may change).
