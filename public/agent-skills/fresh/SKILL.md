@@ -1,7 +1,7 @@
 ---
 name: fresh
 license: MIT
-description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, numbers the sessions of one task (part 1, part 2, ...) so the newest is always clear, and offers a fresh one. Also resumes work from a handoff file or after a crash or stop: it checks the real state first, names every difference from the handoff, then continues. Use at a natural break when the context is large (about 120k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows; and, to resume, when a session starts from a handoff file or the user says to continue after a crash or stop. Not for sessions with nothing to carry over, and never before the current request is done.
+description: Ends a long or finished session cleanly - writes a handoff file without asking, names the model and effort for the next session, numbers the sessions of one task (part 1, part 2, ...) so the newest is always clear, and offers a fresh one. Also resumes work from a handoff file or after a crash or stop: it checks the real state first, names every difference from the handoff, then continues. Use at a natural break when the context is large (about 150k tokens), after a pause of over an hour on a context of 60k tokens or more, when the user moves to a different task with unfinished work behind, after image-heavy work, or when a task is merged and other work follows; and, to resume, when a session starts from a handoff file or the user says to continue after a crash or stop. Not for sessions with nothing to carry over, and never before the current request is done.
 ---
 
 # Fresh
@@ -12,7 +12,7 @@ Every message re-reads the whole context. Cached tokens are cheaper, but the cac
 
 Finish the user's current request first, then run this skill when any of these holds:
 
-- The context is large: about 120k tokens. In Claude Code the optional hook (see Hook setup) reads the token count of the last model call from the transcript and adds a note at that limit. Without the hook, count only a token figure the tool puts into your context or the user tells you; never estimate one yourself.
+- The context is large: about 150k tokens. In Claude Code the optional hook (see Hook setup) reads the token count of the last model call from the transcript and adds a note at that limit. Without the hook, count only a token figure the tool puts into your context or the user tells you; never estimate one yourself.
 - The user returns after a pause of over 60 minutes and the context is 60k tokens or more. Count this only when the hook note or message timestamps show it.
 - The user moves to a different task while the old one has unfinished work or decisions worth keeping. A side question is not a new task.
 - The work was image-heavy: in most tools images stay in context until it is compacted.
@@ -71,7 +71,7 @@ Silent otherwise. Never blocks, never fails loudly."""
 import json, os, sys
 from datetime import datetime, timezone
 
-BIG = 120_000       # tokens: the whole context is re-read on every turn
+BIG = 150_000       # tokens: the whole context is re-read on every turn
 STALE_MIN = 60      # minutes of pause after which the prompt cache has probably expired
 STALE_CTX = 60_000  # tokens: a pause only matters when the context is sizeable
 
