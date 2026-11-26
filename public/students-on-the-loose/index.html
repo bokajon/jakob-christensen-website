@@ -692,7 +692,8 @@ a.mail:not(.split)::before,.m-first::before{content:"";display:inline-block;widt
 .cp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cp.ok{color:var(--good)}
 .cp{position:relative}
-.egg-cube button.cp,.egg-pict button.cp,#arena button.cp{position:relative}   /* inside Inca, Pict and the arena their button rules reset it; the tooltip belongs above the icon (Jakob, 19.10.2026) */
+:root{--tool-ink:var(--ink);--tool-ink-soft:var(--ink-soft);--tool-ink-mute:var(--ink-mute);--tool-surface:var(--surface);--tool-surface-2:var(--surface-2);--tool-line:var(--line);--tool-accent:var(--accent);--tool-accent-soft:var(--accent-soft);--tool-link:var(--link);--tool-amber:var(--amber);--tool-good:var(--good);}   /* the colors Inca and Pict take from the handbook (theme, high contrast): they carry their own defaults and work without these */
+#arena button.cp{position:relative}   /* inside Inca, Pict and the arena their button rules reset it; the tooltip belongs above the icon (Jakob, 19.10.2026) */
 /* copy-link buttons on chapter headers and on Who to Ask: shown on hover/focus (always, but quieter, on touch screens) */
 .cp.lk{width:32px;height:32px;margin:0;flex:none;border-radius:9px;color:var(--c,var(--accent));opacity:0;transition:opacity .15s,background .15s}
 .cp.lk svg{width:17px;height:17px}
@@ -3107,7 +3108,7 @@ html.rm .egg-crt-msg{animation:none}
   function breath(a,t,dur,vol){ var len=a.sampleRate*dur, b=a.createBuffer(1,len,a.sampleRate), ch=b.getChannelData(0); for(var i=0;i<len;i++) ch[i]=Math.random()*2-1;
     var src=a.createBufferSource(); src.buffer=b; var f=a.createBiquadFilter(); f.type="bandpass"; f.frequency.value=2600; f.Q.value=.8; var g=a.createGain();
     g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+dur*.4); g.gain.exponentialRampToValueAtTime(.0001,t+dur); src.connect(f); f.connect(g); g.connect(OUT); src.start(t); src.stop(t+dur); }
-  window.sbhEgg={found:function(k){ try{ var a=JSON.parse(localStorage.getItem("sbh-eggs")||"[]"); if(a.indexOf(k)<0){ a.push(k); localStorage.setItem("sbh-eggs",JSON.stringify(a)); } }catch(e){} }, muted:function(){ return root.classList.contains("mute"); }, calm:calm, rnd:rnd,
+  window.sbhEgg={foundIt:function(k){ try{ return (JSON.parse(localStorage.getItem("sbh-eggs")||"[]")||[]).indexOf(k)>=0; }catch(e){ return false; } }, found:function(k){ try{ var a=JSON.parse(localStorage.getItem("sbh-eggs")||"[]"); if(a.indexOf(k)<0){ a.push(k); localStorage.setItem("sbh-eggs",JSON.stringify(a)); } }catch(e){} }, muted:function(){ return root.classList.contains("mute"); }, calm:calm, rnd:rnd,
     audio:audio, tone:tone, tick:tickNow, soft:function(){ return SOFT; }, whoosh:whoosh, breath:breath, out:function(){ return OUT; },
     itemCard:function(){ return ""; }, itemOfEgg:function(){ return null; }, nextVariant:function(){ return 0; }, goblinSteal:function(){ return false; },
     emptySpot:function(e){ var t=e&&e.target; return !!(t&&t.closest&&!t.closest("a,button,input,select,textarea,label,[role=\"button\"],p,li,dt,dd,h1,h2,h3,h4,svg,canvas,img,iframe,.ask,.banner,.inv,.msheet,.reader")); },

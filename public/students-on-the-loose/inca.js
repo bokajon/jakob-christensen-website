@@ -1,6 +1,9 @@
 /* Inca, the small 3D program (Jakob, 18.10.2026): loaded by the handbook only when it is needed (see the loader in index.html).
    Its styles come first and are added to the page when the file runs. Edit this file; tools/lazy_stamp.py updates its version in index.html. */
 (function(){ var st=document.createElement("style"); st.id="inca-css"; st.textContent=".egg-cube{position:fixed;inset:0;z-index:9500;pointer-events:none;opacity:0;transition:opacity .35s;--cg:#f2c14e;font:600 0.874rem/1.3 ui-monospace,Menlo,Consolas,monospace;color:var(--ink)}\n"
+  +"/* the tool's own colors: the page may hand over its theme through --tool-*, otherwise these dark (or light, on data-theme=light) values apply */\n"
+  +".egg-cube{--ink:var(--tool-ink,#e9eef7);--ink-soft:var(--tool-ink-soft,#b8c4d8);--ink-mute:var(--tool-ink-mute,#8b98af);--surface:var(--tool-surface,#0f1729);--surface-2:var(--tool-surface-2,#0c1324);--line:var(--tool-line,#26375b);--accent:var(--tool-accent,#78b2ff);--accent-soft:var(--tool-accent-soft,#172a4c);--link:var(--tool-link,#9ec9ff);--amber:var(--tool-amber,#f0a94e);--good:var(--tool-good,#6fd6c0);}\n"
+  +":root[data-theme=\"light\"] .egg-cube{--ink:var(--tool-ink,#13203a);--ink-soft:var(--tool-ink-soft,#3a4a65);--ink-mute:var(--tool-ink-mute,#566379);--surface:var(--tool-surface,#ffffff);--surface-2:var(--tool-surface-2,#f6f8fc);--line:var(--tool-line,#d3dcea);--accent:var(--tool-accent,#1f56b8);--accent-soft:var(--tool-accent-soft,#e2ebfa);--link:var(--tool-link,#1a4aa3);--amber:var(--tool-amber,#a8560a);--good:var(--tool-good,#0f7a62);}\n"
   +".egg-cube.in{opacity:1}\n"
   +".egg-cube canvas.cube-gl,.egg-cube canvas.cube-ov{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}\n"
   +".egg-cube .cube-ui{pointer-events:auto;background:var(--surface);border:1px solid var(--cg);border-radius:14px;box-shadow:0 0 0 .5px var(--cg),0 18px 48px rgba(0,0,0,.5),0 4px 12px rgba(0,0,0,.3);box-sizing:border-box}\n"
@@ -709,6 +712,7 @@
   +"/* touch (Jakob, 19.10.2026): the small space buttons are taller, and the tiny corner buttons get a larger invisible tap area */\n"
   +"@media (pointer:coarse){.egg-cube .ch-space button{min-height:30px}.egg-cube .pn-min::after,.egg-cube .wm-pop::after,.egg-cube .tl-auto::after{content:\"\";position:absolute;inset:-7px}}\n"
   +"@media print{.egg-cube{display:none!important}}\n"
+  +".egg-cube button.cp{position:relative}\n"
   +".egg-cube .sw-place{display:flex!important;align-items:center;justify-content:center!important;text-align:center}"; document.head.appendChild(st); })();
 
 /* Default Cube (Jakob, 17.10.2026; third version, a small modeling scene): five clicks on empty space open it. Objects: cube, sphere, cylinder, cone, torus, plane, disk;
@@ -3073,7 +3077,7 @@
   /* the first time Inca is unlocked, and again after the easter eggs are reset, it offers the tutorial (Jakob, 18.10.2026); once per visit at most */
   var tutOffered=false;
   document.addEventListener("sbh-eggs",function(e){ var f=(e.detail&&e.detail.found)||[]; if(f.indexOf("cube")<0) tutOffered=false; });   /* eggs reset: the introduction and the tutorial come again (18.10.2026) */
-  function cubeFound(){ try{ return (JSON.parse(localStorage.getItem("sbh-eggs")||"[]")||[]).indexOf("cube")>=0; }catch(e){ return false; } }
+  function cubeFound(){ try{ return !!(E.foundIt&&E.foundIt("cube")); }catch(e){ return false; } }   /* the page tells whether the egg was found before; Inca reads no key of the handbook */
   function tutAsk(){ if(!wrap||tutOffered) return; tutOffered=true; var c=document.createElement("section"); c.className="cube-ui cube-tutask"; c.setAttribute("role","dialog"); c.setAttribute("aria-label","Tutorial");
     c.innerHTML='<p><b>New to Inca?</b> A short tutorial shows the basics in seven steps.</p><div class="ta-btns"><button type="button" class="ta-no">Not now</button><button type="button" class="ta-yes">Show the tutorial</button></div>';
     wrap.appendChild(c); requestAnimationFrame(function(){ c.classList.add("in"); }); c.querySelector(".ta-yes").focus({preventScroll:true});

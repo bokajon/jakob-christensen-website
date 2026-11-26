@@ -1,6 +1,9 @@
 /* Pict, the small 2D drawing program (Jakob, 18.10.2026): loaded by the handbook only when it is needed (see the loader in index.html).
    Its styles come first and are added to the page when the file runs. Edit this file; tools/lazy_stamp.py updates its version in index.html. */
 (function(){ var st=document.createElement("style"); st.id="pict-css"; st.textContent=".egg-pict .pt-3d{background:#f8eeda!important;color:#2a2118!important;border-color:#ccaf80!important;font-weight:800}\n"
+  +"/* the tool's own colors: the page may hand over its theme through --tool-*, otherwise these dark (or light, on data-theme=light) values apply */\n"
+  +".egg-pict{--ink:var(--tool-ink,#e9eef7);--ink-soft:var(--tool-ink-soft,#b8c4d8);--ink-mute:var(--tool-ink-mute,#8b98af);--surface:var(--tool-surface,#0f1729);--surface-2:var(--tool-surface-2,#0c1324);--line:var(--tool-line,#26375b);--accent:var(--tool-accent,#78b2ff);--accent-soft:var(--tool-accent-soft,#172a4c);--link:var(--tool-link,#9ec9ff);--amber:var(--tool-amber,#f0a94e);--good:var(--tool-good,#6fd6c0);}\n"
+  +":root[data-theme=\"light\"] .egg-pict{--ink:var(--tool-ink,#13203a);--ink-soft:var(--tool-ink-soft,#3a4a65);--ink-mute:var(--tool-ink-mute,#566379);--surface:var(--tool-surface,#ffffff);--surface-2:var(--tool-surface-2,#f6f8fc);--line:var(--tool-line,#d3dcea);--accent:var(--tool-accent,#1f56b8);--accent-soft:var(--tool-accent-soft,#e2ebfa);--link:var(--tool-link,#1a4aa3);--amber:var(--tool-amber,#a8560a);--good:var(--tool-good,#0f7a62);}\n"
   +".egg-pict .pt-3d:hover{background:#fff9ee!important}\n"
   +".egg-pict .pt-place{position:relative;justify-self:stretch;justify-content:center;background:#f2c14e!important;color:#1b1f2a!important;border-color:#f2c14e!important;font-weight:800;width:auto!important;height:auto!important;padding:6px 10px!important}\n"
   +".egg-pict .pt-hok{visibility:hidden;opacity:0;transition:opacity 1.6s ease-in-out,visibility 0s 1.6s}\n"
@@ -132,6 +135,7 @@
   +"@media (max-width:900px){.egg-pict{place-items:start stretch;grid-template-columns:minmax(0,1fr);overflow-y:auto;padding:10px}.egg-pict .pt-win{width:100%;min-width:0}.egg-pict .pt-win{height:calc(100vh - 20px);height:calc(100dvh - 20px);max-height:none}.egg-pict .pt-body{overflow-y:auto}.egg-pict .pt-side{overflow:visible}.egg-pict .pt-head{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.egg-pict .pt-head>*{flex:none}.egg-pict .pt-head .pt-x{position:sticky;right:0;background:var(--surface)}.egg-pict .pt-sw{grid-template-columns:repeat(10,1fr);gap:4px}}\n"
   +"/* phones (Jakob, 19.10.2026): the header wraps into rows instead of scrolling, so the close button no longer covers the tools and Undo, Clear, Save and PNG are in reach */\n"
   +"@media (max-width:640px){.egg-pict .pt-head{flex-wrap:wrap;overflow:visible;row-gap:6px}.egg-pict .pt-head .pt-brand,.egg-pict .pt-head .pt-wip,.egg-pict .pt-head .pt-3d{order:1}.egg-pict .pt-head .pt-x{order:2;position:static;margin-left:auto;background:none}.egg-pict .pt-head .pt-tools{order:3}.egg-pict .pt-head .pt-acts{order:4}.egg-pict .pt-head .pt-sp{display:none}}\n"
+  +".egg-pict button.cp{position:relative}\n"
   +"@media (pointer:coarse){.egg-pict .pt-colsw{min-height:30px}}"; document.head.appendChild(st); })();
 
 /* Pict (Jakob, 18.10.2026): a small 2D drawing program, the sister of Inca. Picture, paint, and an ancient people: not to be confused with the Picts. Draw, Erase, Line and Shape, Bucket, color and size,
