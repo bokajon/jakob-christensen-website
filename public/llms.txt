@@ -14,16 +14,16 @@
 - [/reroll](https://jakobchristensen.com/skills/reroll/): Asks again in a new chat that never saw the first answer
 - [/unrobot](https://jakobchristensen.com/skills/unrobot/): Makes a text read as if a person wrote it
 - [/case-closed](https://jakobchristensen.com/skills/case-closed/): Puts a check mark on finished sessions in Claude Code Desktop
-- [/attic](https://jakobchristensen.com/skills/attic/): Archives sessions with a check mark in Claude Code Desktop
+- [/attic](https://jakobchristensen.com/skills/attic/): Archives sessions that have a check mark in Claude Code Desktop
 - [/tidy-sessions](https://jakobchristensen.com/skills/tidy-sessions/): Archives finished sessions in Claude Code Desktop, keeps the rest
 - [/tidy-worktrees](https://jakobchristensen.com/skills/tidy-worktrees/): Removes worktrees and branches that have landed, keeps the rest
 - [/strays](https://jakobchristensen.com/skills/strays/): Finds commits you never pushed, and pushes them after your OK
 - [/sweep](https://jakobchristensen.com/skills/sweep/): Frees disk space on Windows drives, deletes only what you approve
 - [/fingerprints](https://jakobchristensen.com/skills/fingerprints/): Checks a folder for names, paths and keys before you share it
 - [/lie-detector](https://jakobchristensen.com/skills/lie-detector/): Makes your agent measure claims like faster, smaller or unused
+- [/blindfold](https://jakobchristensen.com/skills/blindfold/): Blind test: is the changed prompt really better?
 - [/measure-ui](https://jakobchristensen.com/skills/measure-ui/): Checks a web page with measured numbers instead of by eye
 - [/media-review](https://jakobchristensen.com/skills/media-review/): Checks generated images, audio and video against your brief
-- [/blindfold](https://jakobchristensen.com/skills/blindfold/): Blind test: is the changed prompt really better?
 - [/nothing-lost](https://jakobchristensen.com/skills/nothing-lost/): Backs up before a big rewrite, then checks that no line got lost
 
 ## Optional
