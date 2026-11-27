@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>/nothing-lost - agent skill for Claude Code | Jakob Christensen</title>
+  <title>/inventory - agent skill for Claude Code | Jakob Christensen</title>
   <meta name="description" content="Backs up before a big rewrite, then checks that no line got lost. A free agent skill for Claude Code and other AI agents by Jakob Christensen.">
-  <link rel="canonical" href="https://jakobchristensen.com/skills/nothing-lost/">
+  <link rel="canonical" href="https://jakobchristensen.com/skills/inventory/">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#121110">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://jakobchristensen.com/skills/nothing-lost/">
-  <meta property="og:title" content="/nothing-lost - agent skill for Claude Code | Jakob Christensen">
+  <meta property="og:url" content="https://jakobchristensen.com/skills/inventory/">
+  <meta property="og:title" content="/inventory - agent skill for Claude Code | Jakob Christensen">
   <meta property="og:description" content="Backs up before a big rewrite, then checks that no line got lost. A free agent skill for Claude Code and other AI agents by Jakob Christensen.">
   <meta property="og:image" content="https://jakobchristensen.com/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"/nothing-lost","description":"Backs up before a big rewrite, then checks that no line got lost","url":"https://jakobchristensen.com/skills/nothing-lost/","codeRepository":"https://jakobchristensen.com/agent-skills/nothing-lost/SKILL.md","programmingLanguage":"Markdown","license":"https://opensource.org/license/mit","author":{"@type":"Person","name":"Jakob Christensen","url":"https://jakobchristensen.com/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"/inventory","description":"Backs up before a big rewrite, then checks that no line got lost","url":"https://jakobchristensen.com/skills/inventory/","codeRepository":"https://jakobchristensen.com/agent-skills/inventory/SKILL.md","programmingLanguage":"Markdown","license":"https://opensource.org/license/mit","author":{"@type":"Person","name":"Jakob Christensen","url":"https://jakobchristensen.com/"}}</script>
   <style>
     :root { color-scheme: dark; --bg:#121110; --fg:#f0eeec; --muted:#a29d98; --border:#2e2b29; --accent:#f2c14e; --surface:#1c1a19; }
     * { box-sizing: border-box; }
@@ -41,14 +41,14 @@
 <body>
   <main>
     <p class="crumb"><a href="/">Jakob Christensen</a> / Agent Skills</p>
-    <h1>/nothing-lost</h1>
+    <h1>/inventory</h1>
     <p class="sum">Backs up before a big rewrite, then checks that no line got lost</p>
     <p>Big rewrites lose words and numbers without anyone noticing. <strong>This skill makes the old state recoverable in git first, moves text word for word, and then has a script check that every old line still exists in the new files.</strong></p>
     <p>It lists every line found nowhere and marks lines that changed on purpose. Line order and counts are not checked.</p>
-    <p>It is meant for about 5 or more files, or 100 or more lines, and needs Python 3 and git. Start it with <code>/nothing-lost</code>, or say that nothing may get lost in a rewrite. Unzip it into your skills folder.</p>
+    <p>It is meant for about 5 or more files, or 100 or more lines, and needs Python 3 and git. Start it with <code>/inventory</code>, or say that nothing may get lost in a rewrite. Unzip it into your skills folder.</p>
     <p class="dl">
-      <a class="btn" href="/agent-skills/nothing-lost.zip" download><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg> Download ZIP</a>
-      <a href="/agent-skills/nothing-lost/SKILL.md">Read SKILL.md</a>
+      <a class="btn" href="/agent-skills/inventory.zip" download><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg> Download ZIP</a>
+      <a href="/agent-skills/inventory/SKILL.md">Read SKILL.md</a>
     </p>
     <h2>When the agent uses it</h2>
     <p>Guards a large rewrite of text or data files against silent loss: commits the old state, moves text verbatim, then runs a bundled script that checks line by line that no old line was lost. Lists every old line found in none of the new files and marks lines that changed on purpose instead of failing on them. Use when restructuring, shortening, splitting, merging or reformatting documents, rule files, content or data across many files (rough guide: 5 or more files, or a rewrite touching 100 or more lines), or when the user asks that nothing gets lost. Not for smaller edits.</p>

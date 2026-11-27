@@ -1,8 +1,11 @@
 ---
-name: nothing-lost
+name: inventory
 license: MIT
 description: Guards a large rewrite of text or data files against silent loss: commits the old state, moves text verbatim, then runs a bundled script that checks line by line that no old line was lost. Lists every old line found in none of the new files and marks lines that changed on purpose instead of failing on them. Use when restructuring, shortening, splitting, merging or reformatting documents, rule files, content or data across many files (rough guide: 5 or more files, or a rewrite touching 100 or more lines), or when the user asks that nothing gets lost. Not for smaller edits.
 compatibility: Needs git and Python 3. The script uses only the standard library.
+metadata:
+  author: "Jakob Christensen"
+  source: "https://jakobchristensen.com"
 ---
 
 # Nothing lost
