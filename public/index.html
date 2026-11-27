@@ -243,6 +243,10 @@
     .skill-desc a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
     .skill-desc code { font-size: 0.95em; font-weight: 700; color: var(--fg); white-space: nowrap; overflow-wrap: normal; }
     .skill-desc a code, .skill-desc a strong { color: inherit; }
+    /* "Full page" stays quiet: muted text, faint underline, accent only on hover. */
+    .skill-more { font-size: 0.875rem; }
+    .skill-more a { color: var(--muted); text-decoration-color: var(--border-strong); transition: color 0.15s, text-decoration-color 0.15s; }
+    .skill-more a:hover, .skill-more a:focus-visible { color: var(--accent); text-decoration-color: currentColor; }
     .video { margin: 3rem auto 0; width: 100%; max-width: 640px; aspect-ratio: 16 / 9; position: relative; overflow: hidden; border-radius: 8px; }
     .video iframe { position: absolute; width: 135%; height: 135%; left: -17.5%; top: -17.5%; border: 0; display: block; }
     .video .cover { position: absolute; width: 135%; height: 135%; left: -17.5%; top: -17.5%; object-fit: cover; cursor: pointer; display: block; }
