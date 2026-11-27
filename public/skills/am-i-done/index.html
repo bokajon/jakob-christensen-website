@@ -43,7 +43,7 @@
     <p class="crumb"><a href="/">Jakob Christensen</a> / Agent Skills</p>
     <h1>/am-i-done</h1>
     <p class="sum">Checks whether the whole task is finished before you close the chat</p>
-    <p>When you close a chat, it is hard to know whether anything is left behind. <strong>This skill checks the whole task, not just the last step</strong>: every request you made in the chat, the sessions it started, the session that started it, other parts of the same series, and the git and deploy state.</p>
+    <p>When you close a chat, it is hard to know whether anything is left behind. <strong>This skill goes through everything the chat set in motion and lists what is still open:</strong> requests you made that were never done, sessions that still run or wait for you, and work that is not yet committed, merged or deployed.</p>
     <p>It answers with a colour: green means you can close the chat, orange means nothing open was found but not everything could be checked, red comes with the list of open points. It only reads and never fixes or archives anything.</p>
     <p>Start it with <code>/am-i-done</code>, or ask "can I close this chat?". The other-session checks need the session tools of the Claude desktop app; elsewhere it checks the conversation, git and your notes files and says what it could not check. It has not yet been run against real multi-session setups.</p>
     <p class="dl">
