@@ -20,11 +20,11 @@
 - [/case-closed](https://jakobchristensen.com/skills/case-closed/): Puts a ✓ check mark on finished sessions in Claude Code Desktop
 - [/attic](https://jakobchristensen.com/skills/attic/): Archives sessions that have a ✓ check mark in Claude Code Desktop
 - [/fingerprints](https://jakobchristensen.com/skills/fingerprints/): Checks a folder for names, paths and keys before you share it
+- [/nothing-lost](https://jakobchristensen.com/skills/nothing-lost/): Backs up before a big rewrite, then checks that no line got lost
 - [/lie-detector](https://jakobchristensen.com/skills/lie-detector/): Makes your agent measure claims like faster, smaller or unused
 - [/blindfold](https://jakobchristensen.com/skills/blindfold/): Blind-tests whether a changed prompt really is better
 - [/measure-ui](https://jakobchristensen.com/skills/measure-ui/): Checks a web page with measured numbers instead of by eye
 - [/media-review](https://jakobchristensen.com/skills/media-review/): Checks generated images, audio and video against your brief
-- [/nothing-lost](https://jakobchristensen.com/skills/nothing-lost/): Backs up before a big rewrite, then checks that no line got lost
 
 ## Optional
 
