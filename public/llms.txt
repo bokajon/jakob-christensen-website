@@ -8,8 +8,8 @@
 - [/lanes](https://jakobchristensen.com/skills/lanes/): Keeps agent sessions from overwriting each other's work in one repo
 - [/fresh](https://jakobchristensen.com/skills/fresh/): Spots when a session gets too long and hands the work to a fresh one
 - [/now-and-then](https://jakobchristensen.com/skills/now-and-then/): Remembers decisions and open points, so every session knows them
-- [/touch-grass](https://jakobchristensen.com/skills/touch-grass/): Works through your plan alone while you are away, then reports back
 - [/am-i-done](https://jakobchristensen.com/skills/am-i-done/): Checks whether the whole task is finished before you close the chat
+- [/touch-grass](https://jakobchristensen.com/skills/touch-grass/): Works through your plan alone while you are away, then reports back
 - [/workaround](https://jakobchristensen.com/skills/workaround/): Finds another route when the direct one is blocked
 - [/reroll](https://jakobchristensen.com/skills/reroll/): Asks again in a new chat that never saw the first answer
 - [/unrobot](https://jakobchristensen.com/skills/unrobot/): Makes a text read as if a person wrote it
