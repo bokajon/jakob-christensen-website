@@ -21,7 +21,7 @@
 Name chosen by Jakob (2026-11-23); earlier working name `generated-asset-check`. Web check 2026-11-24 (two searches, "media-review" agent skill SKILL.md and skills.sh media-review): no skill with exactly this name found. Nearest names: media-reviewer (https://smithery.ai/skills/memorysaver/media-reviewer, analyzes content and narrative, other job), media-judge (https://clawhub.ai/vargai/skills/media-judge, reviews AI videos), ai-media-quality-review (https://www.skills.sh/magichourhq/skills/ai-media-quality-review, checks a file against its brief with a bundled script, needs FFmpeg), media-patch-review (Firefox, code review). Only search snippets read, not the pages; "no exact match" is not proof of none. Name is close to media-reviewer: Jakob decides whether that is acceptable.
 
 ## Open questions
-- Which measurements should the skill name for audio? Left generic so no tool is promised that the user may not have. Images are answered by `scripts/check_image.py` (see "Image script"). A small audio script (duration, peak, silence) is still open; WAV works with the standard library, other formats need a library or ffprobe.
+- Which measurements should the skill name for audio? Left generic so no tool is promised that the user may not have. Images are answered by `scripts/check_image.py` (see "Image script"). A small audio script (duration, peak, silence) was decided against (Jakob, 2026-11-27: "Nein, weglassen"); audio stays generic in the skill text.
 - Decided (Jakob 2026-11-23): the "likeness of a person" guardrail stays, although it is my addition.
 
 ## Paid-batch test (2026-11-24, second test, Claude Code headless, Sonnet, 2 runs with `/media-review`, 2 without)
