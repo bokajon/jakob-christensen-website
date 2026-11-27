@@ -109,7 +109,7 @@ ${skills.filter((o) => o.name !== s.name).map((o) => `      <li><a href="/skills
 let added = 0;
 for (const s of skills) {
   if (home.includes(`href="skills/${s.name}/"`)) continue;
-  const link = `<p class="skill-desc"><a href="skills/${s.name}/">Open the page for /${s.name}</a></p>`;
+  const link = `<p class="skill-desc skill-more"><a href="skills/${s.name}/" aria-label="Open the page for /${s.name}">Full page →</a></p>`;
   const re = new RegExp(`(<h4>/${s.name}</h4>[\\s\\S]*?)(\\s*</details>)`);
   home = home.replace(re, (_, a, b) => `${a}\n              ${link}${b}`);
   added++;
