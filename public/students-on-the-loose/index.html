@@ -692,7 +692,7 @@ a.mail:not(.split)::before,.m-first::before{content:"";display:inline-block;widt
 .cp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .cp.ok{color:var(--good)}
 .cp{position:relative}
-:root{--tool-ink:var(--ink);--tool-ink-soft:var(--ink-soft);--tool-ink-mute:var(--ink-mute);--tool-surface:var(--surface);--tool-surface-2:var(--surface-2);--tool-line:var(--line);--tool-accent:var(--accent);--tool-accent-soft:var(--accent-soft);--tool-link:var(--link);--tool-amber:var(--amber);--tool-good:var(--good);}   /* the colors Inca and Pict take from the handbook (theme, high contrast): they carry their own defaults and work without these */
+:root{--tool-ink:var(--ink);--tool-ink-soft:var(--ink-soft);--tool-surface:var(--surface);--tool-surface-2:var(--surface-2);--tool-line:var(--line);--tool-accent:var(--accent);--tool-accent-soft:var(--accent-soft);--tool-link:var(--link);--tool-amber:var(--amber);--tool-good:var(--good);}   /* the colors Inca and Pict take from the handbook (theme, high contrast): they carry their own defaults and work without these */
 #arena button.cp{position:relative}   /* inside Inca, Pict and the arena their button rules reset it; the tooltip belongs above the icon (Jakob, 19.10.2026) */
 /* copy-link buttons on chapter headers and on Who to Ask: shown on hover/focus (always, but quieter, on touch screens) */
 .cp.lk{width:32px;height:32px;margin:0;flex:none;border-radius:9px;color:var(--c,var(--accent));opacity:0;transition:opacity .15s,background .15s}
@@ -4814,7 +4814,7 @@ html.rm .egg-crt-msg{animation:none}
 /* Inca and Pict load only when someone opens them (their code is in inca.js and pict.js); the two buttons open them */
 (function(){
   var E=window.sbhEgg; if(!E) return; var root=document.documentElement;
-  var LZ_VER={inca:"93b5f16209",pict:"f148227777"};   /* written by tools/lazy_stamp.py: a new version is always fetched */
+  var LZ_VER={inca:"a0f6afa6ca",pict:"d1e7b64207"};   /* written by tools/lazy_stamp.py: a new version is always fetched */
   var st={inca:null,pict:null}, waits={inca:[],pict:[]};
   function load(name,cb){ if(st[name]==="ready"){ if(cb) cb(); return; } if(cb) waits[name].push(cb); if(st[name]==="loading") return; st[name]="loading";
     var done=function(){ st[name]="ready"; var w=waits[name]; waits[name]=[]; w.forEach(function(f){ try{ f(); }catch(err){ setTimeout(function(){ throw err; }); } }); };
